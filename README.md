@@ -1,6 +1,11 @@
-# RetroG24_C22_Centipede
+![Logo de Centipede](https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Centipede_Logo.svg/1024px-Centipede_Logo.svg.png)
 
+# BUT Info - SAE 2.123 : Développement d'une application
 
+> Groupe C22 :
+> - Julien RAVILLY
+> - Romain GUILLON
+> - Quentin RAINAUD
 
 ## Getting started
 
