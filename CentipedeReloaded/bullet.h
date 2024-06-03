@@ -7,7 +7,6 @@
 class Bullet
 {
 private:
-    int itsSpeed;
     QRect itsHitBox;
     Position itsPosition;
 public:

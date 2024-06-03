@@ -10,7 +10,7 @@ private:
     BodyPart* itsHead;
     Direction itsDirection;
 public:
-    Centipede(BodyPart * head = new BodyPart());
+    Centipede(BodyPart* head = new BodyPart());
     ~Centipede();
     void moveForward();
     BodyPart* getItsHead();
