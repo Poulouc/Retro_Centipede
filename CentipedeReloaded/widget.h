@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QTimer>
+#include "game.h"
+#include "qpainter.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,20 +21,34 @@ public:
     ~Widget();
 
 protected:
-    void paintEvent();
+    /**
+     * @brief Overrides the paint event to draw the Widget components.
+     *
+     * @param event The paint event.
+     */
+    void paintEvent(QPaintEvent *event);
+
+    void drawCentipede(QPainter & painter);
+
+    void drawPlayer(QPainter & painter);
+
+    void drawBullet(QPainter & painter);
+
+    void drawMushrooms(QPainter & painter);
+
 
 private slots:
-    void keySpace();
-    void keyZ();
-    void keyQ();
-    void keyS();
-    void keyD();
+    void movePlayer(QKeyEvent * event);
+    void moveCentipede();
+    void moveBullet();
 
 private:
     Ui::Widget *ui;
-    QTimer itsDisplayTimer;
-    QTimer itsCentipedeTimer;
-    QTimer itsBulletTimer;
-    QTimer itsPlayerTimer;
+    QTimer * itsDisplayTimer;
+    QTimer * itsCentipedeTimer;
+    QTimer * itsBulletTimer;
+    QTimer * itsPlayerTimer;
+    Game * itsGame;
+    bool isGameStarted;
 };
 #endif // WIDGET_H
