@@ -55,7 +55,7 @@ void Widget::drawCentipede(QPainter & painter)
 {
     //painter.drawImage(0, 0, *itsBackgroundImage);
     //for (auto it = itsGame->getItsCentipedes()->begin(); it != itsGame->getItsCentipedes()->end(); ++it) {
-    //    Centipede rect = (*it)->get;
+    //    Centipede curre = (*it)->get;
     //}
 }
 
