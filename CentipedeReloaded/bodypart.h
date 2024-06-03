@@ -16,6 +16,9 @@ public:
     Position getItsPosition();
     BodyPart* getItsChild();
     BodyPart* getItsParent();
+    void setItsChild(BodyPart* child);
+    void setItsParent(BodyPart* parent);
+    void addChild(BodyPart* child);
     QRect getItsHitBox();
 };
 

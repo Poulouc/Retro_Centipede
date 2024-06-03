@@ -11,9 +11,10 @@ private:
     BodyPart* itsHead;
     Direction itsDirection;
 public:
-    Centipede();
+    Centipede(BodyPart* head = nullptr);
     ~Centipede();
     void moveForward();
+    BodyPart* getItsHead();
 };
 
 #endif // CENTIPEDE_H
