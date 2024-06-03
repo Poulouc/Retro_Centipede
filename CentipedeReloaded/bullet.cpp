@@ -9,7 +9,7 @@ Bullet::~Bullet()
 
 void Bullet::updatePos()
 {
-    itsPosition.posY = itsPosition.posY - 0; // !-- Change 0 to speed const --!
+    itsPosition.posY = itsPosition.posY - BULLET_SPEED;
 }
 
 QRect Bullet::getItsHitBox()
