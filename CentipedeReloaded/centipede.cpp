@@ -2,6 +2,9 @@
 
 Centipede::Centipede(BodyPart * head) {
     itsHead = head;
-    BodyPart * currentPart = itsHead;
-    for()
+}
+
+BodyPart* Centipede::getItsHead()
+{
+    return itsHead;
 }
