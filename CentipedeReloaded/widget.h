@@ -5,6 +5,7 @@
 #include <QTimer>
 #include "game.h"
 #include "qpainter.h"
+#include "qimage.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -41,6 +42,7 @@ private slots:
     void movePlayer(QKeyEvent * event);
     void moveCentipede();
     void moveBullet();
+    void startGame();
 
 private:
     Ui::Widget *ui;
@@ -49,6 +51,10 @@ private:
     QTimer * itsBulletTimer;
     QTimer * itsPlayerTimer;
     Game * itsGame;
+    QImage itsCentiHead;
+    QImage itsCentiBody;
+    QImage itsAvatar;
+    QImage itsMushrooms;
     bool isGameStarted;
 };
 #endif // WIDGET_H

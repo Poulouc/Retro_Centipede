@@ -1,5 +1,6 @@
 #include <QRect>
 #include "typeDef.h"
+#include "typeDef.h"
 
 #ifndef PLAYER_H
 #define PLAYER_H
@@ -13,7 +14,7 @@ private:
 public:
     Player();
     ~Player();
-    void updatePos();
+    void updatePos(Direction direction);
     Position getItsPosition();
     QRect getItsHitBox();
 };

@@ -14,6 +14,7 @@ public:
     Centipede();
     ~Centipede();
     void moveForward();
+    BodyPart* getItsHead();
 };
 
 #endif // CENTIPEDE_H
