@@ -13,7 +13,7 @@ private:
 public:
     Player();
     ~Player();
-    void updatePos();
+    void updatePos(Direction direction);
     Position getItsPosition();
     QRect getItsHitBox();
 };

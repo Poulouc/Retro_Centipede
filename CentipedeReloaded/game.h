@@ -11,8 +11,8 @@ class Game
 {
 private:
     int itsScore;
-    std::vector<Centipede*> itsCentipedes;
-    std::vector<Mushroom*> itsMushrooms;
+    std::vector<Centipede*>* itsCentipedes;
+    std::vector<Mushroom*>* itsMushrooms;
     Bullet* itsBullet;
     Player* itsPlayer;
 public:
@@ -24,6 +24,10 @@ public:
     bool isColliding(Mushroom* mushroom, Bullet* bullet);
     bool isColliding(Centipede* centipede, Bullet* bullet);
     bool isColliding(Centipede* centipede, Mushroom* mushroom);
+    std::vector<Centipede*>* getItsCentipedes();
+    std::vector<Mushroom*>* getItsMushrooms();
+    Bullet* getItsBullet();
+    Player* getItsPlayer();
 };
 
 #endif // GAME_H
