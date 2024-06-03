@@ -1,3 +1,7 @@
 #include "centipede.h"
 
-Centipede::Centipede() {}
+Centipede::Centipede(BodyPart * head) {
+    itsHead = head;
+    BodyPart * currentPart = itsHead;
+    for()
+}

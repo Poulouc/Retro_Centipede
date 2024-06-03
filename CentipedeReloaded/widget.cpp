@@ -12,3 +12,28 @@ Widget::~Widget()
 {
     delete ui;
 }
+
+void Widget::keySpace()
+{
+
+}
+
+void Widget::keyZ()
+{
+
+}
+
+void Widget::keyQ()
+{
+
+}
+
+void Widget::keyS()
+{
+
+}
+
+void Widget::keyD()
+{
+
+}

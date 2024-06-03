@@ -7,9 +7,10 @@
 class BodyPart
 {
 private:
-    BodyPart* itsParent;
-    BodyPart* itsChild;
+    BodyPart* itsParent = nullptr;
+    BodyPart* itsChild = nullptr;
     QRect itsHitBox;
+    Position itsPosition = {};
 public:
     BodyPart();
     ~BodyPart();
