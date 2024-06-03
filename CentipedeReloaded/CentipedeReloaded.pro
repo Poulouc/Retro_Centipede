@@ -9,10 +9,23 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    bodypart.cpp \
+    bullet.cpp \
+    centipede.cpp \
+    game.cpp \
     main.cpp \
+    mushroom.cpp \
+    player.cpp \
     widget.cpp
 
 HEADERS += \
+    bodypart.h \
+    bullet.h \
+    centipede.h \
+    game.h \
+    mushroom.h \
+    player.h \
+    typeDef.h \
     widget.h
 
 FORMS += \
