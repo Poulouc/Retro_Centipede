@@ -13,4 +13,7 @@ struct Direction
     int dirY;
 };
 
+const int CENTIPEDE_SPEED = 8;
+const int PLAYER_SPEED = 8;
+
 #endif // TYPEDEF_H
