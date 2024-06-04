@@ -91,7 +91,10 @@ void Widget::keyReleaseEvent(QKeyEvent * event)
 void Widget::drawPlayer(QPainter & painter)
 {
     //à compléter avec le liens
-    painter.drawImage(itsGame->getItsPlayer()->getItsHitBox(), itsAvatar);
+    //painter.drawImage(itsGame->getItsPlayer()->getItsHitBox(), itsAvatar);
+    painter.setPen(Qt::black);
+    painter.setBrush(Qt::SolidPattern);
+    painter.drawRect(itsGame->getItsPlayer()->getItsHitBox());
 }
 
 void Widget::drawMushrooms(QPainter & painter)
@@ -99,7 +102,10 @@ void Widget::drawMushrooms(QPainter & painter)
     //painter.drawImage(0, 0, *itsBackgroundImage);
     for(auto it = itsGame->getItsMushrooms()->begin(); it !=  itsGame->getItsMushrooms()->end(); ++it)
     {
-        painter.drawImage((*it)->getItsHitBox(), itsMushrooms);
+        //painter.drawImage((*it)->getItsHitBox(), itsMushrooms);
+        painter.setPen(Qt::red);
+        painter.setBrush(Qt::SolidPattern);
+        painter.drawRect((*it)->getItsHitBox());
     }
 }
 
@@ -113,12 +119,18 @@ void Widget::drawCentipede(QPainter & painter)
             if(currentPart != (*it)->getItsHead())
             {
                 //display the bodys
-                painter.drawImage(currentPart->getItsHitBox(), itsCentiBody);
+                //painter.drawImage(currentPart->getItsHitBox(), itsCentiBody);
+                painter.setPen(Qt::yellow);
+                painter.setBrush(Qt::SolidPattern);
+                painter.drawRect(currentPart->getItsHitBox());
             }
             else
             {
                 //display the head
-                painter.drawImage(currentPart->getItsHitBox(), itsCentiHead);
+                //painter.drawImage(currentPart->getItsHitBox(), itsCentiHead);
+                painter.setPen(Qt::blue);
+                painter.setBrush(Qt::SolidPattern);
+                painter.drawRect(currentPart->getItsHitBox());
             }
             currentPart = currentPart->getItsChild();
         }
@@ -128,6 +140,9 @@ void Widget::drawCentipede(QPainter & painter)
 
 void Widget::drawBullet(QPainter & painter)
 {
+    //painter.drawRect(itsGame->getItsBullet()->getItsHitBox());
+    painter.setPen(Qt::green);
+    painter.setBrush(Qt::SolidPattern);
     painter.drawRect(itsGame->getItsBullet()->getItsHitBox());
 }
 
@@ -143,10 +158,10 @@ void Widget::movePlayer()
 
 void Widget::startGame()
 {
-    ui->stackedWidget->setCurrentIndex(1); // j'ai mis 0 mais jsp trop lequel c'est
+    ui->stackedWidget->setCurrentIndex(3); // j'ai mis 0 mais jsp trop lequel c'est
     itsGame = new Game();
     isGameStarted = true;
-    itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps    itsAvatarTimer->start(2500/this->width());
+    itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
     itsBulletTimer->start(1); // set the speed of it
     itsCentipedeTimer->start(1); // set the speed of it
     itsPlayerTimer->start(1); // set the speed of it
