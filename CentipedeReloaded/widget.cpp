@@ -8,7 +8,6 @@ Widget::Widget(QWidget *parent)
     , ui(new Ui::Widget)
 {
     ui->setupUi(this);
-
     isGameStarted = false;
     connect(ui->playButton , SIGNAL(clicked()), this, SLOT(startGame()));
     // Create and start the timer for updating the GUI, the centipede, the bullet, the player
@@ -23,7 +22,8 @@ Widget::Widget(QWidget *parent)
     itsMushrooms.load("../imageDoss/mushrooms.png");
 
     //initialize direction
-    itsDirection = {0, 0};
+    itsPlayerDirection.dirX = 0;
+    itsPlayerDirection.dirY = 0;
 
     connect(itsDisplayTimer, SIGNAL(timeout()), this, SLOT(update()));
     connect(itsPlayerTimer, SIGNAL(timeout()), this, SLOT(movePlayer()));
@@ -39,6 +39,7 @@ Widget::~Widget()
     delete itsDisplayTimer;
     delete itsPlayerTimer;
     delete itsGame;
+    //delete itsPlayerDirection;
 }
 
 void Widget::paintEvent(QPaintEvent *event)
@@ -60,19 +61,19 @@ void Widget::keyPressEvent(QKeyEvent * event)
     // Handle key press events for left and right arrow keys
     if (event->key() == Qt::Key_Z)
     {
-        itsDirection.dirY = -1;
+        itsPlayerDirection.dirY = -1;
     }
     if (event->key() == Qt::Key_Q)
     {
-        itsDirection.dirX = -1;
+        itsPlayerDirection.dirX = -1;
     }
     if (event->key() == Qt::Key_S)
     {
-        itsDirection.dirY = 1;
+        itsPlayerDirection.dirY = 1;
     }
     if (event->key() == Qt::Key_D)
     {
-        itsDirection.dirX = 1;
+        itsPlayerDirection.dirX = 1;
     }
     if (event->key() == Qt::Key_Space)
     {
@@ -82,24 +83,24 @@ void Widget::keyPressEvent(QKeyEvent * event)
 
 void Widget::keyReleaseEvent(QKeyEvent * event)
 {
-    int xCurrentDir = itsDirection.dirX;
-    int yCurrentDir = itsDirection.dirY;
+    int xCurrentDir = itsPlayerDirection.dirX;
+    int yCurrentDir = itsPlayerDirection.dirY;
     // Handle key press events for left and right arrow keys
     if (event->key() == Qt::Key_Z && yCurrentDir != 1)
     {
-        itsDirection.dirY = 0;
+        itsPlayerDirection.dirY = 0;
     }
     if (event->key() == Qt::Key_Q && xCurrentDir != 1)
     {
-        itsDirection.dirX = 0;
+        itsPlayerDirection.dirX = 0;
     }
     if (event->key() == Qt::Key_S && yCurrentDir != -1)
     {
-        itsDirection.dirY = 0;
+        itsPlayerDirection.dirY = 0;
     }
     if (event->key() == Qt::Key_D && xCurrentDir != -1)
     {
-        itsDirection.dirX = 0;
+        itsPlayerDirection.dirX = 0;
     }
 }
 
@@ -171,7 +172,7 @@ void Widget::moveBullet()
 
 void Widget::movePlayer()
 {
-    itsGame->getItsPlayer()->updatePos(itsDirection);
+    itsGame->movePlayer(itsPlayerDirection);
 }
 
 void Widget::startGame()
@@ -182,7 +183,7 @@ void Widget::startGame()
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
     itsBulletTimer->start(16); // set the speed of it
     //itsCentipedeTimer->start(1); // set the speed of it
-    itsPlayerTimer->start(16); // set the speed of it
+    itsPlayerTimer->start(3); // set the speed of it
     setFixedSize(this->width(), this->height()); // set the size of the window
 }
 

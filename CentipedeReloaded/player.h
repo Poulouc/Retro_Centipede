@@ -11,9 +11,10 @@ private:
     QRect itsHitBox;
     Position itsPosition;
 public:
-    Player();
+    Player(Position position);
     ~Player();
     void updatePos(Direction direction);
+    void hit();
     Position getItsPosition();
     QRect getItsHitBox();
 };
