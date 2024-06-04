@@ -80,20 +80,22 @@ void Widget::keyPressEvent(QKeyEvent * event)
 
 void Widget::keyReleaseEvent(QKeyEvent * event)
 {
+    int xCurrentDir = itsDirection.dirX;
+    int yCurrentDir = itsDirection.dirY;
     // Handle key press events for left and right arrow keys
-    if (event->key() == Qt::Key_Z)
+    if (event->key() == Qt::Key_Z && yCurrentDir != 1)
     {
         itsDirection.dirY = 0;
     }
-    if (event->key() == Qt::Key_Q)
+    if (event->key() == Qt::Key_Q && xCurrentDir != 1)
     {
         itsDirection.dirX = 0;
     }
-    if (event->key() == Qt::Key_S)
+    if (event->key() == Qt::Key_S && yCurrentDir != -1)
     {
         itsDirection.dirY = 0;
     }
-    if (event->key() == Qt::Key_D)
+    if (event->key() == Qt::Key_D && xCurrentDir != -1)
     {
         itsDirection.dirX = 0;
     }
@@ -170,7 +172,7 @@ void Widget::movePlayer()
 void Widget::startGame()
 {
     ui->stackedWidget->setCurrentIndex(3); // j'ai mis 0 mais jsp trop lequel c'est
-    itsGame = new Game();
+    itsGame = new Game({0, 0, this->width(), this->height()});
     isGameStarted = true;
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
     //itsBulletTimer->start(1); // set the speed of it
