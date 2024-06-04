@@ -1,5 +1,4 @@
 #include "bodypart.h"
-#include "typeDef.h"
 
 #ifndef CENTIPEDE_H
 #define CENTIPEDE_H

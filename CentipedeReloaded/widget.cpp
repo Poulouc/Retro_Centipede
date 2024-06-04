@@ -1,12 +1,6 @@
 #include "widget.h"
-#include "ui_widget.h"
-#include "qpainter.h"
-#include "QKeyEvent"
-#include "game.h"
-#include "QRect"
-#include "centipede.h"
-#include "bodypart.h"
-#include "typeDef.h"
+
+
 using namespace std;
 
 Widget::Widget(QWidget *parent)

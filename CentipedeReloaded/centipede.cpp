@@ -5,6 +5,11 @@ Centipede::Centipede(BodyPart * head) {
     itsTail = head;
 }
 
+Centipede::~Centipede()
+{
+
+}
+
 BodyPart* Centipede::getItsHead()
 {
     return itsHead;

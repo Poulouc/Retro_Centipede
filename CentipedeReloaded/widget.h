@@ -3,8 +3,10 @@
 
 #include <QWidget>
 #include <QTimer>
+#include <QKeyEvent>
 #include "game.h"
-#include "qpainter.h"
+#include <QPainter>
+#include "ui_widget.h"
 #include "qimage.h"
 
 QT_BEGIN_NAMESPACE
