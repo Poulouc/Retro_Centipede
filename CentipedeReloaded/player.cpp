@@ -14,6 +14,11 @@ void Player::updatePos(Direction direction)
     itsHitBox = {itsPosition.posX, itsPosition.posY, PLAYER_SIZE, PLAYER_SIZE};
 }
 
+void Player::hit()
+{
+    itsHP--;
+}
+
 Position Player::getItsPosition()
 {
     return itsPosition;

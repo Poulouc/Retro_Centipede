@@ -5,7 +5,9 @@ using namespace std;
 
 Game::Game(QRect board)
     :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsBullet(nullptr), itsPlayer(new Player), itsBoard(board)
-{ }
+{
+    itsCentipedes->push_back(new Centipede());
+}
 
 Game::~Game()
 {
@@ -22,6 +24,7 @@ Game::~Game()
         delete *it;
     }
     delete itsMushrooms;
+
     delete itsBullet;
     delete itsPlayer;
 }
@@ -56,29 +59,57 @@ void Game::shoot()
     {
         int newX = itsPlayer->getItsPosition().posX + PLAYER_SIZE / 2 - BULLET_SIZE / 2;
         int newY = itsPlayer->getItsPosition().posY + PLAYER_SIZE / 2 - BULLET_SIZE / 2;
-        itsBullet = new Bullet(newX, newY)
+        itsBullet = new Bullet(newX, newY);
     }
 }
 
-bool Game::isColliding(Mushroom* mushroom, Player* player)
+bool Game::isColliding(QRect hitbox1, QRect hitbox2)
 {
-    return true;
+    return hitbox1.intersected(hitbox2).isValid();
 }
 
-bool Game::isColliding(Mushroom* mushroom, Bullet* bullet)
+void Game::checkCollisions()
 {
-    return true;
+    if (itsBullet != nullptr)
+    {
+        for (vector<Mushroom*>::iterator it = itsMushrooms->begin(); it < itsMushrooms->end(); it++)
+        {
+            if (isColliding((*it)->getItsHitBox(), itsBullet->getItsHitBox()))
+            {
+                (*it)->damage();
+                itsBullet = nullptr;
+                break;
+            }
+        }
+    }
+
+    for (vector<Centipede*>::iterator it = itsCentipedes->begin(); it < itsCentipedes->end(); it++)
+    {
+        for (BodyPart* centiPart = (*it)->getItsHead(); centiPart != nullptr; centiPart = centiPart->getItsChild())
+        {
+            if (itsBullet != nullptr)
+            {
+                if (isColliding(centiPart->getItsHitBox(), itsBullet->getItsHitBox()))
+                {
+                    sliceCentipede(centiPart);
+                    itsBullet = nullptr;
+                }
+            }
+
+            if (isColliding(centiPart->getItsHitBox(), itsPlayer->getItsHitBox()))
+            {
+                itsPlayer->hit();
+                for (vector<Centipede*>::iterator it = itsCentipedes->begin(); it < itsCentipedes->end(); it++)
+                {
+                    delete *it;
+                }
+            }
+        }
+    }
 }
 
-bool Game::isColliding(Centipede* centipede, Bullet* bullet)
-{
-    return true;
-}
-
-bool Game::isColliding(Centipede* centipede, Mushroom* mushroom)
-{
-    return true;
-}
+void Game::sliceCentipede(BodyPart* hittedPart)
+{ }
 
 std::vector<Centipede*>* Game::getItsCentipedes()
 {
