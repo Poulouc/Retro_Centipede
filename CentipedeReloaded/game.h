@@ -10,11 +10,11 @@
 class Game
 {
 private:
-    int itsScore;
-    std::vector<Centipede*>* itsCentipedes;
-    std::vector<Mushroom*>* itsMushrooms;
-    Bullet* itsBullet;
-    Player* itsPlayer;
+    int itsScore = 0;
+    std::vector<Centipede*>* itsCentipedes = {};
+    std::vector<Mushroom*>* itsMushrooms = {};
+    Bullet* itsBullet = new Bullet();
+    Player* itsPlayer = new Player();
 public:
     Game();
     ~Game();

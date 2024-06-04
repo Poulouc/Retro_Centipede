@@ -2,6 +2,8 @@
 
 BodyPart::BodyPart() {}
 
+BodyPart::~BodyPart() {}
+
 Position BodyPart::getItsPosition()
 {
     return itsPosition;
