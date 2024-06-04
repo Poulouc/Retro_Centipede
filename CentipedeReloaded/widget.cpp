@@ -81,10 +81,21 @@ void Widget::keyPressEvent(QKeyEvent * event)
 void Widget::keyReleaseEvent(QKeyEvent * event)
 {
     // Handle key press events for left and right arrow keys
-    if (event->key() == Qt::Key_Z || event->key() == Qt::Key_Q || event->key() == Qt::Key_S || event->key() == Qt::Key_D)
+    if (event->key() == Qt::Key_Z)
+    {
+        itsDirection.dirY = 0;
+    }
+    if (event->key() == Qt::Key_Q)
     {
         itsDirection.dirX = 0;
+    }
+    if (event->key() == Qt::Key_S)
+    {
         itsDirection.dirY = 0;
+    }
+    if (event->key() == Qt::Key_D)
+    {
+        itsDirection.dirX = 0;
     }
 }
 
@@ -164,7 +175,7 @@ void Widget::startGame()
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
     //itsBulletTimer->start(1); // set the speed of it
     //itsCentipedeTimer->start(1); // set the speed of it
-    itsPlayerTimer->start(1); // set the speed of it
+    itsPlayerTimer->start(16); // set the speed of it
     setFixedSize(this->width(), this->height()); // set the size of the window
 }
 
