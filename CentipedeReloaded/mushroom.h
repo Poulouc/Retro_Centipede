@@ -11,7 +11,7 @@ private:
     QRect itsHitBox;
     Position itsPosition;
 public:
-    Mushroom();
+    Mushroom(int x, int y);
     ~Mushroom();
     void damage();
     int getItsState();

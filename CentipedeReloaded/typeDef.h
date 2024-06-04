@@ -27,6 +27,7 @@ const int MUSHROOM_SIZE = 5;
 
 // Variables for bullet
 const int BULLET_SPEED = 5;
+const int BULLET_SIZE = 2;
 
 // Variables for game
 const int MUSHROOMS_AMOUNT = 20;
