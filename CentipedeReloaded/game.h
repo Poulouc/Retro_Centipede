@@ -3,6 +3,7 @@
 #include "centipede.h"
 #include "mushroom.h"
 #include "player.h"
+#include "typeDef.h"
 
 #ifndef GAME_H
 #define GAME_H
@@ -16,6 +17,7 @@ private:
     Bullet* itsBullet;
     Player* itsPlayer;
     QRect itsBoard;
+    QRect itsPlayerZone;
 public:
     Game(QRect board);
     ~Game();
@@ -24,6 +26,7 @@ public:
     bool isColliding(QRect hitbox1, QRect hitbox2);
     void checkCollisions();
     void sliceCentipede(BodyPart* hittedPart);
+    void movePlayer(Direction & direction);
     std::vector<Centipede*>* getItsCentipedes();
     std::vector<Mushroom*>* getItsMushrooms();
     Bullet* getItsBullet();

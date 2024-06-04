@@ -1,13 +1,14 @@
 #include <random>
 #include "game.h"
+#include <QRect>
 
 using namespace std;
 
 Game::Game(QRect board)
-    :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsBullet(nullptr), itsPlayer(new Player), itsBoard(board)
-{
-    itsCentipedes->push_back(new Centipede());
-}
+    :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsBullet(nullptr),
+    itsPlayer(new Player({board.width()/2 - PLAYER_SIZE/2, board.height() - PLAYER_SIZE - 1})), itsBoard(board),
+    itsPlayerZone(0, (4 * board.height()) / 5, board.width(), board.height() / 5)
+{ }
 
 Game::~Game()
 {
@@ -129,4 +130,13 @@ Bullet* Game::getItsBullet()
 Player* Game::getItsPlayer()
 {
     return itsPlayer;
+}
+
+void Game::movePlayer(Direction & direction)
+{
+    if(itsPlayerZone.x() < itsPlayer->getItsHitBox().x() + direction.dirX * PLAYER_SPEED and itsPlayerZone.x() + itsPlayerZone.width() > itsPlayer->getItsHitBox().x() + itsPlayer->getItsHitBox().width() + direction.dirX * PLAYER_SPEED
+        and itsPlayerZone.y() < itsPlayer->getItsHitBox().y() + direction.dirY * PLAYER_SPEED and itsPlayerZone.y() + itsPlayerZone.height() > itsPlayer->getItsHitBox().y() + itsPlayer->getItsHitBox().height() + direction.dirY * PLAYER_SPEED)
+    {
+        itsPlayer->updatePos(direction);
+    }
 }
