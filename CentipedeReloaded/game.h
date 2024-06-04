@@ -15,7 +15,7 @@ private:
     std::vector<Centipede*>* itsCentipedes = {};
     std::vector<Mushroom*>* itsMushrooms = {};
     Bullet* itsBullet = new Bullet();
-    Player* itsPlayer = new Player();
+    Player* itsPlayer = nullptr;
     QRect itsBoard;
     QRect itsPlayerZone;
 public:

@@ -5,7 +5,9 @@
 using namespace std;
 
 Game::Game(QRect board)
-    :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsBullet(nullptr), itsPlayer(new Player), itsBoard(board), itsPlayerZone(0, (4 * itsBoard.height()) / 5, itsBoard.width(), itsBoard.height() / 5)
+    :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>),
+    itsBullet(nullptr), itsPlayer(new Player({board.width()/2 - PLAYER_SIZE/2, board.height() - PLAYER_SIZE - 1})),
+    itsBoard(board), itsPlayerZone(0, (4 * board.height()) / 5, board.width(), board.height() / 5)
 { }
 
 Game::~Game()

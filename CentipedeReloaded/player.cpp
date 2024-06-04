@@ -1,8 +1,8 @@
 #include "player.h"
 
-Player::Player()
-    :itsHP(3), itsHitBox({100, 400, PLAYER_SIZE, PLAYER_SIZE}), itsPosition({100, 400})
-{ }
+Player::Player(Position position)
+    :itsHP(3), itsHitBox({position.posX, position.posY, PLAYER_SIZE, PLAYER_SIZE}), itsPosition(position)
+{}
 
 Player::~Player()
 { }
