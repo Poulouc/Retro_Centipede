@@ -10,7 +10,7 @@ private:
     QRect itsHitBox;
     Position itsPosition;
 public:
-    Bullet();
+    Bullet(int x, int y);
     ~Bullet();
     void updatePos();
     QRect getItsHitBox();

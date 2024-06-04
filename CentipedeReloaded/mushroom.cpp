@@ -1,7 +1,7 @@
 #include "mushroom.h"
 
-Mushroom::Mushroom()
-    :itsState(4), itsHitBox(0, 0, 0, 0), itsPosition({0, 0})
+Mushroom::Mushroom(int x, int y)
+    :itsState(4), itsHitBox(0, 0, 0, 0), itsPosition({x, y})
 { }
 
 Mushroom::~Mushroom()

@@ -36,13 +36,28 @@ void Game::createMushrooms()
 
     while (itsMushrooms->size() < MUSHROOMS_AMOUNT)
     {
-        itsMushrooms->push_back(new Mushroom());
+        // Generate a position
+        int genX = itsBoard.x() + randX(eng) * itsBoard.width();
+        int genY = itsBoard.y() + randY(eng) * itsBoard.height();
+
+        // Check if a mushroom already exist at the same position
+        for (vector<Mushroom*>::iterator it = itsMushrooms->begin(); it < itsMushrooms->end(); it++)
+        {
+            if ((*it)->getItsPosition().posX == genX && (*it)->getItsPosition().posY == genY) continue;
+        }
+
+        itsMushrooms->push_back(new Mushroom(genX, genY));
     }
 }
 
 void Game::shoot()
 {
-
+    if (itsBullet != nullptr)
+    {
+        int newX = itsPlayer->getItsPosition().posX + PLAYER_SIZE / 2 - BULLET_SIZE / 2;
+        int newY = itsPlayer->getItsPosition().posY + PLAYER_SIZE / 2 - BULLET_SIZE / 2;
+        itsBullet = new Bullet(newX, newY)
+    }
 }
 
 bool Game::isColliding(Mushroom* mushroom, Player* player)
