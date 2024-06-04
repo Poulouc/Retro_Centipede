@@ -16,7 +16,7 @@ struct Direction
 // Variables for centipede
 const int CENTIPEDE_SPEED = 8;
 const int CENTIPEDE_LENGTH = 8;
-const int CENTIPEDE_BODYPART_SIZE = 5;
+const int CENTIPEDE_BODYPART_SIZE = 10;
 
 // Variables for player
 const int PLAYER_SPEED = 1;
@@ -27,9 +27,9 @@ const int MUSHROOM_SIZE = 5;
 
 // Variables for bullet
 const int BULLET_SPEED = 5;
-const int BULLET_SIZE = 2;
+const int BULLET_SIZE = 5;
 
 // Variables for game
-const int MUSHROOMS_AMOUNT = 20;
+const int MUSHROOMS_AMOUNT = 30;
 
 #endif // TYPEDEF_H

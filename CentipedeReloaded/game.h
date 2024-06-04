@@ -19,6 +19,7 @@ private:
 public:
     Game(QRect board);
     ~Game();
+    void spawnCentipede();
     void createMushrooms();
     void shoot();
     bool isColliding(Mushroom* mushroom, Player* player);

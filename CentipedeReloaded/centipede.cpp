@@ -1,9 +1,8 @@
 #include "centipede.h"
 
-Centipede::Centipede(BodyPart * head) {
-    itsHead = head;
-    itsTail = head;
-}
+Centipede::Centipede(BodyPart * head)
+    :itsHead(head), itsTail(head)
+{}
 
 Centipede::~Centipede()
 {
@@ -34,4 +33,9 @@ void Centipede::moveForward()
     newPos.posX = headPos.posX + CENTIPEDE_SPEED * itsDirection.dirX;
     newPos.posY = headPos.posY + CENTIPEDE_SPEED * itsDirection.dirY;
     currentPart->setItsPosition(newPos);
+}
+
+void Centipede::setItsDirection(Direction dir)
+{
+    itsDirection = dir;
 }

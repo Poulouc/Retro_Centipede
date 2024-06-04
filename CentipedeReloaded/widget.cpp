@@ -1,6 +1,8 @@
 #include "widget.h"
 #include "ui_widget.h"
 
+using namespace std;
+
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
@@ -46,10 +48,10 @@ void Widget::paintEvent(QPaintEvent *event)
         Q_UNUSED(event); //pour éviter les avertissements du compilateur concernant des variables non utilisées
         QPainter painter(this);
         // Draw the Bricks and the avatar
-        //drawCentipede(painter);
+        drawCentipede(painter);
         drawPlayer(painter);
-        //drawBullet(painter);
-        //drawMushrooms(painter);
+        drawBullet(painter);
+        drawMushrooms(painter);
     }
 }
 
@@ -113,19 +115,19 @@ void Widget::drawPlayer(QPainter & painter)
 void Widget::drawMushrooms(QPainter & painter)
 {
     //painter.drawImage(0, 0, *itsBackgroundImage);
-    for(auto it = itsGame->getItsMushrooms()->begin(); it !=  itsGame->getItsMushrooms()->end(); ++it)
+    for(Mushroom * mushroom : *itsGame->getItsMushrooms())
     {
         //painter.drawImage((*it)->getItsHitBox(), itsMushrooms);
         painter.setPen(Qt::red);
         painter.setBrush(Qt::SolidPattern);
-        painter.drawRect((*it)->getItsHitBox());
+        painter.drawRect(mushroom->getItsHitBox());
     }
 }
 
 void Widget::drawCentipede(QPainter & painter)
 {
     //painter.drawImage(0, 0, *itsBackgroundImage);
-    for (auto it = itsGame->getItsCentipedes()->begin(); it != itsGame->getItsCentipedes()->end(); ++it) {
+    for (vector<Centipede *>::iterator it = itsGame->getItsCentipedes()->begin(); it != itsGame->getItsCentipedes()->end(); ++it) {
         BodyPart * currentPart = (*it)->getItsHead();
         while(currentPart != nullptr)
         {
@@ -153,15 +155,18 @@ void Widget::drawCentipede(QPainter & painter)
 
 void Widget::drawBullet(QPainter & painter)
 {
-    //painter.drawRect(itsGame->getItsBullet()->getItsHitBox());
-    painter.setPen(Qt::green);
-    painter.setBrush(Qt::SolidPattern);
-    painter.drawRect(itsGame->getItsBullet()->getItsHitBox());
+    if(itsGame->getItsBullet() != nullptr)
+    {
+        //painter.drawRect(itsGame->getItsBullet()->getItsHitBox());
+        painter.setPen(Qt::green);
+        painter.setBrush(Qt::SolidPattern);
+        painter.drawRect(itsGame->getItsBullet()->getItsHitBox());
+    }
 }
 
 void Widget::moveBullet()
 {
-    itsGame->getItsBullet()->updatePos();
+    //itsGame->getItsBullet()->updatePos();
 }
 
 void Widget::movePlayer()

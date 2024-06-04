@@ -16,6 +16,7 @@ public:
     BodyPart* getItsHead();
     BodyPart* getItsTail();
     void setItsTail(BodyPart* tail);
+    void setItsDirection(Direction dir);
 };
 
 #endif // CENTIPEDE_H

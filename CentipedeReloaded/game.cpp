@@ -5,7 +5,10 @@ using namespace std;
 
 Game::Game(QRect board)
     :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsBullet(nullptr), itsPlayer(new Player), itsBoard(board)
-{ }
+{
+    spawnCentipede();
+    createMushrooms();
+}
 
 Game::~Game()
 {
@@ -26,6 +29,26 @@ Game::~Game()
     delete itsPlayer;
 }
 
+void Game::spawnCentipede()
+{
+    Centipede * newCentipede = new Centipede();
+    BodyPart * currentPart = newCentipede->getItsHead();
+    currentPart->setItsPosition({500, 100});
+    newCentipede->setItsDirection({-1,0});
+    for(int i = 0; i < CENTIPEDE_LENGTH; i++)
+    {
+        BodyPart * newPart = new BodyPart();
+        Position newPos;
+        newPos.posX = currentPart->getItsPosition().posX + CENTIPEDE_BODYPART_SIZE;
+        newPos.posY = currentPart->getItsPosition().posY;
+        newPart->setItsPosition(newPos);
+        currentPart->setItsChild(newPart);
+        newPart->setItsParent(currentPart);
+        currentPart = newPart;
+    }
+    itsCentipedes->push_back(newCentipede);
+}
+
 void Game::createMushrooms()
 {
     random_device rd;
@@ -37,8 +60,8 @@ void Game::createMushrooms()
     while (itsMushrooms->size() < MUSHROOMS_AMOUNT)
     {
         // Generate a position
-        int genX = itsBoard.x() + randX(eng) * itsBoard.width();
-        int genY = itsBoard.y() + randY(eng) * itsBoard.height();
+        int genX = itsBoard.x() + randX(eng) * 30;
+        int genY = itsBoard.y() + randY(eng) * 31;
 
         // Check if a mushroom already exist at the same position
         for (vector<Mushroom*>::iterator it = itsMushrooms->begin(); it < itsMushrooms->end(); it++)

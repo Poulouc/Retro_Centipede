@@ -1,7 +1,7 @@
 #include "bullet.h"
 
 Bullet::Bullet(int x, int y)
-    :itsHitBox(0, 0, 0, 0), itsPosition({x, y})
+    :itsHitBox(x, y, BULLET_SIZE, BULLET_SIZE), itsPosition({x, y})
 { }
 
 Bullet::~Bullet()
