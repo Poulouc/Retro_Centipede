@@ -7,6 +7,7 @@
 #include <Qpainter>
 #include <QKeyEvent>
 #include "game.h"
+#include "typeDef.h"
 
 
 QT_BEGIN_NAMESPACE

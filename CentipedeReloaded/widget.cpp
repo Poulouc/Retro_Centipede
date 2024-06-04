@@ -46,10 +46,10 @@ void Widget::paintEvent(QPaintEvent *event)
         Q_UNUSED(event); //pour éviter les avertissements du compilateur concernant des variables non utilisées
         QPainter painter(this);
         // Draw the Bricks and the avatar
-        drawCentipede(painter);
+        //drawCentipede(painter);
         drawPlayer(painter);
-        drawBullet(painter);
-        drawMushrooms(painter);
+        //drawBullet(painter);
+        //drawMushrooms(painter);
     }
 }
 
@@ -162,9 +162,13 @@ void Widget::startGame()
     itsGame = new Game();
     isGameStarted = true;
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
-    itsBulletTimer->start(1); // set the speed of it
-    itsCentipedeTimer->start(1); // set the speed of it
+    //itsBulletTimer->start(1); // set the speed of it
+    //itsCentipedeTimer->start(1); // set the speed of it
     itsPlayerTimer->start(1); // set the speed of it
     setFixedSize(this->width(), this->height()); // set the size of the window
 }
 
+void Widget::moveCentipede()
+{
+
+}
