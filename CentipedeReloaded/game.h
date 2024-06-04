@@ -22,6 +22,7 @@ public:
     void spawnCentipede();
     void createMushrooms();
     void shoot();
+    void moveBullet();
     bool isColliding(Mushroom* mushroom, Player* player);
     bool isColliding(Mushroom* mushroom, Bullet* bullet);
     bool isColliding(Centipede* centipede, Bullet* bullet);
