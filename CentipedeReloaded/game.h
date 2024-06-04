@@ -13,7 +13,7 @@ private:
     int itsScore = 0;
     std::vector<Centipede*>* itsCentipedes = {};
     std::vector<Mushroom*>* itsMushrooms = {};
-    Bullet* itsBullet = new Bullet();
+    Bullet* itsBullet = nullptr;
     Player* itsPlayer = new Player();
     QRect itsBoard;
 public:

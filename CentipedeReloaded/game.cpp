@@ -56,7 +56,7 @@ void Game::shoot()
     {
         int newX = itsPlayer->getItsPosition().posX + PLAYER_SIZE / 2 - BULLET_SIZE / 2;
         int newY = itsPlayer->getItsPosition().posY + PLAYER_SIZE / 2 - BULLET_SIZE / 2;
-        itsBullet = new Bullet(newX, newY)
+        itsBullet = new Bullet(newX, newY);
     }
 }
 
