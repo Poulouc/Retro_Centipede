@@ -11,11 +11,11 @@
 class Game
 {
 private:
-    int itsScore = 0;
-    std::vector<Centipede*>* itsCentipedes = {};
-    std::vector<Mushroom*>* itsMushrooms = {};
-    Bullet* itsBullet = new Bullet();
-    Player* itsPlayer = nullptr;
+    int itsScore;
+    std::vector<Centipede*>* itsCentipedes;
+    std::vector<Mushroom*>* itsMushrooms;
+    Bullet* itsBullet;
+    Player* itsPlayer;
     QRect itsBoard;
     QRect itsPlayerZone;
 public:
@@ -23,10 +23,9 @@ public:
     ~Game();
     void createMushrooms();
     void shoot();
-    bool isColliding(Mushroom* mushroom, Player* player);
-    bool isColliding(Mushroom* mushroom, Bullet* bullet);
-    bool isColliding(Centipede* centipede, Bullet* bullet);
-    bool isColliding(Centipede* centipede, Mushroom* mushroom);
+    bool isColliding(QRect hitbox1, QRect hitbox2);
+    void checkCollisions();
+    void sliceCentipede(BodyPart* hittedPart);
     void movePlayer(Direction & direction);
     std::vector<Centipede*>* getItsCentipedes();
     std::vector<Mushroom*>* getItsMushrooms();
