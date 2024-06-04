@@ -15,8 +15,9 @@ private:
     std::vector<Mushroom*>* itsMushrooms = {};
     Bullet* itsBullet = new Bullet();
     Player* itsPlayer = new Player();
+    QRect itsBoard;
 public:
-    Game();
+    Game(QRect board);
     ~Game();
     void createMushrooms();
     void shoot();

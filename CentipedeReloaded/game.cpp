@@ -1,9 +1,10 @@
+#include <random>
 #include "game.h"
 
 using namespace std;
 
-Game::Game()
-    :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsBullet(nullptr), itsPlayer(new Player)
+Game::Game(QRect board)
+    :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsBullet(nullptr), itsPlayer(new Player), itsBoard(board)
 { }
 
 Game::~Game()
@@ -27,7 +28,16 @@ Game::~Game()
 
 void Game::createMushrooms()
 {
+    random_device rd;
+    default_random_engine eng(rd());
 
+    uniform_int_distribution<int> randX(0, itsBoard.width() / 30);
+    uniform_int_distribution<int> randY(0, itsBoard.height() / 31);
+
+    while (itsMushrooms->size() < MUSHROOMS_AMOUNT)
+    {
+        itsMushrooms->push_back(new Mushroom());
+    }
 }
 
 void Game::shoot()

@@ -28,4 +28,7 @@ const int MUSHROOM_SIZE = 5;
 // Variables for bullet
 const int BULLET_SPEED = 5;
 
+// Variables for game
+const int MUSHROOMS_AMOUNT = 20;
+
 #endif // TYPEDEF_H
