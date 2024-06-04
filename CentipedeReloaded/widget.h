@@ -3,11 +3,12 @@
 
 #include <QWidget>
 #include <QTimer>
+#include <QImage>
+#include <Qpainter>
 #include <QKeyEvent>
 #include "game.h"
-#include <QPainter>
-#include "ui_widget.h"
-#include "qimage.h"
+#include "typeDef.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -29,7 +30,21 @@ protected:
      *
      * @param event The paint event.
      */
-    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *event) override;
+
+    /**
+     * @brief Overrides the key press event to handle user input.
+     *
+     * @param event The key event.
+     */
+    void keyPressEvent(QKeyEvent * event) override;
+
+    /**
+     * @brief Overrides the key press event to handle user input.
+     *
+     * @param event The key event.
+     */
+    void keyReleaseEvent(QKeyEvent * event) override;
 
     void drawCentipede(QPainter & painter);
 
@@ -41,7 +56,7 @@ protected:
 
 
 private slots:
-    void movePlayer(QKeyEvent * event);
+    void movePlayer();
     void moveCentipede();
     void moveBullet();
     void startGame();
@@ -57,6 +72,7 @@ private:
     QImage itsCentiBody;
     QImage itsAvatar;
     QImage itsMushrooms;
+    Direction itsDirection;
     bool isGameStarted;
 };
 #endif // WIDGET_H
