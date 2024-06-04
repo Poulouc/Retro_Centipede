@@ -7,14 +7,16 @@
 class Centipede
 {
 private:
-    int itsSpeed;
     BodyPart* itsHead;
+    BodyPart* itsTail;
     Direction itsDirection;
 public:
-    Centipede();
+    Centipede(BodyPart* head = new BodyPart());
     ~Centipede();
     void moveForward();
     BodyPart* getItsHead();
+    BodyPart* getItsTail();
+    void setItsTail(BodyPart* tail);
 };
 
 #endif // CENTIPEDE_H

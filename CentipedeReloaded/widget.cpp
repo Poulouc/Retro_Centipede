@@ -153,3 +153,28 @@ void Widget::startGame()
     itsPlayerTimer->start(1); // set the speed of it
     setFixedSize(this->width(), this->height()); // set the size of the window
 }
+
+void Widget::keySpace()
+{
+
+}
+
+void Widget::keyZ()
+{
+
+}
+
+void Widget::keyQ()
+{
+
+}
+
+void Widget::keyS()
+{
+
+}
+
+void Widget::keyD()
+{
+
+}

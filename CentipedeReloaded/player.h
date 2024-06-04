@@ -1,6 +1,5 @@
 #include <QRect>
 #include "typeDef.h"
-#include "typeDef.h"
 
 #ifndef PLAYER_H
 #define PLAYER_H

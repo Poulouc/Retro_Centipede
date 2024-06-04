@@ -7,9 +7,10 @@
 class BodyPart
 {
 private:
-    BodyPart* itsParent;
-    BodyPart* itsChild;
-    QRect itsHitBox;
+    BodyPart* itsParent = nullptr;
+    BodyPart* itsChild = nullptr;
+    QRect itsHitBox = QRect(0, 0, CENTIPEDE_BODYPART_SIZE, CENTIPEDE_BODYPART_SIZE);
+    Position itsPosition =  {};
 public:
     BodyPart();
     ~BodyPart();
@@ -17,6 +18,10 @@ public:
     BodyPart* getItsChild();
     BodyPart* getItsParent();
     QRect getItsHitBox();
+    void setItsPosition(Position pos);
+    void setItsChild(BodyPart* child);
+    void setItsParent(BodyPart* parent);
+    void addChild(BodyPart* child);
 };
 
 #endif // BODYPART_H
