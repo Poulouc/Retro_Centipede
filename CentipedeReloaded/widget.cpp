@@ -21,7 +21,7 @@ Widget::Widget(QWidget *parent)
     itsMushrooms.load("../imageDoss/mushrooms.png");
 
     //initialize direction
-    itsDirection = {0, 0};
+    itsPlayerDirection = {0, 0};
 
     connect(itsDisplayTimer, SIGNAL(timeout()), this, SLOT(update()));
     connect(itsPlayerTimer, SIGNAL(timeout()), this, SLOT(movePlayer()));
@@ -58,19 +58,19 @@ void Widget::keyPressEvent(QKeyEvent * event)
     // Handle key press events for left and right arrow keys
     if (event->key() == Qt::Key_Z)
     {
-        itsDirection.dirY = -1;
+        itsPlayerDirection.dirY = -1;
     }
     if (event->key() == Qt::Key_Q)
     {
-        itsDirection.dirX = -1;
+        itsPlayerDirection.dirX = -1;
     }
     if (event->key() == Qt::Key_S)
     {
-        itsDirection.dirY = 1;
+        itsPlayerDirection.dirY = 1;
     }
     if (event->key() == Qt::Key_D)
     {
-        itsDirection.dirX = 1;
+        itsPlayerDirection.dirX = 1;
     }
     if (event->key() == Qt::Key_Space)
     {
@@ -83,19 +83,19 @@ void Widget::keyReleaseEvent(QKeyEvent * event)
     // Handle key press events for left and right arrow keys
     if (event->key() == Qt::Key_Z)
     {
-        itsDirection.dirY = 0;
+        itsPlayerDirection.dirY = 0;
     }
     if (event->key() == Qt::Key_Q)
     {
-        itsDirection.dirX = 0;
+        itsPlayerDirection.dirX = 0;
     }
     if (event->key() == Qt::Key_S)
     {
-        itsDirection.dirY = 0;
+        itsPlayerDirection.dirY = 0;
     }
     if (event->key() == Qt::Key_D)
     {
-        itsDirection.dirX = 0;
+        itsPlayerDirection.dirX = 0;
     }
 }
 
@@ -164,7 +164,7 @@ void Widget::moveBullet()
 
 void Widget::movePlayer()
 {
-    itsGame->getItsPlayer()->updatePos(itsDirection);
+    itsGame->getItsPlayer()->updatePos(itsPlayerDirection);
 }
 
 void Widget::startGame()

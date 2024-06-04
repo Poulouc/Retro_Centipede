@@ -72,7 +72,7 @@ private:
     QImage itsCentiBody;
     QImage itsAvatar;
     QImage itsMushrooms;
-    Direction itsDirection;
+    Direction itsPlayerDirection;
     bool isGameStarted;
 };
 #endif // WIDGET_H
