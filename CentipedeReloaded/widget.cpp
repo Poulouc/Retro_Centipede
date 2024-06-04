@@ -58,19 +58,19 @@ void Widget::keyPressEvent(QKeyEvent * event)
     // Handle key press events for left and right arrow keys
     if (event->key() == Qt::Key_Z)
     {
-        itsDirection.dirX = -1;
+        itsDirection.dirY = -1;
     }
     if (event->key() == Qt::Key_Q)
     {
-        itsDirection.dirY = -1;
+        itsDirection.dirX = -1;
     }
     if (event->key() == Qt::Key_S)
     {
-        itsDirection.dirX = 1;
+        itsDirection.dirY = 1;
     }
     if (event->key() == Qt::Key_D)
     {
-        itsDirection.dirY = 1;
+        itsDirection.dirX = 1;
     }
     if (event->key() == Qt::Key_Space)
     {

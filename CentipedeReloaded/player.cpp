@@ -11,6 +11,7 @@ void Player::updatePos(Direction direction)
 {
     itsPosition.posX = itsPosition.posX + direction.dirX * PLAYER_SPEED;
     itsPosition.posY = itsPosition.posY + direction.dirY * PLAYER_SPEED;
+    itsHitBox = {itsPosition.posX, itsPosition.posY, PLAYER_SIZE, PLAYER_SIZE};
 }
 
 Position Player::getItsPosition()
