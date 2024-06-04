@@ -28,7 +28,6 @@ Widget::Widget(QWidget *parent)
     itsMushrooms.load("../imageDoss/mushrooms.png");
 
     connect(itsDisplayTimer, SIGNAL(timeout()), this, SLOT(update()));
-    connect(itsPlayerTimer, SIGNAL(timeout()), this, SLOT(movePlayer()));
     connect(itsBulletTimer, SIGNAL(timeout()), this, SLOT(moveBullet()));
     connect(itsCentipedeTimer, SIGNAL(timeout()), this, SLOT(moveCentipede()));
 }
