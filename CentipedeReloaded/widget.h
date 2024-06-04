@@ -63,11 +63,11 @@ private slots:
 
 private:
     Ui::Widget *ui;
-    QTimer * itsDisplayTimer;
-    QTimer * itsCentipedeTimer;
-    QTimer * itsBulletTimer;
-    QTimer * itsPlayerTimer;
-    Game * itsGame;
+    QTimer * itsDisplayTimer = nullptr;
+    QTimer * itsCentipedeTimer = nullptr;
+    QTimer * itsBulletTimer = nullptr;
+    QTimer * itsPlayerTimer = nullptr;
+    Game * itsGame = nullptr;
     QImage itsCentiHead;
     QImage itsCentiBody;
     QImage itsAvatar;

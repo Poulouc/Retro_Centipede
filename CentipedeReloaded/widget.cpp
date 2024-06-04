@@ -1,12 +1,16 @@
 #include "widget.h"
 #include "ui_widget.h"
 
+#include <iostream>
+
+using namespace std;
+
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
 {
     ui->setupUi(this);
-
+    cout << "bannaneé";
     isGameStarted = false;
     connect(ui->playButton , SIGNAL(clicked()), this, SLOT(startGame()));
     // Create and start the timer for updating the GUI, the centipede, the bullet, the player
@@ -21,7 +25,8 @@ Widget::Widget(QWidget *parent)
     itsMushrooms.load("../imageDoss/mushrooms.png");
 
     //initialize direction
-    itsPlayerDirection = {0, 0};
+    itsPlayerDirection.dirX = 0;
+    itsPlayerDirection.dirY = 0;
 
     connect(itsDisplayTimer, SIGNAL(timeout()), this, SLOT(update()));
     connect(itsPlayerTimer, SIGNAL(timeout()), this, SLOT(movePlayer()));
@@ -37,6 +42,7 @@ Widget::~Widget()
     delete itsDisplayTimer;
     delete itsPlayerTimer;
     delete itsGame;
+    //delete itsPlayerDirection;
 }
 
 void Widget::paintEvent(QPaintEvent *event)
@@ -164,13 +170,13 @@ void Widget::moveBullet()
 
 void Widget::movePlayer()
 {
-    itsGame->getItsPlayer()->updatePos(itsPlayerDirection);
+    itsGame->movePlayer(itsPlayerDirection);
 }
 
 void Widget::startGame()
 {
     ui->stackedWidget->setCurrentIndex(3); // j'ai mis 0 mais jsp trop lequel c'est
-    itsGame = new Game();
+    itsGame = new Game({0, 0, this->width(), this->height()});
     isGameStarted = true;
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
     //itsBulletTimer->start(1); // set the speed of it
