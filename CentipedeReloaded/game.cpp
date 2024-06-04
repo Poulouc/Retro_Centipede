@@ -52,9 +52,12 @@ void Game::createMushrooms()
 
 void Game::shoot()
 {
-    int newX = itsPlayer->getItsPosition().posX + PLAYER_SIZE / 2 - BULLET_SIZE / 2;
-    int newY = itsPlayer->getItsPosition().posY + PLAYER_SIZE / 2 - BULLET_SIZE / 2;
-    itsBullet = new Bullet(newX, newY)
+    if (itsBullet != nullptr)
+    {
+        int newX = itsPlayer->getItsPosition().posX + PLAYER_SIZE / 2 - BULLET_SIZE / 2;
+        int newY = itsPlayer->getItsPosition().posY + PLAYER_SIZE / 2 - BULLET_SIZE / 2;
+        itsBullet = new Bullet(newX, newY)
+    }
 }
 
 bool Game::isColliding(Mushroom* mushroom, Player* player)
