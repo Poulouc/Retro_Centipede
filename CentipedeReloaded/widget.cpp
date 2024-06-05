@@ -111,7 +111,7 @@ void Widget::drawPlayer(QPainter & painter)
 {
     //à compléter avec le liens
     //painter.drawImage(itsGame->getItsPlayer()->getItsHitBox(), itsAvatar);
-    painter.setPen(Qt::black);
+    painter.setPen(Qt::gray);
     painter.setBrush(Qt::SolidPattern);
     painter.drawRect(itsGame->getItsPlayer()->getItsHitBox());
 }
@@ -175,7 +175,6 @@ void Widget::drawHeadUpDisplay(QPainter & painter)
     painter.setFont(font);
     painter.setPen(Qt::black);
 
-
     // Draw the score
     painter.drawText((this->width()*0.1 - (QFontMetrics(font).boundingRect(QString("Score: %1").arg(itsGame->getItsScore())).width()/2)),
     (this->height()*0.04), QString("Score: %1").arg(itsGame->getItsScore()));
@@ -201,20 +200,25 @@ void Widget::movePlayer()
     itsGame->movePlayer(itsPlayerDirection);
 }
 
-void Widget::startGame()
-{
-    ui->stackedWidget->setCurrentIndex(3);
-    itsGame = new Game({(width() / 2 - (height() / 31 * 30) / 2), int(height() * 0.05), (height() / 31 * 30), int(height() * 0.95)});
-
-    isGameStarted = true;
-    itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
-    itsBulletTimer->start(4000/this->height()); // set the speed of it
-    //itsCentipedeTimer->start(1); // set the speed of it
-    itsPlayerTimer->start(2500/this->width()); // set the speed of it
-    setFixedSize(this->width(), this->height()); // set the size of the window
-}
-
 void Widget::moveCentipede()
 {
 
+}
+
+void Widget::startGame()
+{
+    ui->stackedWidget->setCurrentIndex(3);
+
+    // Calculer la taille du itsBoard en fonction de la plus petite dimension de la fenêtre
+    int boardSize = 0.95*qMin(width(), height());
+    int boardX = (width() - boardSize) / 2;
+    int boardY = int(0.03*boardSize)+((height() - boardSize) / 2);
+
+    itsGame = new Game({boardX, boardY, boardSize, boardSize});
+
+    isGameStarted = true;
+    itsDisplayTimer->start(16); // Mettre à jour toutes les 16 ms (environ 60fps)
+    itsBulletTimer->start(4000 / this->height()); // Définir la vitesse du bullet
+    itsPlayerTimer->start(2500 / this->width()); // Définir la vitesse du player
+    setFixedSize(this->width(), this->height()); // Définir la taille de la fenêtre
 }
