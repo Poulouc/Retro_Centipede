@@ -164,6 +164,8 @@ void Game::checkCollisions()
                 {
                     delete *it;
                 }
+                itsPlayer->setItsPosition({ itsBoard.width() / 2 - PLAYER_SIZE / 2, itsBoard.height() - PLAYER_SIZE - 1 });
+                spawnCentipede();
             }
         }
     }

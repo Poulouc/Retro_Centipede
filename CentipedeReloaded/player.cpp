@@ -19,6 +19,11 @@ void Player::hit()
     itsHP--;
 }
 
+void Player::resetPos(Position pos)
+{
+    itsPosition = pos;
+}
+
 Position Player::getItsPosition()
 {
     return itsPosition;

@@ -4,25 +4,26 @@
 using namespace std;
 
 Widget::Widget(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::Widget)
+    : QWidget(parent), ui(new Ui::Widget)
 {
     ui->setupUi(this);
     setWindowTitle("Centipede Reloaded - v1.0");
     isGameStarted = false;
     connect(ui->playButton , SIGNAL(clicked()), this, SLOT(startGame()));
-    // Create and start the timer for updating the GUI, the centipede, the bullet, the player
+
+    // Create timers for updating the GUI, the centipede, the bullet, the player
     itsDisplayTimer = new QTimer(this);
     itsCentipedeTimer = new QTimer(this);
     itsBulletTimer = new QTimer(this);
     itsPlayerTimer = new QTimer(this);
-    //loading of the images
+
+    // Loading assets
     itsCentiBody.load("../imageDoss/centibody.png");
     itsCentiHead.load("../imageDoss/centihead.png");
     itsAvatar.load("../imageDoss/avatar.png");
     itsMushrooms.load("../imageDoss/mushrooms.png");
 
-    //initialize direction
+    // Initialize the direction of the player
     itsPlayerDirection.dirX = 0;
     itsPlayerDirection.dirY = 0;
 
