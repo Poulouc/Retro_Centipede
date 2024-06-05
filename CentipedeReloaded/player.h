@@ -16,6 +16,7 @@ public:
     void updatePos(Direction direction);
     void hit();
     Position getItsPosition();
+    int getItsHp();
     QRect getItsHitBox();
 };
 

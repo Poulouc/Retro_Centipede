@@ -37,6 +37,7 @@ public:
     std::vector<Mushroom*>* getItsMushrooms();
     Bullet* getItsBullet();
     Player* getItsPlayer();
+    int getItsScore();
 };
 
 #endif // GAME_H

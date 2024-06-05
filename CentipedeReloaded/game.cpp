@@ -188,6 +188,11 @@ Player* Game::getItsPlayer()
     return itsPlayer;
 }
 
+int Game::getItsScore()
+{
+    return itsScore;
+}
+
 void Game::movePlayer(Direction & direction)
 {
     if(itsPlayerZone.x() < itsPlayer->getItsHitBox().x() + direction.dirX * PLAYER_SPEED and itsPlayerZone.x() + itsPlayerZone.width() > itsPlayer->getItsHitBox().x() + itsPlayer->getItsHitBox().width() + direction.dirX * PLAYER_SPEED
