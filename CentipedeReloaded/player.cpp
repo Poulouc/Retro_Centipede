@@ -28,3 +28,8 @@ QRect Player::getItsHitBox()
 {
     return itsHitBox;
 }
+
+int Player::getItsHp()
+{
+    return itsHP;
+}

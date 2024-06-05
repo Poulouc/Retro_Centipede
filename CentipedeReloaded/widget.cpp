@@ -1,5 +1,6 @@
 #include "widget.h"
 #include "ui_widget.h"
+#include <QFontMetrics>
 
 using namespace std;
 
@@ -53,6 +54,7 @@ void Widget::paintEvent(QPaintEvent *event)
         drawPlayer(painter);
         drawBullet(painter);
         drawMushrooms(painter);
+        drawHeadUpDisplay(painter);
     }
 }
 
@@ -165,6 +167,27 @@ void Widget::drawBullet(QPainter & painter)
     }
 }
 
+void Widget::drawHeadUpDisplay(QPainter & painter)
+{
+    // Set the font and color for the text
+    QFont font("Arial", 8, QFont::Bold);
+    painter.setFont(font);
+    painter.setPen(Qt::black);
+
+
+    // Draw the score
+    painter.drawText((this->width()*0.1 - (QFontMetrics(font).boundingRect(QString("Score: %1").arg(itsGame->getItsScore())).width()/2)),
+    (this->height()*0.04), QString("Score: %1").arg(itsGame->getItsScore()));
+
+    // Draw the game name
+    painter.drawText((this->width()*0.5 - (QFontMetrics(font).boundingRect(QString("Centipede Reloaded")).width()/2))
+    , (this->height()*0.04), QString("Centipede Reloaded"));
+
+    // Draw the life count
+    painter.drawText((this->width()*0.9 - (QFontMetrics(font).boundingRect(QString("Life: %1").arg(itsGame->getItsPlayer()->getItsHp())).width()/2))
+    , (this->height()*0.04), QString("Life: %1").arg(itsGame->getItsPlayer()->getItsHp()));
+}
+
 void Widget::moveBullet()
 {
     if(itsGame->getItsBullet() != nullptr) itsGame->moveBullet();
@@ -178,7 +201,7 @@ void Widget::movePlayer()
 void Widget::startGame()
 {
     ui->stackedWidget->setCurrentIndex(3);
-    itsGame = new Game({0, 0, this->width(), this->height()});
+    itsGame = new Game({0, (this->height()*0.05), this->width(), this->height()});
     isGameStarted = true;
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
     itsBulletTimer->start(16); // set the speed of it

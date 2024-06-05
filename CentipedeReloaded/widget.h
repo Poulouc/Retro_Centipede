@@ -54,6 +54,8 @@ protected:
 
     void drawMushrooms(QPainter & painter);
 
+    void drawHeadUpDisplay(QPainter & painter);
+
 
 private slots:
     void movePlayer();
