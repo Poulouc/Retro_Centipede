@@ -19,6 +19,8 @@ public:
     int getItsHp();
     QRect getItsHitBox();
     void setItsPosition(Position position);
+    void setItsHitBox(QRect hitBox);
+    void setItsHitBox(Position position);
 };
 
 #endif // PLAYER_H

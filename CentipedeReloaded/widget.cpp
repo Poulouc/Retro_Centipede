@@ -59,6 +59,23 @@ void Widget::paintEvent(QPaintEvent *event)
     }
 }
 
+void Widget::resizeEvent(QResizeEvent *event)
+{
+    Q_UNUSED(event);
+    if (itsGame != nullptr)
+    {
+        // Calculer la taille du itsBoard en fonction de la plus petite dimension de la fenêtre
+        int boardSize = 0.95*qMin(width(), height());
+        int boardX = (width() - boardSize) / 2;
+        int boardY = (0.03*boardSize)+((height() - boardSize) / 2);
+
+        itsGame->setBoard(QRect(boardX, boardY, boardSize, boardSize));
+        // ajuster les timers ou autres paramètres en fonction de la nouvelle taille de la fenêtre
+        itsBulletTimer->start(4000 / this->height()); // Définir la vitesse du bullet
+        itsPlayerTimer->start(2500 / this->width()); // Définir la vitesse du player
+    }
+}
+
 void Widget::keyPressEvent(QKeyEvent * event)
 {
     // Handle key press events for left and right arrow keys
@@ -220,5 +237,5 @@ void Widget::startGame()
     itsDisplayTimer->start(16); // Mettre à jour toutes les 16 ms (environ 60fps)
     itsBulletTimer->start(4000 / this->height()); // Définir la vitesse du bullet
     itsPlayerTimer->start(2500 / this->width()); // Définir la vitesse du player
-    setFixedSize(this->width(), this->height()); // Définir la taille de la fenêtre
+    //setFixedSize(this->width(), this->height()); // Définir la taille de la fenêtre
 }

@@ -11,7 +11,7 @@ void Player::updatePos(Direction direction)
 {
     itsPosition.posX = itsPosition.posX + direction.dirX * PLAYER_SPEED;
     itsPosition.posY = itsPosition.posY + direction.dirY * PLAYER_SPEED;
-    itsHitBox = {itsPosition.posX, itsPosition.posY, PLAYER_SIZE, PLAYER_SIZE};
+    itsHitBox = {itsPosition.posX, itsPosition.posY, itsHitBox.width(), itsHitBox.height()};
 }
 
 void Player::hit()
@@ -37,4 +37,14 @@ void Player::setItsPosition(Position position)
 int Player::getItsHp()
 {
     return itsHP;
+}
+
+void Player::setItsHitBox(QRect hitBox)
+{
+    itsHitBox = hitBox;
+}
+
+void Player::setItsHitBox(Position position)
+{
+    itsPosition = {position.posX, position.posY};
 }

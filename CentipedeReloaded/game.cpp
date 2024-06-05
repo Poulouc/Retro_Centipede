@@ -106,7 +106,7 @@ void Game::createMushrooms()
         if (itsBullet != nullptr && isColliding(previewHitbox, itsBullet->getItsHitBox())) continue;
 
         // Create the mushroom, must be executed only if the position is valid
-        itsMushrooms->push_back(new Mushroom(genX, genY));
+        itsMushrooms->push_back(new Mushroom(genX, genY, mushroomSize));
     }
 }
 
@@ -235,6 +235,27 @@ int Game::getItsScore()
 QRect Game::getItsBoard()
 {
     return itsBoard;
+}
+
+void Game::setBoard(QRect board)
+{
+    //set the size of the mushrooms
+    for (vector<Mushroom*>::iterator it = itsMushrooms->begin(); it < itsMushrooms->end(); it++)
+    {
+        (*it)->setItsHitBox(QRect((*it)->getItsHitBox().x() + (itsBoard.x() - board.x()), (*it)->getItsHitBox().y() + (board.y() - itsBoard.y()), itsBoard.width()/BOARD_WIDTH, itsBoard.width()/BOARD_WIDTH));
+    }
+    //set the size of the player
+    itsPlayer->setItsHitBox(QRect(board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2, board.y() + board.height() - (board.width() / BOARD_WIDTH) - 1, board.width()/BOARD_WIDTH, board.width()/BOARD_WIDTH));
+    //set the position of the player
+    itsPlayer->setItsPosition({board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2, board.y() + board.height() - (board.width() / BOARD_WIDTH) - 1}); // Julien es que tu pourra, si tu vois ça, m'expliquer à quoi sert position
+    //set the playerZone
+    itsPlayerZone = QRect(board.x(), board.y() + (4 * board.height()) / 5, board.width(), board.height() / 5);
+
+    //faire une partie pour centipède
+
+
+    //set the board
+    itsBoard = board;
 }
 
 void Game::movePlayer(Direction & direction)

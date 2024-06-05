@@ -39,6 +39,7 @@ public:
     Player* getItsPlayer();
     int getItsScore();
     QRect getItsBoard();
+    void setBoard(QRect board);
 };
 
 #endif // GAME_H
