@@ -48,7 +48,6 @@ void Widget::paintEvent(QPaintEvent *event)
     {
         Q_UNUSED(event); //pour éviter les avertissements du compilateur concernant des variables non utilisées
         QPainter painter(this);
-        // Draw the Bricks and the avatar
         drawCentipede(painter);
         drawPlayer(painter);
         drawBullet(painter);
@@ -177,7 +176,7 @@ void Widget::movePlayer()
 
 void Widget::startGame()
 {
-    ui->stackedWidget->setCurrentIndex(3); // j'ai mis 0 mais jsp trop lequel c'est
+    ui->stackedWidget->setCurrentIndex(3);
     itsGame = new Game({0, 0, this->width(), this->height()});
     isGameStarted = true;
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps

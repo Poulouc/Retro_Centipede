@@ -8,7 +8,10 @@ Game::Game(QRect board)
     :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsBullet(nullptr),
     itsPlayer(new Player({board.width()/2 - PLAYER_SIZE/2, board.height() - PLAYER_SIZE - 1})), itsBoard(board),
     itsPlayerZone(0, (4 * board.height()) / 5, board.width(), board.height() / 5)
-{ }
+{
+    spawnCentipede();
+    createMushrooms();
+}
 
 Game::~Game()
 {
@@ -25,7 +28,6 @@ Game::~Game()
         delete *it;
     }
     delete itsMushrooms;
-
     delete itsBullet;
     delete itsPlayer;
 }
@@ -91,9 +93,6 @@ void Game::moveBullet()
     if(itsBullet->getItsPosition().posY < 0)
     {
         itsBullet = nullptr;
-        int newX = itsPlayer->getItsPosition().posX + PLAYER_SIZE / 2 - BULLET_SIZE / 2;
-        int newY = itsPlayer->getItsPosition().posY + PLAYER_SIZE / 2 - BULLET_SIZE / 2;
-        itsBullet = new Bullet(newX, newY);
     }
 }
 
