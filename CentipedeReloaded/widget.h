@@ -6,6 +6,7 @@
 #include <QImage>
 #include <Qpainter>
 #include <QKeyEvent>
+#include <QFontMetrics>
 #include "game.h"
 #include "typeDef.h"
 
