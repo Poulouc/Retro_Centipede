@@ -1,6 +1,5 @@
 #include <random>
 #include "game.h"
-#include <QRect>
 
 using namespace std;
 
@@ -142,7 +141,32 @@ void Game::checkCollisions()
 }
 
 void Game::sliceCentipede(BodyPart* hittedPart)
-{ }
+{
+    if (hittedPart->getItsParent() != nullptr)
+    {
+        hittedPart->getItsParent()->setItsChild(nullptr);
+        if (hittedPart->getItsChild() != nullptr)
+        {
+            BodyPart* newHead = hittedPart->getItsChild();
+            while(newHead->getItsChild() != nullptr)
+            {
+                newHead = newHead->getItsChild();
+            }
+            itsCentipedes->push_back(new Centipede(newHead));
+        }
+    }
+    else
+    {
+        for (vector<Centipede*>::iterator it = itsCentipedes->begin(); it < itsCentipedes->end(); it++)
+        {
+            if ((*it)->getItsHead() == hittedPart)
+            {
+                delete *it;
+                break;
+            }
+        }
+    }
+}
 
 std::vector<Centipede*>* Game::getItsCentipedes()
 {
