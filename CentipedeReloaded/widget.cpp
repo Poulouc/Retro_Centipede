@@ -1,6 +1,7 @@
 #include "widget.h"
 #include "ui_widget.h"
 
+
 using namespace std;
 
 Widget::Widget(QWidget *parent)
@@ -176,18 +177,18 @@ void Widget::drawHeadUpDisplay(QPainter & painter)
 
 
     // Draw the score
-    painter.drawText((itsGame->getItsBoard().x() + itsGame->getItsBoard().width()*0.1 - (QFontMetrics(font).boundingRect(QString("Score: %1").arg(itsGame->getItsScore())).width()/2)),
-    (itsGame->getItsBoard().height()*0.04), QString("Score: %1").arg(itsGame->getItsScore()));
+    painter.drawText((this->width()*0.1 - (QFontMetrics(font).boundingRect(QString("Score: %1").arg(itsGame->getItsScore())).width()/2)),
+    (this->height()*0.04), QString("Score: %1").arg(itsGame->getItsScore()));
 
     // Draw the game name
-    painter.drawText((itsGame->getItsBoard().x() + itsGame->getItsBoard().width()*0.5 - (QFontMetrics(font).boundingRect(QString("Centipede Reloaded")).width()/2))
-    , (itsGame->getItsBoard().height()*0.04), QString("Centipede Reloaded"));
+    painter.drawText((this->width()*0.5 - (QFontMetrics(font).boundingRect(QString("Centipede Reloaded")).width()/2))
+    , (this->height()*0.04), QString("Centipede Reloaded"));
 
     // Draw the life count
-    painter.drawText((itsGame->getItsBoard().x() + itsGame->getItsBoard().width()*0.9 - (QFontMetrics(font).boundingRect(QString("Life: %1").arg(itsGame->getItsPlayer()->getItsHp())).width()/2))
-    , (itsGame->getItsBoard().height()*0.04), QString("Life: %1").arg(itsGame->getItsPlayer()->getItsHp()));
+    painter.drawText((this->width()*0.9 - (QFontMetrics(font).boundingRect(QString("Life: %1").arg(itsGame->getItsPlayer()->getItsHp())).width()/2))
+    , (this->height()*0.04), QString("Life: %1").arg(itsGame->getItsPlayer()->getItsHp()));
 
-    painter.drawRect(QRect(itsGame->getItsBoard().x(), itsGame->getItsBoard().height()*0.05 - 1, itsGame->getItsBoard().width(), 0));
+    painter.drawRect(QRect(0, this->height()*0.05 - 1, this->width(), 0));
 }
 
 void Widget::moveBullet()
@@ -203,23 +204,8 @@ void Widget::movePlayer()
 void Widget::startGame()
 {
     ui->stackedWidget->setCurrentIndex(3);
-<<<<<<< HEAD
-    int minHeightWidth = std::min(this->width(), this->height());
-    if(minHeightWidth == this->height())
-    {
-        itsGame = new Game({(this->width()/2 - minHeightWidth/2), int(this->height()*0.05),
-                            minHeightWidth, minHeightWidth});
-    }
-    else
-    {
-        itsGame = new Game({(this->width()/2), int(((this->height()*0.05)/2 - minHeightWidth/2) - minHeightWidth/2),
-                            minHeightWidth, minHeightWidth});
-    }
-    //this->setFixedHeight(minHeightWidth);
-    //this->setFixedWidth(minHeightWidth);
-=======
     itsGame = new Game({(width() / 2 - (height() / 31 * 30) / 2), int(height() * 0.05), (height() / 31 * 30), int(height() * 0.95)});
->>>>>>> 7c401cb69072db4584b84897142eb67a52a4e3e2
+
     isGameStarted = true;
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
     itsBulletTimer->start(4000/this->height()); // set the speed of it

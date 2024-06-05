@@ -38,7 +38,6 @@ public:
     Bullet* getItsBullet();
     Player* getItsPlayer();
     int getItsScore();
-    QRect getItsBoard();
 };
 
 #endif // GAME_H

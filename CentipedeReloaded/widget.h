@@ -7,7 +7,10 @@
 #include <Qpainter>
 #include <QKeyEvent>
 #include <QFontMetrics>
+<<<<<<< HEAD
 #include <iostream>
+=======
+>>>>>>> 711c4ae2baeb525a4619d9c62b834d32db8333c2
 #include "game.h"
 #include "typeDef.h"
 
