@@ -19,11 +19,6 @@ void Player::hit()
     itsHP--;
 }
 
-void Player::resetPos(Position pos)
-{
-    itsPosition = pos;
-}
-
 Position Player::getItsPosition()
 {
     return itsPosition;
@@ -32,4 +27,9 @@ Position Player::getItsPosition()
 QRect Player::getItsHitBox()
 {
     return itsHitBox;
+}
+
+void Player::setItsPosition(Position position)
+{
+    itsPosition = position;
 }
