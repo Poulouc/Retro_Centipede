@@ -33,3 +33,8 @@ void Player::setItsPosition(Position position)
 {
     itsPosition = position;
 }
+
+int Player::getItsHp()
+{
+    return itsHP;
+}

@@ -120,7 +120,7 @@ void Game::moveBullet()
 {
     itsBullet->updatePos();
 
-    if(itsBullet->getItsPosition().posY < 0)
+    if(itsBullet->getItsPosition().posY < itsBoard.y())
     {
         itsBullet = nullptr;
     }
@@ -217,6 +217,11 @@ Bullet* Game::getItsBullet()
 Player* Game::getItsPlayer()
 {
     return itsPlayer;
+}
+
+int Game::getItsScore()
+{
+    return itsScore;
 }
 
 void Game::movePlayer(Direction & direction)
