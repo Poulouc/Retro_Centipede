@@ -6,6 +6,8 @@
 #include <QImage>
 #include <Qpainter>
 #include <QKeyEvent>
+#include <QFontMetrics>
+#include <iostream>
 #include "game.h"
 #include "typeDef.h"
 
@@ -53,6 +55,8 @@ protected:
     void drawBullet(QPainter & painter);
 
     void drawMushrooms(QPainter & painter);
+
+    void drawHeadUpDisplay(QPainter & painter);
 
 
 private slots:

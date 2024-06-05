@@ -1,30 +1,29 @@
 #include "widget.h"
 #include "ui_widget.h"
 
-#include <iostream>
-
 using namespace std;
 
 Widget::Widget(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::Widget)
+    : QWidget(parent), ui(new Ui::Widget)
 {
     ui->setupUi(this);
-    cout << "bannaneé";
+    setWindowTitle("Centipede Reloaded - v1.0");
     isGameStarted = false;
     connect(ui->playButton , SIGNAL(clicked()), this, SLOT(startGame()));
-    // Create and start the timer for updating the GUI, the centipede, the bullet, the player
+
+    // Create timers for updating the GUI, the centipede, the bullet, the player
     itsDisplayTimer = new QTimer(this);
     itsCentipedeTimer = new QTimer(this);
     itsBulletTimer = new QTimer(this);
     itsPlayerTimer = new QTimer(this);
-    //loading of the images
+
+    // Loading assets
     itsCentiBody.load("../imageDoss/centibody.png");
     itsCentiHead.load("../imageDoss/centihead.png");
     itsAvatar.load("../imageDoss/avatar.png");
     itsMushrooms.load("../imageDoss/mushrooms.png");
 
-    //initialize direction
+    // Initialize the direction of the player
     itsPlayerDirection.dirX = 0;
     itsPlayerDirection.dirY = 0;
 
@@ -51,11 +50,11 @@ void Widget::paintEvent(QPaintEvent *event)
     {
         Q_UNUSED(event); //pour éviter les avertissements du compilateur concernant des variables non utilisées
         QPainter painter(this);
-        // Draw the Bricks and the avatar
-        //drawCentipede(painter);
+        drawCentipede(painter);
         drawPlayer(painter);
-        //drawBullet(painter);
-        //drawMushrooms(painter);
+        drawBullet(painter);
+        drawMushrooms(painter);
+        drawHeadUpDisplay(painter);
     }
 }
 
@@ -86,8 +85,8 @@ void Widget::keyPressEvent(QKeyEvent * event)
 
 void Widget::keyReleaseEvent(QKeyEvent * event)
 {
-    int xCurrentDir = itsDirection.dirX;
-    int yCurrentDir = itsDirection.dirY;
+    int xCurrentDir = itsPlayerDirection.dirX;
+    int yCurrentDir = itsPlayerDirection.dirY;
     // Handle key press events for left and right arrow keys
     if (event->key() == Qt::Key_Z && yCurrentDir != 1)
     {
@@ -119,19 +118,19 @@ void Widget::drawPlayer(QPainter & painter)
 void Widget::drawMushrooms(QPainter & painter)
 {
     //painter.drawImage(0, 0, *itsBackgroundImage);
-    for(auto it = itsGame->getItsMushrooms()->begin(); it !=  itsGame->getItsMushrooms()->end(); ++it)
+    for(Mushroom * mushroom : *itsGame->getItsMushrooms())
     {
         //painter.drawImage((*it)->getItsHitBox(), itsMushrooms);
         painter.setPen(Qt::red);
         painter.setBrush(Qt::SolidPattern);
-        painter.drawRect((*it)->getItsHitBox());
+        painter.drawRect(mushroom->getItsHitBox());
     }
 }
 
 void Widget::drawCentipede(QPainter & painter)
 {
     //painter.drawImage(0, 0, *itsBackgroundImage);
-    for (auto it = itsGame->getItsCentipedes()->begin(); it != itsGame->getItsCentipedes()->end(); ++it) {
+    for (vector<Centipede *>::iterator it = itsGame->getItsCentipedes()->begin(); it != itsGame->getItsCentipedes()->end(); ++it) {
         BodyPart * currentPart = (*it)->getItsHead();
         while(currentPart != nullptr)
         {
@@ -159,15 +158,41 @@ void Widget::drawCentipede(QPainter & painter)
 
 void Widget::drawBullet(QPainter & painter)
 {
-    //painter.drawRect(itsGame->getItsBullet()->getItsHitBox());
-    painter.setPen(Qt::green);
-    painter.setBrush(Qt::SolidPattern);
-    painter.drawRect(itsGame->getItsBullet()->getItsHitBox());
+    if(itsGame->getItsBullet() != nullptr)
+    {
+        //painter.drawRect(itsGame->getItsBullet()->getItsHitBox());
+        painter.setPen(Qt::green);
+        painter.setBrush(Qt::SolidPattern);
+        painter.drawRect(itsGame->getItsBullet()->getItsHitBox());
+    }
+}
+
+void Widget::drawHeadUpDisplay(QPainter & painter)
+{
+    // Set the font and color for the text
+    QFont font("Arial", 8, QFont::Bold);
+    painter.setFont(font);
+    painter.setPen(Qt::black);
+
+
+    // Draw the score
+    painter.drawText((itsGame->getItsBoard().x() + itsGame->getItsBoard().width()*0.1 - (QFontMetrics(font).boundingRect(QString("Score: %1").arg(itsGame->getItsScore())).width()/2)),
+    (itsGame->getItsBoard().height()*0.04), QString("Score: %1").arg(itsGame->getItsScore()));
+
+    // Draw the game name
+    painter.drawText((itsGame->getItsBoard().x() + itsGame->getItsBoard().width()*0.5 - (QFontMetrics(font).boundingRect(QString("Centipede Reloaded")).width()/2))
+    , (itsGame->getItsBoard().height()*0.04), QString("Centipede Reloaded"));
+
+    // Draw the life count
+    painter.drawText((itsGame->getItsBoard().x() + itsGame->getItsBoard().width()*0.9 - (QFontMetrics(font).boundingRect(QString("Life: %1").arg(itsGame->getItsPlayer()->getItsHp())).width()/2))
+    , (itsGame->getItsBoard().height()*0.04), QString("Life: %1").arg(itsGame->getItsPlayer()->getItsHp()));
+
+    painter.drawRect(QRect(itsGame->getItsBoard().x(), itsGame->getItsBoard().height()*0.05 - 1, itsGame->getItsBoard().width(), 0));
 }
 
 void Widget::moveBullet()
 {
-    itsGame->getItsBullet()->updatePos();
+    if(itsGame->getItsBullet() != nullptr) itsGame->moveBullet();
 }
 
 void Widget::movePlayer()
@@ -177,13 +202,29 @@ void Widget::movePlayer()
 
 void Widget::startGame()
 {
-    ui->stackedWidget->setCurrentIndex(3); // j'ai mis 0 mais jsp trop lequel c'est
-    itsGame = new Game({0, 0, this->width(), this->height()});
+    ui->stackedWidget->setCurrentIndex(3);
+<<<<<<< HEAD
+    int minHeightWidth = std::min(this->width(), this->height());
+    if(minHeightWidth == this->height())
+    {
+        itsGame = new Game({(this->width()/2 - minHeightWidth/2), int(this->height()*0.05),
+                            minHeightWidth, minHeightWidth});
+    }
+    else
+    {
+        itsGame = new Game({(this->width()/2), int(((this->height()*0.05)/2 - minHeightWidth/2) - minHeightWidth/2),
+                            minHeightWidth, minHeightWidth});
+    }
+    //this->setFixedHeight(minHeightWidth);
+    //this->setFixedWidth(minHeightWidth);
+=======
+    itsGame = new Game({(width() / 2 - (height() / 31 * 30) / 2), int(height() * 0.05), (height() / 31 * 30), int(height() * 0.95)});
+>>>>>>> 7c401cb69072db4584b84897142eb67a52a4e3e2
     isGameStarted = true;
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
-    //itsBulletTimer->start(1); // set the speed of it
+    itsBulletTimer->start(4000/this->height()); // set the speed of it
     //itsCentipedeTimer->start(1); // set the speed of it
-    itsPlayerTimer->start(3); // set the speed of it
+    itsPlayerTimer->start(2500/this->width()); // set the speed of it
     setFixedSize(this->width(), this->height()); // set the size of the window
 }
 

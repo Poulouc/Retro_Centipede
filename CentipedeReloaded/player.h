@@ -16,7 +16,9 @@ public:
     void updatePos(Direction direction);
     void hit();
     Position getItsPosition();
+    int getItsHp();
     QRect getItsHitBox();
+    void setItsPosition(Position position);
 };
 
 #endif // PLAYER_H

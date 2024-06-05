@@ -21,8 +21,14 @@ private:
 public:
     Game(QRect board);
     ~Game();
+    void spawnCentipede();
     void createMushrooms();
     void shoot();
+    void moveBullet();
+    bool isColliding(Mushroom* mushroom, Player* player);
+    bool isColliding(Mushroom* mushroom, Bullet* bullet);
+    bool isColliding(Centipede* centipede, Bullet* bullet);
+    bool isColliding(Centipede* centipede, Mushroom* mushroom);
     bool isColliding(QRect hitbox1, QRect hitbox2);
     void checkCollisions();
     void sliceCentipede(BodyPart* hittedPart);
@@ -31,6 +37,8 @@ public:
     std::vector<Mushroom*>* getItsMushrooms();
     Bullet* getItsBullet();
     Player* getItsPlayer();
+    int getItsScore();
+    QRect getItsBoard();
 };
 
 #endif // GAME_H
