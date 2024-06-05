@@ -1,6 +1,5 @@
 #include <random>
 #include "game.h"
-#include <QRect>
 
 using namespace std;
 
@@ -41,8 +40,8 @@ void Game::createMushrooms()
     while (itsMushrooms->size() < MUSHROOMS_AMOUNT)
     {
         // Generate a position
-        int genX = itsBoard.x() + randX(eng) * itsBoard.width();
-        int genY = itsBoard.y() + randY(eng) * itsBoard.height();
+        int genX = itsBoard.x() + randX(eng) * 30;
+        int genY = itsBoard.y() + randY(eng) * 31;
 
         // Check if a mushroom already exist at the same position
         for (vector<Mushroom*>::iterator it = itsMushrooms->begin(); it < itsMushrooms->end(); it++)
@@ -110,7 +109,32 @@ void Game::checkCollisions()
 }
 
 void Game::sliceCentipede(BodyPart* hittedPart)
-{ }
+{
+    if (hittedPart->getItsParent() != nullptr)
+    {
+        hittedPart->getItsParent()->setItsChild(nullptr);
+        if (hittedPart->getItsChild() != nullptr)
+        {
+            BodyPart* newHead = hittedPart->getItsChild();
+            while(newHead->getItsChild() != nullptr)
+            {
+                newHead = newHead->getItsChild();
+            }
+            itsCentipedes->push_back(new Centipede(newHead));
+        }
+    }
+    else
+    {
+        for (vector<Centipede*>::iterator it = itsCentipedes->begin(); it < itsCentipedes->end(); it++)
+        {
+            if ((*it)->getItsHead() == hittedPart)
+            {
+                delete *it;
+                break;
+            }
+        }
+    }
+}
 
 std::vector<Centipede*>* Game::getItsCentipedes()
 {

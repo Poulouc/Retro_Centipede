@@ -10,7 +10,6 @@ Widget::Widget(QWidget *parent)
     , ui(new Ui::Widget)
 {
     ui->setupUi(this);
-    cout << "bannaneé";
     isGameStarted = false;
     connect(ui->playButton , SIGNAL(clicked()), this, SLOT(startGame()));
     // Create and start the timer for updating the GUI, the centipede, the bullet, the player
