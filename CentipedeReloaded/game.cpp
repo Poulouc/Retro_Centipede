@@ -120,7 +120,7 @@ void Game::moveBullet()
 {
     itsBullet->updatePos();
 
-    if(itsBullet->getItsPosition().posY < 0)
+    if(itsBullet->getItsPosition().posY < itsBoard.y())
     {
         itsBullet = nullptr;
     }
