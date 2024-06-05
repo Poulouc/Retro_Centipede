@@ -31,6 +31,7 @@ public:
     bool isColliding(Centipede* centipede, Bullet* bullet);
     bool isColliding(Centipede* centipede, Mushroom* mushroom);
     bool isColliding(QRect hitbox1, QRect hitbox2);
+    int collidingDistance(Centipede * centipede);
     void checkCollisions();
     void sliceCentipede(BodyPart* hittedPart);
     void movePlayer(Direction & direction);

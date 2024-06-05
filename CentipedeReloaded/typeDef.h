@@ -23,7 +23,7 @@ const int PLAYER_SPEED = 1;
 const int PLAYER_SIZE = 5;
 
 // Variables for mushroom
-const int MUSHROOM_SIZE = 5;
+const int MUSHROOM_SIZE = 10;
 
 // Variables for bullet
 const int BULLET_SPEED = 5;
