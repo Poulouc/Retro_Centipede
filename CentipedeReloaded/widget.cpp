@@ -1,6 +1,6 @@
 #include "widget.h"
 #include "ui_widget.h"
-#include <QFontMetrics>
+
 
 using namespace std;
 
@@ -186,6 +186,8 @@ void Widget::drawHeadUpDisplay(QPainter & painter)
     // Draw the life count
     painter.drawText((this->width()*0.9 - (QFontMetrics(font).boundingRect(QString("Life: %1").arg(itsGame->getItsPlayer()->getItsHp())).width()/2))
     , (this->height()*0.04), QString("Life: %1").arg(itsGame->getItsPlayer()->getItsHp()));
+
+    painter.drawRect(QRect(0, this->height()*0.05 - 1, this->width(), 0));
 }
 
 void Widget::moveBullet()
