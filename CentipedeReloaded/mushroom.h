@@ -18,6 +18,7 @@ public:
     QRect getItsHitBox();
     Position getItsPosition();
     void setItsHitBox(QRect hitBox);
+    void setItsPosition(Position position);
 };
 
 #endif // MUSHROOM_H

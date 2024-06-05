@@ -1,4 +1,5 @@
 #include <vector>
+#include <QRect>
 #include "bullet.h"
 #include "centipede.h"
 #include "mushroom.h"

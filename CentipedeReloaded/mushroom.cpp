@@ -32,3 +32,8 @@ void Mushroom::setItsHitBox(QRect hitBox)
 {
     itsHitBox = hitBox;
 }
+
+void Mushroom::setItsPosition(Position position)
+{
+    itsPosition = position;
+}
