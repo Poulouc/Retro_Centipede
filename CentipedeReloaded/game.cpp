@@ -65,12 +65,43 @@ void Game::createMushrooms()
         int genX = itsBoard.x() + randX(eng) * 30;
         int genY = itsBoard.y() + randY(eng) * 31;
 
+        bool validPos = true;
+
         // Check if a mushroom already exist at the same position
         for (vector<Mushroom*>::iterator it = itsMushrooms->begin(); it < itsMushrooms->end(); it++)
         {
-            if ((*it)->getItsPosition().posX == genX && (*it)->getItsPosition().posY == genY) continue;
+            if ((*it)->getItsPosition().posX == genX && (*it)->getItsPosition().posY == genY)
+            {
+                validPos = false;
+                break;
+            }
         }
+        if (!validPos) continue;
 
+        // Simulate the mushroom hitbox for next checks
+        QRect previewHitbox = QRect(genX, genY, MUSHROOM_SIZE, MUSHROOM_SIZE);
+
+        // Check if the mushroom want to spawn on a centipede
+        for (vector<Centipede*>::iterator it = itsCentipedes->begin(); it < itsCentipedes->end(); it++)
+        {
+            for (BodyPart* actualPart = (*it)->getItsHead(); actualPart != nullptr; actualPart = actualPart->getItsChild())
+            {
+                if (isColliding(previewHitbox, actualPart->getItsHitBox()))
+                {
+                    validPos = false;
+                    break;
+                }
+            }
+        }
+        if (!validPos) continue;
+
+        // Check if the mushroom want to spawn on the player
+        if (isColliding(previewHitbox, itsPlayer->getItsHitBox())) continue;
+
+        // Check if the mushroom want to spawn on the bullet
+        if (itsBullet != nullptr && isColliding(previewHitbox, itsBullet->getItsHitBox())) continue;
+
+        // Create the mushroom, must be executed only if the position is valid
         itsMushrooms->push_back(new Mushroom(genX, genY));
     }
 }
@@ -97,7 +128,8 @@ void Game::moveBullet()
 
 bool Game::isColliding(QRect hitbox1, QRect hitbox2)
 {
-    return hitbox1.intersected(hitbox2).isValid();
+    return hitbox1.contains(hitbox2);
+    //return hitbox1.intersected(hitbox2).isValid();
 }
 
 void Game::checkCollisions()
@@ -119,13 +151,10 @@ void Game::checkCollisions()
     {
         for (BodyPart* centiPart = (*it)->getItsHead(); centiPart != nullptr; centiPart = centiPart->getItsChild())
         {
-            if (itsBullet != nullptr)
+            if (itsBullet != nullptr && isColliding(centiPart->getItsHitBox(), itsBullet->getItsHitBox()))
             {
-                if (isColliding(centiPart->getItsHitBox(), itsBullet->getItsHitBox()))
-                {
-                    sliceCentipede(centiPart);
-                    itsBullet = nullptr;
-                }
+                sliceCentipede(centiPart);
+                itsBullet = nullptr;
             }
 
             if (isColliding(centiPart->getItsHitBox(), itsPlayer->getItsHitBox()))
@@ -190,8 +219,10 @@ Player* Game::getItsPlayer()
 
 void Game::movePlayer(Direction & direction)
 {
-    if(itsPlayerZone.x() < itsPlayer->getItsHitBox().x() + direction.dirX * PLAYER_SPEED and itsPlayerZone.x() + itsPlayerZone.width() > itsPlayer->getItsHitBox().x() + itsPlayer->getItsHitBox().width() + direction.dirX * PLAYER_SPEED
-        and itsPlayerZone.y() < itsPlayer->getItsHitBox().y() + direction.dirY * PLAYER_SPEED and itsPlayerZone.y() + itsPlayerZone.height() > itsPlayer->getItsHitBox().y() + itsPlayer->getItsHitBox().height() + direction.dirY * PLAYER_SPEED)
+    if (itsPlayerZone.x() < itsPlayer->getItsHitBox().x() + direction.dirX * PLAYER_SPEED &&
+        itsPlayerZone.x() + itsPlayerZone.width() > itsPlayer->getItsHitBox().x() + itsPlayer->getItsHitBox().width() + direction.dirX * PLAYER_SPEED &&
+        itsPlayerZone.y() < itsPlayer->getItsHitBox().y() + direction.dirY * PLAYER_SPEED &&
+        itsPlayerZone.y() + itsPlayerZone.height() > itsPlayer->getItsHitBox().y() + itsPlayer->getItsHitBox().height() + direction.dirY * PLAYER_SPEED)
     {
         itsPlayer->updatePos(direction);
     }
