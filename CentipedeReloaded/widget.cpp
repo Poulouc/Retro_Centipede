@@ -204,7 +204,7 @@ void Widget::movePlayer()
 void Widget::startGame()
 {
     ui->stackedWidget->setCurrentIndex(3);
-    itsGame = new Game({0, (this->height()*0.05), this->width(), this->height()});
+    itsGame = new Game({(width() / 2 - (height() / 31 * 30) / 2), int(height() * 0.05), (height() / 31 * 30), int(height() * 0.95)});
     isGameStarted = true;
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
     itsBulletTimer->start(16); // set the speed of it

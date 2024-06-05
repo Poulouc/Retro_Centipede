@@ -6,7 +6,7 @@ using namespace std;
 Game::Game(QRect board)
     :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsBullet(nullptr),
     itsPlayer(new Player({board.width()/2 - PLAYER_SIZE/2, board.height() - PLAYER_SIZE - 1})), itsBoard(board),
-    itsPlayerZone(0, (4 * board.height()) / 5, board.width(), board.height() / 5)
+    itsPlayerZone(board.x(), board.y() + (4 * board.height()) / 5, board.width(), board.height() / 5)
 {
     spawnCentipede();
     createMushrooms();
@@ -102,7 +102,7 @@ void Game::createMushrooms()
         if (itsBullet != nullptr && isColliding(previewHitbox, itsBullet->getItsHitBox())) continue;
 
         // Create the mushroom, must be executed only if the position is valid
-        itsMushrooms->push_back(new Mushroom(genX, genY));
+        itsMushrooms->push_back(new Mushroom(genX, genY, itsBoard.x() / 30));
     }
 }
 
@@ -128,8 +128,8 @@ void Game::moveBullet()
 
 bool Game::isColliding(QRect hitbox1, QRect hitbox2)
 {
-    return hitbox1.contains(hitbox2);
-    //return hitbox1.intersected(hitbox2).isValid();
+    //dreturn hitbox1.contains(hitbox2);
+    return hitbox1.intersected(hitbox2).isValid();
 }
 
 void Game::checkCollisions()
@@ -141,6 +141,10 @@ void Game::checkCollisions()
             if (isColliding((*it)->getItsHitBox(), itsBullet->getItsHitBox()))
             {
                 (*it)->damage();
+                if ((*it)->getItsState() <= 0)
+                {
+                    delete *it;
+                }
                 itsBullet = nullptr;
                 break;
             }
