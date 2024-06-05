@@ -188,5 +188,5 @@ void Widget::startGame()
 
 void Widget::moveCentipede()
 {
-
+    itsGame->moveCentipede();
 }
