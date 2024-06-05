@@ -5,7 +5,7 @@ using namespace std;
 
 Game::Game(QRect board)
     :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsBullet(nullptr),
-    itsPlayer(new Player({board.x() + board.width()/2 - PLAYER_SIZE/2, board.y() + board.height() - PLAYER_SIZE - 1})), itsBoard(board),
+    itsPlayer(new Player({board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2, board.y() + board.height() - (board.width() / BOARD_WIDTH) - 1}, board.width() / BOARD_WIDTH)), itsBoard(board),
     itsPlayerZone(board.x(), board.y() + (4 * board.height()) / 5, board.width(), board.height() / 5)
 {
     spawnCentipede();
@@ -56,14 +56,17 @@ void Game::createMushrooms()
     random_device rd;
     default_random_engine eng(rd());
 
-    uniform_int_distribution<int> randX(0, itsBoard.width() / 30);
-    uniform_int_distribution<int> randY(0, itsBoard.height() / 31);
+    uniform_int_distribution<int> randX(0, itsBoard.width() / BOARD_WIDTH);
+    uniform_int_distribution<int> randY(0, itsBoard.height() / BOARD_HEIGHT);
+
+    // Set the size of the mushrooms
+    int mushroomSize = itsBoard.width() / BOARD_WIDTH;
 
     while (itsMushrooms->size() < MUSHROOMS_AMOUNT)
     {
         // Generate a position
-        int genX = itsBoard.x() + randX(eng) * 30;
-        int genY = itsBoard.y() + randY(eng) * 31;
+        int genX = itsBoard.x() + randX(eng) * BOARD_WIDTH;
+        int genY = itsBoard.y() + randY(eng) * BOARD_HEIGHT;
 
         bool validPos = true;
 
@@ -78,8 +81,9 @@ void Game::createMushrooms()
         }
         if (!validPos) continue;
 
+
         // Simulate the mushroom hitbox for next checks
-        QRect previewHitbox = QRect(genX, genY, MUSHROOM_SIZE, MUSHROOM_SIZE);
+        QRect previewHitbox = QRect(genX, genY, mushroomSize, mushroomSize);
 
         // Check if the mushroom want to spawn on a centipede
         for (vector<Centipede*>::iterator it = itsCentipedes->begin(); it < itsCentipedes->end(); it++)

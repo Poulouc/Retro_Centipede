@@ -31,5 +31,7 @@ const int BULLET_SIZE = 5;
 
 // Variables for game
 const int MUSHROOMS_AMOUNT = 30;
+const int BOARD_WIDTH = 30;
+const int BOARD_HEIGHT = 31;
 
 #endif // TYPEDEF_H

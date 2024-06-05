@@ -212,7 +212,7 @@ void Widget::startGame()
     // Calculer la taille du itsBoard en fonction de la plus petite dimension de la fenêtre
     int boardSize = 0.95*qMin(width(), height());
     int boardX = (width() - boardSize) / 2;
-    int boardY = int(0.03*boardSize)+((height() - boardSize) / 2);
+    int boardY = (0.03*boardSize)+((height() - boardSize) / 2);
 
     itsGame = new Game({boardX, boardY, boardSize, boardSize});
 
