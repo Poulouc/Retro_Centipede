@@ -72,8 +72,8 @@ void Widget::resizeEvent(QResizeEvent *event)
 
         itsGame->setBoard(QRect(boardX, boardY, boardWidth, boardHeight));
         // ajuster les timers ou autres paramètres en fonction de la nouvelle taille de la fenêtre
-        itsBulletTimer->start(4000 / this->height()); // Définir la vitesse du bullet
-        itsPlayerTimer->start(2500 / this->width()); // Définir la vitesse du player
+        itsBulletTimer->start(4000 / boardHeight); // Définir la vitesse du bullet
+        itsPlayerTimer->start(2500 / boardWidth); // Définir la vitesse du player
     }
 }
 
@@ -235,7 +235,7 @@ void Widget::startGame()
 
     isGameStarted = true;
     itsDisplayTimer->start(16); // Mettre à jour toutes les 16 ms (environ 60fps)
-    itsBulletTimer->start(4000 / this->height()); // Définir la vitesse du bullet
-    itsPlayerTimer->start(2500 / this->width()); // Définir la vitesse du player
+    itsBulletTimer->start(4000 / boardHeight); // Définir la vitesse du bullet
+    itsPlayerTimer->start(2500 / boardWidth); // Définir la vitesse du player
     //setFixedSize(this->width(), this->height()); // Définir la taille de la fenêtre
 }
