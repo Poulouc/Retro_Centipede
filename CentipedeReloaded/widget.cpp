@@ -12,6 +12,13 @@ Widget::Widget(QWidget *parent)
     isGameStarted = false;
     connect(ui->playButton , SIGNAL(clicked()), this, SLOT(startGame()));
 
+    // ---- EXPERIMENTAL ----
+    QPalette bgColor = QPalette();
+    bgColor.setColor(QPalette::Window, Qt::darkGray);
+    setAutoFillBackground(true);
+    setPalette(bgColor);
+    // ----------------------
+
     // Create timers for updating the GUI, the centipede, the bullet, the player
     itsDisplayTimer = new QTimer(this);
     itsCentipedeTimer = new QTimer(this);
@@ -51,6 +58,7 @@ void Widget::paintEvent(QPaintEvent *event)
     {
         Q_UNUSED(event); //pour éviter les avertissements du compilateur concernant des variables non utilisées
         QPainter painter(this);
+        painter.fillRect(itsGameBoard, QBrush(Qt::lightGray, Qt::SolidPattern));
         drawCentipede(painter);
         drawPlayer(painter);
         drawBullet(painter);
@@ -196,6 +204,10 @@ void Widget::drawHeadUpDisplay(QPainter & painter)
 void Widget::moveBullet()
 {
     if(itsGame->getItsBullet() != nullptr) itsGame->moveBullet();
+
+    // ---- EXPERIMENTAL ----
+    itsGame->checkCollisions();
+    // ----------------------
 }
 
 void Widget::movePlayer()
@@ -206,7 +218,15 @@ void Widget::movePlayer()
 void Widget::startGame()
 {
     ui->stackedWidget->setCurrentIndex(3);
-    itsGame = new Game({(width() / 2 - (height() / 31 * 30) / 2), int(height() * 0.05), (height() / 31 * 30), int(height() * 0.95)});
+
+    // Calculate game board
+    int boardHeight = height() * 95 / 100;
+    int boardWidth = boardHeight / 31 * 30;
+    int boardX = width() / 2 - boardWidth / 2;
+    int boardY = height() * 5 / 100;
+    itsGameBoard = { boardX, boardY, boardWidth, boardHeight };
+
+    itsGame = new Game(itsGameBoard);
     isGameStarted = true;
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
     itsBulletTimer->start(16); // set the speed of it
