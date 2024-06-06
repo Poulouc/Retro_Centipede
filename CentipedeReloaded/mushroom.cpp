@@ -1,8 +1,9 @@
 #include "mushroom.h"
 
-Mushroom::Mushroom(int x, int y)
-    :itsState(4), itsHitBox(0, 0, 0, 0), itsPosition({x, y})
+Mushroom::Mushroom(int x, int y, int size, Position gridPosition)
+    :itsState(4), itsHitBox(x, y, size, size), itsGridPosition(gridPosition)
 { }
+
 
 Mushroom::~Mushroom()
 { }
@@ -22,7 +23,17 @@ QRect Mushroom::getItsHitBox()
     return itsHitBox;
 }
 
-Position Mushroom::getItsPosition()
+Position Mushroom::getItsGridPosition()
 {
-    return itsPosition;
+    return itsGridPosition;
+}
+
+void Mushroom::setItsHitBox(QRect hitBox)
+{
+    itsHitBox = hitBox;
+}
+
+void Mushroom::setItsGridPosition(Position position)
+{
+    itsGridPosition = position;
 }

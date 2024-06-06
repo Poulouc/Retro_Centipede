@@ -6,6 +6,9 @@
 #include <QImage>
 #include <Qpainter>
 #include <QKeyEvent>
+#include <QFontMetrics>
+#include <iostream>
+#include <QResizeEvent>
 #include "game.h"
 #include "typeDef.h"
 
@@ -46,6 +49,8 @@ protected:
      */
     void keyReleaseEvent(QKeyEvent * event) override;
 
+    void resizeEvent(QResizeEvent *event) override;
+
     void drawCentipede(QPainter & painter);
 
     void drawPlayer(QPainter & painter);
@@ -54,12 +59,17 @@ protected:
 
     void drawMushrooms(QPainter & painter);
 
+    void drawHeadUpDisplay(QPainter & painter);
+
+    void endGame();
+
 
 private slots:
     void movePlayer();
     void moveCentipede();
     void moveBullet();
     void startGame();
+    void backToMenu();
 
 private:
     Ui::Widget *ui;
@@ -73,6 +83,7 @@ private:
     QImage itsAvatar;
     QImage itsMushrooms;
     Direction itsPlayerDirection;
+    QRect itsGameBoard;
     bool isGameStarted;
 };
 #endif // WIDGET_H
