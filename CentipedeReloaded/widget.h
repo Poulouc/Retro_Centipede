@@ -7,6 +7,8 @@
 #include <Qpainter>
 #include <QKeyEvent>
 #include <QFontMetrics>
+#include <iostream>
+#include <QResizeEvent>
 #include "game.h"
 #include "typeDef.h"
 
@@ -46,6 +48,8 @@ protected:
      * @param event The key event.
      */
     void keyReleaseEvent(QKeyEvent * event) override;
+
+    void resizeEvent(QResizeEvent *event) override;
 
     void drawCentipede(QPainter & painter);
 

@@ -9,14 +9,16 @@ class Mushroom
 private:
     int itsState;
     QRect itsHitBox;
-    Position itsPosition;
+    Position itsGridPosition;
 public:
-    Mushroom(int x, int y);
+    Mushroom(int x, int y, int size, Position gridPosition);
     ~Mushroom();
     void damage();
     int getItsState();
     QRect getItsHitBox();
-    Position getItsPosition();
+    Position getItsGridPosition();
+    void setItsHitBox(QRect hitBox);
+    void setItsGridPosition(Position position);
 };
 
 #endif // MUSHROOM_H

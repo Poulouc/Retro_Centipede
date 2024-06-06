@@ -71,6 +71,24 @@ void Widget::paintEvent(QPaintEvent *event)
     }
 }
 
+void Widget::resizeEvent(QResizeEvent *event)
+{
+    Q_UNUSED(event);
+    if (itsGame != nullptr)
+    {
+        // Calculer la taille du itsBoard en fonction de la plus petite dimension de la fenêtre
+        int boardHeight = height() * 95 / 100;
+        int boardWidth = boardHeight / BOARD_WIDTH * BOARD_HEIGHT;
+        int boardX = width() / 2 - boardWidth / 2;
+        int boardY = height() * 5 / 100;
+
+        itsGame->setBoard(QRect(boardX, boardY, boardWidth, boardHeight));
+        // ajuster les timers ou autres paramètres en fonction de la nouvelle taille de la fenêtre
+        itsBulletTimer->start(4000 / boardHeight); // Définir la vitesse du bullet
+        itsPlayerTimer->start(2500 / boardWidth); // Définir la vitesse du player
+    }
+}
+
 void Widget::keyPressEvent(QKeyEvent * event)
 {
     // Handle key press events for left and right arrow keys
@@ -98,22 +116,20 @@ void Widget::keyPressEvent(QKeyEvent * event)
 
 void Widget::keyReleaseEvent(QKeyEvent * event)
 {
-    int xCurrentDir = itsPlayerDirection.dirX;
-    int yCurrentDir = itsPlayerDirection.dirY;
-    // Handle key press events for left and right arrow keys
-    if (event->key() == Qt::Key_Z && yCurrentDir != 1)
+    // Handle key release events for left and right arrow keys
+    if (event->key() == Qt::Key_Z && itsPlayerDirection.dirY == -1)
     {
         itsPlayerDirection.dirY = 0;
     }
-    if (event->key() == Qt::Key_Q && xCurrentDir != 1)
+    if (event->key() == Qt::Key_Q && itsPlayerDirection.dirX == -1)
     {
         itsPlayerDirection.dirX = 0;
     }
-    if (event->key() == Qt::Key_S && yCurrentDir != -1)
+    if (event->key() == Qt::Key_S && itsPlayerDirection.dirY == 1)
     {
         itsPlayerDirection.dirY = 0;
     }
-    if (event->key() == Qt::Key_D && xCurrentDir != -1)
+    if (event->key() == Qt::Key_D && itsPlayerDirection.dirX == 1)
     {
         itsPlayerDirection.dirX = 0;
     }
@@ -123,7 +139,7 @@ void Widget::drawPlayer(QPainter & painter)
 {
     //à compléter avec le liens
     //painter.drawImage(itsGame->getItsPlayer()->getItsHitBox(), itsAvatar);
-    painter.setPen(Qt::black);
+    painter.setPen(Qt::gray);
     painter.setBrush(Qt::SolidPattern);
     painter.drawRect(itsGame->getItsPlayer()->getItsHitBox());
 }
@@ -189,7 +205,6 @@ void Widget::drawHeadUpDisplay(QPainter & painter)
     painter.setFont(font);
     painter.setPen(Qt::black);
 
-
     // Draw the score
     painter.drawText((this->width()*0.1 - (QFontMetrics(font).boundingRect(QString("Score: %1").arg(itsGame->getItsScore())).width()/2)),
     (this->height()*0.04), QString("Score: %1").arg(itsGame->getItsScore()));
@@ -224,19 +239,19 @@ void Widget::startGame()
     ui->stackedWidget->setCurrentIndex(3);
 
     // Calculate game board
+    // Calculate game board
     int boardHeight = height() * 95 / 100;
-    int boardWidth = boardHeight / 31 * 30;
+    int boardWidth = boardHeight / BOARD_WIDTH * BOARD_HEIGHT;
     int boardX = width() / 2 - boardWidth / 2;
     int boardY = height() * 5 / 100;
-    itsGameBoard = { boardX, boardY, boardWidth, boardHeight };
 
-    itsGame = new Game(itsGameBoard);
+    itsGame = new Game({ boardX, boardY, boardWidth, boardHeight });
     isGameStarted = true;
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
     itsBulletTimer->start(16); // set the speed of it
     itsCentipedeTimer->start(16); // set the speed of it
     itsPlayerTimer->start(3); // set the speed of it
-    setFixedSize(this->width(), this->height()); // set the size of the window
+    //setFixedSize(this->width(), this->height()); // set the size of the window
 }
 
 void Widget::endGame()
@@ -268,3 +283,4 @@ void Widget::moveCentipede()
 {
     itsGame->moveCentipede();
 }
+
