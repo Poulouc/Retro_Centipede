@@ -9,7 +9,8 @@ private:
     BodyPart* itsHead;
     BodyPart* itsTail;
     Direction itsDirection;
-    int distanceToGoDown = 0;
+    bool isGoingDown = true;
+    bool reachedBottom = false;
 public:
     Centipede(BodyPart* head = new BodyPart());
     ~Centipede();
@@ -18,8 +19,11 @@ public:
     BodyPart* getItsTail();
     void setItsTail(BodyPart* tail);
     void setItsDirection(Direction dir);
-    Position getNextPosition();
+    Position getNextPosition(int distance);
     Direction getItsDirection();
+    bool hasReachedBottom();
+    void setVerticalDirection(bool isCentipedeGoingDown);
+    bool getVerticalDirection();
 };
 
 #endif // CENTIPEDE_H

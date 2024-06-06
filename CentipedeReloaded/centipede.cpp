@@ -26,17 +26,21 @@ Direction Centipede::getItsDirection()
 
 void Centipede::moveForward(int distance)
 {
-    BodyPart * currentPart = itsTail;
-    while(currentPart->getItsParent() != nullptr)
-    {
-        Position newPos = currentPart->getItsParent()->getItsPosition();
-        currentPart->setItsPosition(newPos);
-        currentPart = currentPart->getItsParent();
-    }
+    BodyPart * currentPart = itsHead;
     Position headPos = itsHead->getItsPosition();
     Position newPos = {};
-    newPos.posX = headPos.posX + distance * itsDirection.dirX;
-    newPos.posY = headPos.posY + distance * itsDirection.dirY;
+    if(isGoingDown)
+    {
+        newPos.posY = headPos.posY + distance * itsDirection.dirY;
+        newPos.posX = headPos.posX;
+        isGoingDown = false;
+    }
+    else
+    {
+        newPos.posX = headPos.posX + distance * itsDirection.dirX;
+        newPos.posY = headPos.posY;
+    }
+
     currentPart->setItsPosition(newPos);
 }
 
@@ -45,11 +49,34 @@ void Centipede::setItsDirection(Direction dir)
     itsDirection = dir;
 }
 
-Position Centipede::getNextPosition()
+Position Centipede::getNextPosition(int distance)
 {
     Position nextPos;
     Position currentPos = itsHead->getItsPosition();
-    nextPos.posX = currentPos.posX + CENTIPEDE_SPEED * itsDirection.dirX;
-    nextPos.posY = currentPos.posY + CENTIPEDE_SPEED * itsDirection.dirY;
+    if(isGoingDown)
+    {
+        nextPos.posY = currentPos.posY + distance * itsDirection.dirY;
+        nextPos.posX = currentPos.posX;
+    }
+    else
+    {
+        nextPos.posX = currentPos.posX + distance * itsDirection.dirX;
+        nextPos.posY = currentPos.posY;
+    }
     return nextPos;
+}
+
+bool Centipede::getVerticalDirection()
+{
+    return isGoingDown;
+}
+
+bool Centipede::hasReachedBottom()
+{
+    return reachedBottom;
+}
+
+void Centipede::setVerticalDirection(bool isCentipedeGoingDown)
+{
+    isGoingDown = isCentipedeGoingDown;
 }

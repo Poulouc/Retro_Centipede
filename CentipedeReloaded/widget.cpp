@@ -137,7 +137,7 @@ void Widget::drawCentipede(QPainter & painter)
                 //painter.drawImage(currentPart->getItsHitBox(), itsCentiBody);
                 painter.setPen(Qt::yellow);
                 painter.setBrush(Qt::SolidPattern);
-                painter.drawRect(currentPart->getItsHitBox());
+                //painter.drawRect(currentPart->getItsHitBox());
             }
             else
             {
