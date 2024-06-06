@@ -1,6 +1,5 @@
 #include <random>
 #include "game.h"
-#include <iostream>
 
 using namespace std;
 
@@ -62,7 +61,9 @@ void Game::createMushrooms()
 
     uniform_int_distribution<int> randX(0, 30 - 1);
     uniform_int_distribution<int> randY(0, 31 - 1);
+
     int mushroomSize = (itsBoard.width() / BOARD_WIDTH);
+
     while (itsMushrooms->size() < MUSHROOMS_AMOUNT)
     {
         int randomX = randX(eng), randomY = randY(eng);
@@ -108,7 +109,7 @@ void Game::createMushrooms()
         if (itsBullet != nullptr && isColliding(previewHitbox, itsBullet->getItsHitBox())) continue;
 
         // Create the mushroom, must be executed only if the position is valid
-        itsMushrooms->push_back(new Mushroom(genX, genY, mushroomSize, Position{randomX, randomY}));
+        itsMushrooms->push_back(new Mushroom(genX, genY, mushroomSize, { randomX, randomY }));
     }
 }
 
@@ -116,8 +117,8 @@ void Game::shoot()
 {
     if (itsBullet == nullptr)
     {
-        int newX = itsPlayer->getItsPosition().posX /*+ PLAYER_SIZE / 2 - BULLET_SIZE / 2*/;
-        int newY = itsPlayer->getItsPosition().posY /*+ PLAYER_SIZE / 2 - BULLET_SIZE / 2*/;
+        int newX = itsPlayer->getItsPosition().posX + (itsBoard.width() / BOARD_WIDTH) / 2 - BULLET_SIZE / 2;
+        int newY = itsPlayer->getItsPosition().posY;
         itsBullet = new Bullet(newX, newY);
     }
 }
@@ -252,7 +253,12 @@ void Game::sliceCentipede(BodyPart* hittedPart)
         }
 
         // Add a new mushroom at the position of the hitted part
-        itsMushrooms->push_back(new Mushroom(hittedPart->getItsPosition().posX, hittedPart->getItsPosition().posY));
+        int posX = hittedPart->getItsPosition().posX - (hittedPart->getItsPosition().posX - itsBoard.x()) % BOARD_WIDTH;
+        int posY = hittedPart->getItsPosition().posY - (hittedPart->getItsPosition().posY - itsBoard.y()) % BOARD_HEIGHT;
+        int gridX = (posX - itsBoard.x()) / BOARD_WIDTH;
+        int gridY = (posY - itsBoard.y()) / BOARD_HEIGHT;
+        itsMushrooms->push_back(new Mushroom(posX, posY, itsBoard.width() / BOARD_WIDTH, { gridX, gridY }));
+
         // Deletion of the hitted part
         delete hittedPart;
     }
@@ -263,11 +269,17 @@ void Game::sliceCentipede(BodyPart* hittedPart)
         {
             if ((*it)->getItsHead() == hittedPart)
             {
-                // Remove centipede from the vector
+                // Store centipede to delete it and remove it from the vector
                 Centipede* toDelete = *it;
                 itsCentipedes->erase(it);
+
                 // Generate a new mushroom at the position of the head of the centipede
-                itsMushrooms->push_back(new Mushroom(hittedPart->getItsPosition().posX, hittedPart->getItsPosition().posY));
+                int posX = hittedPart->getItsPosition().posX - (hittedPart->getItsPosition().posX - itsBoard.x()) % BOARD_WIDTH;
+                int posY = hittedPart->getItsPosition().posY - (hittedPart->getItsPosition().posY - itsBoard.y()) % BOARD_HEIGHT;
+                int gridX = (posX - itsBoard.x()) / BOARD_WIDTH;
+                int gridY = (posY - itsBoard.y()) / BOARD_HEIGHT;
+                itsMushrooms->push_back(new Mushroom(posX, posY, itsBoard.width() / BOARD_WIDTH, { gridX, gridY }));
+
                 delete toDelete;
 
                 break;
