@@ -125,7 +125,7 @@ void Game::shoot()
 void Game::moveBullet()
 {
     itsBullet->updatePos();
-
+    //If the bullet left the board
     if(itsBullet->getItsPosition().posY < itsBoard.y())
     {
         itsBullet = nullptr;
@@ -299,20 +299,15 @@ QRect Game::getItsBoard()
 
 void Game::setBoard(QRect board)
 {
-    //set the size of the mushrooms
+    //set the size of the mushrooms and their new placement
     for (vector<Mushroom*>::iterator it = itsMushrooms->begin(); it < itsMushrooms->end(); it++)
     {
-        //int randX = (genX - itsBoard.x()) / BOARD_WIDTH;
-        //int randY = (genY - itsBoard.y()) / BOARD_HEIGHT;
-        //int genX = itsBoard.x() + randomX * BOARD_WIDTH;
-        //int genY = itsBoard.y() + randomY * BOARD_HEIGHT;
-
         (*it)->setItsHitBox(QRect((board.x() + (*it)->getItsGridPosition().posX * (board.width()/BOARD_WIDTH)),
                                   (board.y() + (*it)->getItsGridPosition().posY * (board.width()/BOARD_WIDTH)),
                                   board.width()/BOARD_WIDTH,
                                   board.width()/BOARD_WIDTH));
     }
-    //set the size of the player
+    //set the size of the player and the new placement on the board
     itsPlayer->setItsHitBox(QRect(board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2,
                                   board.y() + board.height() - (board.height() / BOARD_HEIGHT) - 1,
                                   board.width()/BOARD_WIDTH,
@@ -333,40 +328,53 @@ void Game::setBoard(QRect board)
     itsBoard = board;
 }
 
+// Moves the player based on the provided direction.
 void Game::movePlayer(Direction & direction)
 {
+    // Check if the player can move horizontally within the player zone
     if (itsPlayerZone.x() < itsPlayer->getItsHitBox().x() + direction.dirX * PLAYER_SPEED &&
         itsPlayerZone.x() + itsPlayerZone.width() > itsPlayer->getItsHitBox().x() + itsPlayer->getItsHitBox().width() + direction.dirX * PLAYER_SPEED
         && (direction.dirX == -PLAYER_SPEED or direction.dirX == PLAYER_SPEED))
     {
+        // Update the player's position in the horizontal direction
         itsPlayer->updatePos({direction.dirX, 0});
     }
+    // Check if the player can move vertically within the player zone
     if(itsPlayerZone.y() < itsPlayer->getItsHitBox().y() + direction.dirY * PLAYER_SPEED &&
         itsPlayerZone.y() + itsPlayerZone.height() > itsPlayer->getItsHitBox().y() + itsPlayer->getItsHitBox().height() + direction.dirY * PLAYER_SPEED
         && (direction.dirY == -PLAYER_SPEED or direction.dirY == PLAYER_SPEED))
     {
+        // Update the player's position in the vertical direction
         itsPlayer->updatePos({0, direction.dirY});
     }
 }
 
+// Moves the centipede units.
 void Game::moveCentipede()
 {
+    // Define the initial zone as the game board.
     QRect zone = itsBoard;
+
+    // Iterate through each centipede in the game.
     for(Centipede * centipede : *itsCentipedes)
     {
-        //centipede->moveForward(CENTIPEDE_SPEED);
-        //return;
+        // If the centipede has reached the bottom, change the zone to the player zone.
+        if(centipede->hasReachedBottom())
+            zone = itsPlayerZone;
 
-
-        if(centipede->hasReachedBottom()) zone = itsPlayerZone;
+        // Check for collisions with mushrooms and the game board.
         bool first = centipedeMushroomCollision(centipede);
         bool second = centipedeBoardCollision(centipede, zone);
-        if(!(first || second)) // if there's no collision
+
+        // If there's no collision, move the centipede forward.
+        if(!(first || second))
         {
+            // If the centipede is moving vertically, move it by one step.
             if(centipede->getVerticalDirection())
             {
                 centipede->moveForward(itsBoard.height()/31);
             }
+            // If the centipede is moving horizontally, move it by its standard speed.
             else
             {
                 centipede->moveForward(CENTIPEDE_SPEED);
@@ -374,6 +382,7 @@ void Game::moveCentipede()
         }
     }
 }
+
 
 bool Game::centipedeBoardCollision(Centipede * centipede, QRect board)
 {
