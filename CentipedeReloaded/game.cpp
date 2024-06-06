@@ -178,16 +178,17 @@ void Game::checkCollisions()
 {
     if (itsBullet != nullptr)
     {
-        for (vector<Mushroom*>::iterator it = itsMushrooms->begin(); it < itsMushrooms->end(); it++)
+        for (vector<Mushroom*>::iterator it = itsMushrooms->begin(); it < itsMushrooms->end(); it++) // checks if the bullet touches a mushroom
         {
             if (isColliding((*it)->getItsHitBox(), itsBullet->getItsHitBox()))
             {
-                (*it)->damage();
-                if ((*it)->getItsState() <= 0)
+                Mushroom * mushroom = *it;
+                (mushroom)->damage();
+                if (mushroom->getItsState() <= 0)
                 {
                     itsScore += 4;
                     itsMushrooms->erase(it);
-                    delete *it;
+                    delete mushroom;
                 }
                 itsBullet = nullptr;
                 break;
@@ -195,27 +196,31 @@ void Game::checkCollisions()
         }
     }
 
-    for (vector<Centipede*>::iterator it = itsCentipedes->begin(); it < itsCentipedes->end(); it++)
+    for (vector<Centipede*>::iterator it = itsCentipedes->begin(); it != itsCentipedes->end(); ++it)
     {
-        for (BodyPart* centiPart = (*it)->getItsHead(); centiPart != nullptr; centiPart = centiPart->getItsChild())
+        Centipede * centipede = *it;
+        for (BodyPart* centiPart = centipede->getItsHead(); centiPart != nullptr; centiPart = centiPart->getItsChild())
         {
-            if (isColliding(centiPart->getItsHitBox(), itsPlayer->getItsHitBox()))
+            if (isColliding(centiPart->getItsHitBox(), itsPlayer->getItsHitBox())) // player touched
             {
                 itsPlayer->hit();
-                for (vector<Centipede*>::iterator itDel = itsCentipedes->begin(); itDel < itsCentipedes->end(); itDel++)
+                for (vector<Centipede*>::iterator itDel = itsCentipedes->begin(); itDel != itsCentipedes->end(); ++itDel)
                 {
-                    itsCentipedes->erase(itDel);
                     delete *itDel;
                 }
-                itsPlayer->setItsPosition({ itsBoard.x() + itsBoard.width()/2 - PLAYER_SIZE/2, itsBoard.y() + itsBoard.height() - PLAYER_SIZE - 1 });
+                itsCentipedes->clear();
+                itsPlayer->setItsPosition({ itsBoard.x() + itsBoard.width()/2 - PLAYER_SIZE/2, itsBoard.y() + itsBoard.height() - PLAYER_SIZE - 2});
                 spawnCentipede();
                 return;
             }
-            else if (itsBullet != nullptr && isColliding(centiPart->getItsHitBox(), itsBullet->getItsHitBox()))
+
+            else if (itsBullet != nullptr && isColliding(centiPart->getItsHitBox(), itsBullet->getItsHitBox())) // centipede hit
             {
+                BodyPart * newTail = centiPart->getItsParent();
                 sliceCentipede(centiPart);
+                centipede->setItsTail(newTail);
                 itsBullet = nullptr;
-                break;
+                return;
             }
         }
     }
@@ -223,41 +228,53 @@ void Game::checkCollisions()
 
 void Game::sliceCentipede(BodyPart* hittedPart)
 {
-    // Check if the hitted part is a the head of a centipede
-    if (hittedPart->getItsParent() != nullptr)
+    if (hittedPart->getItsParent() != nullptr) // body hit
     {
         // Cut the hitted centipede
         hittedPart->getItsParent()->setItsChild(nullptr);
 
-        // Check if the hitted part is NOT the tale
+        // Check if the hitted part is NOT the tail
         if (hittedPart->getItsChild() != nullptr)
         {
             // Set next part as the head for the new centipede ...
             BodyPart* newHead = hittedPart->getItsChild();
+            hittedPart->setItsChild(nullptr);
             // ... and seperate it from the hitted part
             newHead->setItsParent(nullptr);
-
-            // Search the tale of the centipede
+            BodyPart* newTail = newHead;
+            // Search the tail of the centipede
             while(newHead->getItsChild() != nullptr)
             {
                 newHead = newHead->getItsChild();
             }
 
-            // Create a new centipede with the tale as a head
-            itsCentipedes->push_back(new Centipede(newHead));
+            BodyPart * reversedHead = new BodyPart();
+            BodyPart * currentParent = reversedHead;
+            BodyPart * currentPart = newHead->getItsParent();
+            while(currentPart != newTail) // we reverse the chained list
+            {
+                currentParent->setItsChild(currentPart);
+                currentPart->setItsParent(currentParent);
+                currentParent = currentPart;
+            }
+            // Create a new centipede with the tail as the head
+            Centipede * newCentipede = new Centipede(reversedHead);
+            newCentipede->setItsTail(newTail);
+            itsCentipedes->push_back(newCentipede);
         }
 
         // Deletion of the hitted part
         delete hittedPart;
     }
-    else
+    else // headshot
     {
-        for (vector<Centipede*>::iterator it = itsCentipedes->begin(); it < itsCentipedes->end(); it++)
+        for (vector<Centipede*>::iterator it = itsCentipedes->begin(); it != itsCentipedes->end(); ++it)
         {
-            if ((*it)->getItsHead() == hittedPart)
+            Centipede * centipede = *it;
+            if (centipede->getItsHead() == hittedPart)
             {
                 itsCentipedes->erase(it);
-                delete *it;
+                delete centipede;
                 break;
             }
         }

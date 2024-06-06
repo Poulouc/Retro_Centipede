@@ -145,29 +145,28 @@ void Widget::drawCentipede(QPainter & painter)
     //painter.drawImage(0, 0, *itsBackgroundImage);
     for (vector<Centipede *>::iterator it = itsGame->getItsCentipedes()->begin(); it != itsGame->getItsCentipedes()->end(); ++it) {
         BodyPart * currentPart = (*it)->getItsHead();
+
+        // displays the tail
+        painter.setPen(Qt::darkGreen);
+        painter.setBrush(Qt::SolidPattern);
+        painter.drawRect((*it)->getItsTail()->getItsHitBox());
+
+        // displays the head
+        painter.setPen(Qt::blue);
+        painter.setBrush(Qt::SolidPattern);
+        painter.drawRect((*it)->getItsHead()->getItsHitBox());
         while(currentPart->getItsChild() != nullptr)
         {
             if(currentPart != (*it)->getItsHead())
             {
-                //display the bodys
+                //displays the bodyparts
                 //painter.drawImage(currentPart->getItsHitBox(), itsCentiBody);
                 painter.setPen(Qt::yellow);
                 painter.setBrush(Qt::SolidPattern);
                 painter.drawRect(currentPart->getItsHitBox());
             }
-            else
-            {
-                //display the head
-                //painter.drawImage(currentPart->getItsHitBox(), itsCentiHead);
-                painter.setPen(Qt::blue);
-                painter.setBrush(Qt::SolidPattern);
-                painter.drawRect(currentPart->getItsHitBox());
-            }
             currentPart = currentPart->getItsChild();
         }
-        painter.setPen(Qt::darkGreen);
-        painter.setBrush(Qt::SolidPattern);
-        painter.drawRect((*it)->getItsTail()->getItsHitBox());
     }
 }
 
@@ -234,8 +233,8 @@ void Widget::startGame()
     isGameStarted = true;
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
     itsBulletTimer->start(16); // set the speed of it
-    itsCentipedeTimer->start(16); // set the speed of it
-    itsPlayerTimer->start(3); // set the speed of it
+    //itsCentipedeTimer->start(16); // set the speed of it
+    itsPlayerTimer->start(16); // set the speed of it
     setFixedSize(this->width(), this->height()); // set the size of the window
 }
 
