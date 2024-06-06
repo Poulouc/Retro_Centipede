@@ -268,7 +268,7 @@ void Widget::startGame()
     itsBulletTimer->start(16); // set the speed of it
     itsCentipedeTimer->start(16); // set the speed of it
     itsPlayerTimer->start(16); // set the speed of it
-    setFixedSize(this->width(), this->height()); // set the size of the window
+    //setFixedSize(this->width(), this->height()); // set the size of the window
 }
 
 void Widget::endGame()
