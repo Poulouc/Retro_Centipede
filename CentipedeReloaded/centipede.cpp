@@ -26,22 +26,33 @@ Direction Centipede::getItsDirection()
 
 void Centipede::moveForward(int distance)
 {
-    BodyPart * currentPart = itsHead;
-    Position headPos = itsHead->getItsPosition();
-    Position newPos = {};
-    if(isGoingDown)
+    BodyPart * currentPart = itsTail;
+    Position partPos = itsHead->getItsPosition();
+    Position newPos;
+    int bodyCounter = CENTIPEDE_LENGTH;
+
+    while(currentPart != itsHead) // moves the body
     {
-        newPos.posY = headPos.posY + distance * itsDirection.dirY;
-        newPos.posX = headPos.posX;
+        newPos = currentPart->getItsParent()->getItsPosition();
+        newPos.posX -= CENTIPEDE_BODYPART_SIZE * itsDirection.dirX;
+
+        currentPart->setItsPosition(newPos);
+        currentPart = currentPart->getItsParent();
+    }
+
+    if(isGoingDown) // moves the head
+    {
+        newPos.posY = partPos.posY + distance * itsDirection.dirY;
+        newPos.posX = partPos.posX;
+        itsHead->setItsPosition(newPos);
         isGoingDown = false;
     }
     else
     {
-        newPos.posX = headPos.posX + distance * itsDirection.dirX;
-        newPos.posY = headPos.posY;
+        newPos.posX = partPos.posX + distance * itsDirection.dirX;
+        newPos.posY = partPos.posY;
+        itsHead->setItsPosition(newPos);
     }
-
-    currentPart->setItsPosition(newPos);
 }
 
 void Centipede::setItsDirection(Direction dir)
@@ -84,4 +95,9 @@ void Centipede::setVerticalDirection(bool isCentipedeGoingDown)
 void Centipede::setHasReachedBottom(bool hasReachedBottom)
 {
     reachedBottom = hasReachedBottom;
+}
+
+void Centipede::setItsTail(BodyPart * tail)
+{
+    itsTail = tail;
 }
