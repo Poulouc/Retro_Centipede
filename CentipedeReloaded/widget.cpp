@@ -12,6 +12,13 @@ Widget::Widget(QWidget *parent)
     isGameStarted = false;
     connect(ui->playButton , SIGNAL(clicked()), this, SLOT(startGame()));
 
+    // ---- EXPERIMENTAL ----
+    QPalette bgColor = QPalette();
+    bgColor.setColor(QPalette::Window, Qt::darkGray);
+    setAutoFillBackground(true);
+    setPalette(bgColor);
+    // ----------------------
+
     // Create timers for updating the GUI, the centipede, the bullet, the player
     itsDisplayTimer = new QTimer(this);
     itsCentipedeTimer = new QTimer(this);
@@ -51,6 +58,12 @@ void Widget::paintEvent(QPaintEvent *event)
     {
         Q_UNUSED(event); //pour éviter les avertissements du compilateur concernant des variables non utilisées
         QPainter painter(this);
+
+        // ---- EXPERIMENTAL ----
+        painter.fillRect(QRect((width() / 2 - (height() / 31 * 30) / 2), int(height() * 0.05), (height() / 31 * 30), int(height() * 0.95)),
+                         QBrush(Qt::lightGray, Qt::SolidPattern));
+        // ----------------------
+
         drawCentipede(painter);
         drawPlayer(painter);
         drawBullet(painter);
@@ -194,6 +207,7 @@ void Widget::drawHeadUpDisplay(QPainter & painter)
 void Widget::moveBullet()
 {
     if(itsGame->getItsBullet() != nullptr) itsGame->moveBullet();
+    itsGame->checkCollisions();
 }
 
 void Widget::movePlayer()
