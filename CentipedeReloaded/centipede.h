@@ -22,8 +22,9 @@ public:
     Position getNextPosition(int distance);
     Direction getItsDirection();
     bool hasReachedBottom();
-    void setVerticalDirection(bool isCentipedeGoingDown);
     bool getVerticalDirection();
+    void setVerticalDirection(bool isCentipedeGoingDown);
+    void setHasReachedBottom(bool hasReachedBottom);
 };
 
 #endif // CENTIPEDE_H
