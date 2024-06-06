@@ -1,6 +1,8 @@
 #include <random>
 #include "game.h"
 
+#include <iostream>
+
 using namespace std;
 
 Game::Game(QRect board)
@@ -220,7 +222,7 @@ void Game::checkCollisions()
             {
                 sliceCentipede(centiPart);
                 itsBullet = nullptr;
-                break;
+                return;
             }
         }
     }
@@ -266,6 +268,9 @@ void Game::sliceCentipede(BodyPart* hittedPart)
 
         // Deletion of the hitted part
         delete hittedPart;
+
+        // Increase the score of 10
+        itsScore += 10;
     }
     else
     {
@@ -349,6 +354,7 @@ void Game::setBoard(QRect board)
 
     //faire une partie pour centipède
 
+    // pour le tir aussi
 
     //set the board
     itsBoard = board;

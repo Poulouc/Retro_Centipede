@@ -262,6 +262,7 @@ void Widget::startGame()
     int boardWidth = boardHeight / BOARD_WIDTH * BOARD_HEIGHT;
     int boardX = width() / 2 - boardWidth / 2;
     int boardY = height() * 5 / 100;
+    itsGameBoard = { boardX, boardY, boardWidth, boardHeight };
 
     itsGame = new Game({ boardX, boardY, boardWidth, boardHeight });
     isGameStarted = true;
