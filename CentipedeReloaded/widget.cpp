@@ -150,9 +150,27 @@ void Widget::drawMushrooms(QPainter & painter)
     for(Mushroom * mushroom : *itsGame->getItsMushrooms())
     {
         //painter.drawImage((*it)->getItsHitBox(), itsMushrooms);
-        painter.setPen(Qt::red);
         painter.setBrush(Qt::SolidPattern);
-        painter.drawRect(mushroom->getItsHitBox());
+        if(mushroom->getItsState() == 4)
+        {
+            painter.setPen(Qt::red);
+            painter.drawRect(mushroom->getItsHitBox());
+        }
+        else if(mushroom->getItsState() == 3)
+        {
+            painter.setPen(Qt::magenta);
+            painter.drawRect(mushroom->getItsHitBox());
+        }
+        else if(mushroom->getItsState() == 2)
+        {
+            painter.setPen(Qt::yellow);
+            painter.drawRect(mushroom->getItsHitBox());
+        }
+        else if(mushroom->getItsState() == 1)
+        {
+            painter.setPen(Qt::green);
+            painter.drawRect(mushroom->getItsHitBox());
+        }
     }
 }
 
@@ -167,7 +185,7 @@ void Widget::drawCentipede(QPainter & painter)
             {
                 //display the bodys
                 //painter.drawImage(currentPart->getItsHitBox(), itsCentiBody);
-                painter.setPen(Qt::yellow);
+                painter.setPen(Qt::cyan);
                 painter.setBrush(Qt::SolidPattern);
                 painter.drawRect(currentPart->getItsHitBox());
             }
