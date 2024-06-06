@@ -10,7 +10,16 @@ Widget::Widget(QWidget *parent)
     ui->setupUi(this);
     setWindowTitle("Centipede Reloaded - v1.0");
     isGameStarted = false;
-    connect(ui->playButton , SIGNAL(clicked()), this, SLOT(startGame()));
+    connect(ui->playButton, SIGNAL(clicked()), this, SLOT(startGame()));
+    connect(ui->back_button, SIGNAL(clicked()), this, SLOT(backToMenu()));
+    connect(ui->back_button_2, SIGNAL(clicked()), this, SLOT(backToMenu()));
+
+    // ---- EXPERIMENTAL ----
+    QPalette bgColor = QPalette();
+    bgColor.setColor(QPalette::Window, Qt::darkGray);
+    setAutoFillBackground(true);
+    setPalette(bgColor);
+    // ----------------------
 
     // Create timers for updating the GUI, the centipede, the bullet, the player
     itsDisplayTimer = new QTimer(this);
@@ -47,15 +56,18 @@ Widget::~Widget()
 
 void Widget::paintEvent(QPaintEvent *event)
 {
-    if(isGameStarted)
+    if (isGameStarted)
     {
         Q_UNUSED(event); //pour éviter les avertissements du compilateur concernant des variables non utilisées
         QPainter painter(this);
+        painter.fillRect(itsGameBoard, QBrush(Qt::lightGray, Qt::SolidPattern));
         drawCentipede(painter);
         drawPlayer(painter);
         drawBullet(painter);
         drawMushrooms(painter);
         drawHeadUpDisplay(painter);
+
+        endGame();
     }
 }
 
@@ -149,7 +161,7 @@ void Widget::drawCentipede(QPainter & painter)
     //painter.drawImage(0, 0, *itsBackgroundImage);
     for (vector<Centipede *>::iterator it = itsGame->getItsCentipedes()->begin(); it != itsGame->getItsCentipedes()->end(); ++it) {
         BodyPart * currentPart = (*it)->getItsHead();
-        while(currentPart != nullptr)
+        while(currentPart->getItsChild() != nullptr)
         {
             if(currentPart != (*it)->getItsHead())
             {
@@ -169,7 +181,9 @@ void Widget::drawCentipede(QPainter & painter)
             }
             currentPart = currentPart->getItsChild();
         }
-        delete currentPart;
+        painter.setPen(Qt::darkGreen);
+        painter.setBrush(Qt::SolidPattern);
+        painter.drawRect((*it)->getItsTail()->getItsHitBox());
     }
 }
 
@@ -209,6 +223,10 @@ void Widget::drawHeadUpDisplay(QPainter & painter)
 void Widget::moveBullet()
 {
     if(itsGame->getItsBullet() != nullptr) itsGame->moveBullet();
+
+    // ---- EXPERIMENTAL ----
+    itsGame->checkCollisions();
+    // ----------------------
 }
 
 void Widget::movePlayer()
@@ -216,9 +234,54 @@ void Widget::movePlayer()
     itsGame->movePlayer(itsPlayerDirection);
 }
 
+void Widget::startGame()
+{
+    ui->stackedWidget->setCurrentIndex(3);
+
+    // Calculate game board
+    int boardHeight = height() * 95 / 100;
+    int boardWidth = boardHeight / 31 * 30;
+    int boardX = width() / 2 - boardWidth / 2;
+    int boardY = height() * 5 / 100;
+    itsGameBoard = { boardX, boardY, boardWidth, boardHeight };
+
+    itsGame = new Game(itsGameBoard);
+    isGameStarted = true;
+    itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
+    itsBulletTimer->start(16); // set the speed of it
+    itsCentipedeTimer->start(16); // set the speed of it
+    itsPlayerTimer->start(3); // set the speed of it
+    setFixedSize(this->width(), this->height()); // set the size of the window
+}
+
+void Widget::endGame()
+{
+    if (itsGame->isGameWon())
+    {
+        ui->stackedWidget->setCurrentIndex(1);
+    }
+    else if (itsGame->isGameLosed())
+    {
+        ui->stackedWidget->setCurrentIndex(2);
+    }
+    else return;
+
+    itsDisplayTimer->stop();
+    itsBulletTimer->stop();
+    itsCentipedeTimer->stop();
+    itsPlayerTimer->stop();
+
+    isGameStarted = false;
+}
+
+void Widget::backToMenu()
+{
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
 void Widget::moveCentipede()
 {
-
+    itsGame->moveCentipede();
 }
 
 void Widget::startGame()
