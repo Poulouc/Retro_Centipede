@@ -186,8 +186,9 @@ void Game::checkCollisions()
                 if ((*it)->getItsState() <= 0)
                 {
                     itsScore += 4;
+                    Mushroom* toDelete = *it;
                     itsMushrooms->erase(it);
-                    delete *it;
+                    delete toDelete;
                 }
                 itsBullet = nullptr;
                 break;
@@ -247,17 +248,25 @@ void Game::sliceCentipede(BodyPart* hittedPart)
             itsCentipedes->push_back(new Centipede(newHead));
         }
 
+        // Add a new mushroom at the position of the hitted part
+        itsMushrooms->push_back(new Mushroom(hittedPart->getItsPosition().posX, hittedPart->getItsPosition().posY));
         // Deletion of the hitted part
         delete hittedPart;
     }
     else
     {
+        // Search the centipede that correspond to the hitted head
         for (vector<Centipede*>::iterator it = itsCentipedes->begin(); it < itsCentipedes->end(); it++)
         {
             if ((*it)->getItsHead() == hittedPart)
             {
+                // Remove centipede from the vector
+                Centipede* toDelete = *it;
                 itsCentipedes->erase(it);
-                delete *it;
+                // Generate a new mushroom at the position of the head of the centipede
+                itsMushrooms->push_back(new Mushroom(hittedPart->getItsPosition().posX, hittedPart->getItsPosition().posY));
+                delete toDelete;
+
                 break;
             }
         }
