@@ -57,12 +57,15 @@ protected:
 
     void drawHeadUpDisplay(QPainter & painter);
 
+    void endGame();
+
 
 private slots:
     void movePlayer();
     void moveCentipede();
     void moveBullet();
     void startGame();
+    void backToMenu();
 
 private:
     Ui::Widget *ui;

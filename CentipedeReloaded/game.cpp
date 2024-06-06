@@ -163,6 +163,16 @@ bool Game::centipedeMushroomCollision(Centipede * centipede)
     return false;
 }
 
+bool Game::isGameWon()
+{
+    return itsCentipedes->size() <= 0;
+}
+
+bool Game::isGameLosed()
+{
+    return itsPlayer->getItsHp() <= 0;
+}
+
 void Game::checkCollisions()
 {
     if (itsBullet != nullptr)
@@ -188,21 +198,23 @@ void Game::checkCollisions()
     {
         for (BodyPart* centiPart = (*it)->getItsHead(); centiPart != nullptr; centiPart = centiPart->getItsChild())
         {
-            if (itsBullet != nullptr && isColliding(centiPart->getItsHitBox(), itsBullet->getItsHitBox()))
-            {
-                sliceCentipede(centiPart);
-                itsBullet = nullptr;
-            }
-
             if (isColliding(centiPart->getItsHitBox(), itsPlayer->getItsHitBox()))
             {
                 itsPlayer->hit();
-                for (vector<Centipede*>::iterator it = itsCentipedes->begin(); it < itsCentipedes->end(); it++)
+                for (vector<Centipede*>::iterator itDel = itsCentipedes->begin(); itDel < itsCentipedes->end(); itDel++)
                 {
-                    delete *it;
+                    itsCentipedes->erase(itDel);
+                    delete *itDel;
                 }
-                itsPlayer->setItsPosition({ itsBoard.width() / 2 - PLAYER_SIZE / 2, itsBoard.height() - PLAYER_SIZE - 1 });
+                itsPlayer->setItsPosition({ itsBoard.x() + itsBoard.width()/2 - PLAYER_SIZE/2, itsBoard.y() + itsBoard.height() - PLAYER_SIZE - 1 });
                 spawnCentipede();
+                return;
+            }
+            else if (itsBullet != nullptr && isColliding(centiPart->getItsHitBox(), itsBullet->getItsHitBox()))
+            {
+                sliceCentipede(centiPart);
+                itsBullet = nullptr;
+                break;
             }
         }
     }
@@ -210,18 +222,32 @@ void Game::checkCollisions()
 
 void Game::sliceCentipede(BodyPart* hittedPart)
 {
+    // Check if the hitted part is a the head of a centipede
     if (hittedPart->getItsParent() != nullptr)
     {
+        // Cut the hitted centipede
         hittedPart->getItsParent()->setItsChild(nullptr);
+
+        // Check if the hitted part is NOT the tale
         if (hittedPart->getItsChild() != nullptr)
         {
+            // Set next part as the head for the new centipede ...
             BodyPart* newHead = hittedPart->getItsChild();
+            // ... and seperate it from the hitted part
+            newHead->setItsParent(nullptr);
+
+            // Search the tale of the centipede
             while(newHead->getItsChild() != nullptr)
             {
                 newHead = newHead->getItsChild();
             }
+
+            // Create a new centipede with the tale as a head
             itsCentipedes->push_back(new Centipede(newHead));
         }
+
+        // Deletion of the hitted part
+        delete hittedPart;
     }
     else
     {
@@ -229,6 +255,7 @@ void Game::sliceCentipede(BodyPart* hittedPart)
         {
             if ((*it)->getItsHead() == hittedPart)
             {
+                itsCentipedes->erase(it);
                 delete *it;
                 break;
             }

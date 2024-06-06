@@ -10,7 +10,9 @@ Widget::Widget(QWidget *parent)
     ui->setupUi(this);
     setWindowTitle("Centipede Reloaded - v1.0");
     isGameStarted = false;
-    connect(ui->playButton , SIGNAL(clicked()), this, SLOT(startGame()));
+    connect(ui->playButton, SIGNAL(clicked()), this, SLOT(startGame()));
+    connect(ui->back_button, SIGNAL(clicked()), this, SLOT(backToMenu()));
+    connect(ui->back_button_2, SIGNAL(clicked()), this, SLOT(backToMenu()));
 
     // ---- EXPERIMENTAL ----
     QPalette bgColor = QPalette();
@@ -54,7 +56,7 @@ Widget::~Widget()
 
 void Widget::paintEvent(QPaintEvent *event)
 {
-    if(isGameStarted)
+    if (isGameStarted)
     {
         Q_UNUSED(event); //pour éviter les avertissements du compilateur concernant des variables non utilisées
         QPainter painter(this);
@@ -64,6 +66,8 @@ void Widget::paintEvent(QPaintEvent *event)
         drawBullet(painter);
         drawMushrooms(painter);
         drawHeadUpDisplay(painter);
+
+        endGame();
     }
 }
 
@@ -231,6 +235,31 @@ void Widget::startGame()
     itsCentipedeTimer->start(10); // set the speed of it
     itsPlayerTimer->start(3); // set the speed of it
     setFixedSize(this->width(), this->height()); // set the size of the window
+}
+
+void Widget::endGame()
+{
+    if (itsGame->isGameWon())
+    {
+        ui->stackedWidget->setCurrentIndex(1);
+    }
+    else if (itsGame->isGameLosed())
+    {
+        ui->stackedWidget->setCurrentIndex(2);
+    }
+    else return;
+
+    itsDisplayTimer->stop();
+    itsBulletTimer->stop();
+    itsCentipedeTimer->stop();
+    itsPlayerTimer->stop();
+
+    isGameStarted = false;
+}
+
+void Widget::backToMenu()
+{
+    ui->stackedWidget->setCurrentIndex(0);
 }
 
 void Widget::moveCentipede()
