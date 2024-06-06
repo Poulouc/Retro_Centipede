@@ -240,12 +240,17 @@ void Game::sliceCentipede(BodyPart* hittedPart)
             // Set next part as the head for the new centipede ...
             BodyPart* newHead = hittedPart->getItsChild();
             // ... and seperate it from the hitted part
-            newHead->setItsParent(nullptr);
+            newHead->setItsParent(newHead->getItsChild());
+            newHead->setItsChild(nullptr);
 
             // Search the tale of the centipede
+            BodyPart* prevHead;
             while(newHead->getItsChild() != nullptr)
             {
-                newHead = newHead->getItsChild();
+                prevHead = newHead;
+                newHead = newHead->getItsParent();
+                newHead->setItsParent(newHead->getItsChild());
+                newHead->setItsChild(prevHead);
             }
 
             // Create a new centipede with the tale as a head
