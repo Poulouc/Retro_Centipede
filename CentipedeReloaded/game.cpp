@@ -1,6 +1,8 @@
 #include <random>
 #include "game.h"
 
+#include <iostream>
+
 using namespace std;
 
 Game::Game(QRect board)
@@ -59,6 +61,8 @@ void Game::createMushrooms()
     uniform_int_distribution<int> randX(0, itsBoard.width() / 30);
     uniform_int_distribution<int> randY(0, itsBoard.height() / 31);
 
+    cout << itsBoard.width() << " " << itsBoard.width() / 30 << " " << itsBoard.height() << " " << itsBoard.height() / 31 << endl;
+
     while (itsMushrooms->size() < MUSHROOMS_AMOUNT)
     {
         // Generate a position
@@ -102,7 +106,7 @@ void Game::createMushrooms()
         if (itsBullet != nullptr && isColliding(previewHitbox, itsBullet->getItsHitBox())) continue;
 
         // Create the mushroom, must be executed only if the position is valid
-        itsMushrooms->push_back(new Mushroom(genX, genY, itsBoard.x() / 30));
+        itsMushrooms->push_back(new Mushroom(genX, genY));
     }
 }
 
@@ -129,7 +133,7 @@ void Game::moveBullet()
 bool Game::isColliding(QRect hitbox1, QRect hitbox2)
 {
     //dreturn hitbox1.contains(hitbox2);
-    return hitbox1.intersected(hitbox2).isValid();
+    return hitbox1.intersects(hitbox2);
 }
 
 void Game::checkCollisions()
