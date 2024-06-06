@@ -245,7 +245,7 @@ void Game::sliceCentipede(BodyPart* hittedPart)
 
             // Search the tale of the centipede
             BodyPart* prevHead;
-            while(newHead->getItsChild() != nullptr)
+            while(newHead->getItsParent() != nullptr)
             {
                 prevHead = newHead;
                 newHead = newHead->getItsParent();
