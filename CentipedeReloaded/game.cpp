@@ -155,7 +155,7 @@ bool Game::centipedeMushroomCollision(Centipede * centipede)
             }
             else
             {
-                distance = abs(mushroom->getItsPosition().posX - centipede->getItsHead()->getItsPosition().posX) - CENTIPEDE_BODYPART_SIZE;
+                distance = abs(mushroom->getItsHitBox().x() - centipede->getItsHead()->getItsPosition().posX) - CENTIPEDE_BODYPART_SIZE;
                 centipede->moveForward(distance);
                 centipede->setVerticalDirection(true);
                 centipede->moveForward(itsBoard.height()/31);

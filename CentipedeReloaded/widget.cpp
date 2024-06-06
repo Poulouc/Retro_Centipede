@@ -239,19 +239,19 @@ void Widget::startGame()
     ui->stackedWidget->setCurrentIndex(3);
 
     // Calculate game board
+    // Calculate game board
     int boardHeight = height() * 95 / 100;
-    int boardWidth = boardHeight / 31 * 30;
+    int boardWidth = boardHeight / BOARD_WIDTH * BOARD_HEIGHT;
     int boardX = width() / 2 - boardWidth / 2;
     int boardY = height() * 5 / 100;
-    itsGameBoard = { boardX, boardY, boardWidth, boardHeight };
 
-    itsGame = new Game(itsGameBoard);
+    itsGame = new Game({ boardX, boardY, boardWidth, boardHeight });
     isGameStarted = true;
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
     itsBulletTimer->start(16); // set the speed of it
     itsCentipedeTimer->start(16); // set the speed of it
     itsPlayerTimer->start(3); // set the speed of it
-    setFixedSize(this->width(), this->height()); // set the size of the window
+    //setFixedSize(this->width(), this->height()); // set the size of the window
 }
 
 void Widget::endGame()
@@ -284,21 +284,3 @@ void Widget::moveCentipede()
     itsGame->moveCentipede();
 }
 
-void Widget::startGame()
-{
-    ui->stackedWidget->setCurrentIndex(3);
-
-    // Calculate game board
-    int boardHeight = height() * 95 / 100;
-    int boardWidth = boardHeight / BOARD_WIDTH * BOARD_HEIGHT;
-    int boardX = width() / 2 - boardWidth / 2;
-    int boardY = height() * 5 / 100;
-
-    itsGame = new Game({ boardX, boardY, boardWidth, boardHeight });
-
-    isGameStarted = true;
-    itsDisplayTimer->start(16); // Mettre à jour toutes les 16 ms (environ 60fps)
-    itsBulletTimer->start(4000 / boardHeight); // Définir la vitesse du bullet
-    itsPlayerTimer->start(2500 / boardWidth); // Définir la vitesse du player
-    //setFixedSize(this->width(), this->height()); // Définir la taille de la fenêtre
-}

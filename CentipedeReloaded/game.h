@@ -156,6 +156,16 @@ public:
      * \param board The new game board rectangle.
      */
     void setBoard(QRect board);
+
+    bool centipedeMushroomCollision(Centipede * centipede);
+
+    bool isGameWon();
+
+    bool isGameLosed();
+
+    void moveCentipede();
+
+    bool centipedeBoardCollision(Centipede * centipede, QRect board);
 };
 
 #endif // GAME_H
