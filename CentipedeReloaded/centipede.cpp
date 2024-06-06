@@ -80,3 +80,8 @@ void Centipede::setVerticalDirection(bool isCentipedeGoingDown)
 {
     isGoingDown = isCentipedeGoingDown;
 }
+
+void Centipede::setHasReachedBottom(bool hasReachedBottom)
+{
+    reachedBottom = hasReachedBottom;
+}

@@ -208,7 +208,7 @@ void Widget::startGame()
     isGameStarted = true;
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
     itsBulletTimer->start(16); // set the speed of it
-    itsCentipedeTimer->start(16); // set the speed of it
+    itsCentipedeTimer->start(1); // set the speed of it
     itsPlayerTimer->start(3); // set the speed of it
     setFixedSize(this->width(), this->height()); // set the size of the window
 }
