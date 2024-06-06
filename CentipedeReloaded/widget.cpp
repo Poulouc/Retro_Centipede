@@ -204,7 +204,7 @@ void Widget::moveBullet()
     if(itsGame->getItsBullet() != nullptr) itsGame->moveBullet();
 
     // ---- EXPERIMENTAL ----
-    //itsGame->checkCollisions();
+    itsGame->checkCollisions();
     // ----------------------
 }
 

@@ -1,13 +1,11 @@
 #include <random>
 #include "game.h"
 
-#include <iostream>
-
 using namespace std;
 
 Game::Game(QRect board)
     :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsBullet(nullptr),
-    itsPlayer(new Player({board.width()/2 - PLAYER_SIZE/2, board.height() - PLAYER_SIZE - 1})), itsBoard(board),
+    itsPlayer(new Player({board.x() + board.width()/2 - PLAYER_SIZE/2, board.y() + board.height() - PLAYER_SIZE - 1})), itsBoard(board),
     itsPlayerZone(board.x(), board.y() + (4 * board.height()) / 5, board.width(), board.height() / 5)
 {
     spawnCentipede();
@@ -29,6 +27,8 @@ Game::~Game()
         delete *it;
     }
     delete itsMushrooms;
+
+    // Deletion of the bullet and the player
     delete itsBullet;
     delete itsPlayer;
 }
@@ -60,8 +60,6 @@ void Game::createMushrooms()
 
     uniform_int_distribution<int> randX(0, 30 - 1);
     uniform_int_distribution<int> randY(0, 31 - 1);
-
-    cout << itsBoard.width() << " " << itsBoard.width() / 30 << " " << itsBoard.height() << " " << itsBoard.height() / 31 << endl;
 
     while (itsMushrooms->size() < MUSHROOMS_AMOUNT)
     {
