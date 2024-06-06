@@ -58,12 +58,7 @@ void Widget::paintEvent(QPaintEvent *event)
     {
         Q_UNUSED(event); //pour éviter les avertissements du compilateur concernant des variables non utilisées
         QPainter painter(this);
-
-        // ---- EXPERIMENTAL ----
-        painter.fillRect(QRect((width() / 2 - ((height() * 95 / 100) / 31 * 30) / 2), (height() * 5 / 100), ((height() * 95 / 100) / 31 * 30), (height() * 95 / 100)),
-                         QBrush(Qt::lightGray, Qt::SolidPattern));
-        // ----------------------
-
+        painter.fillRect(itsGameBoard, QBrush(Qt::lightGray, Qt::SolidPattern));
         drawCentipede(painter);
         drawPlayer(painter);
         drawBullet(painter);
@@ -207,7 +202,10 @@ void Widget::drawHeadUpDisplay(QPainter & painter)
 void Widget::moveBullet()
 {
     if(itsGame->getItsBullet() != nullptr) itsGame->moveBullet();
-    itsGame->checkCollisions();
+
+    // ---- EXPERIMENTAL ----
+    //itsGame->checkCollisions();
+    // ----------------------
 }
 
 void Widget::movePlayer()
@@ -218,7 +216,15 @@ void Widget::movePlayer()
 void Widget::startGame()
 {
     ui->stackedWidget->setCurrentIndex(3);
-    itsGame = new Game({(width() / 2 - ((height() * 95 / 100) / 31 * 30) / 2), (height() * 5 / 100), ((height() * 95 / 100) / 31 * 30), (height() * 95 / 100)});
+
+    // Calculate game board
+    int boardHeight = height() * 95 / 100;
+    int boardWidth = boardHeight / 31 * 30;
+    int boardX = width() / 2 - boardWidth / 2;
+    int boardY = height() * 5 / 100;
+    itsGameBoard = { boardX, boardY, boardWidth, boardHeight };
+
+    itsGame = new Game(itsGameBoard);
     isGameStarted = true;
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
     itsBulletTimer->start(16); // set the speed of it
