@@ -65,9 +65,9 @@ void Widget::resizeEvent(QResizeEvent *event)
     if (itsGame != nullptr)
     {
         // Calculer la taille du itsBoard en fonction de la plus petite dimension de la fenêtre
-        int boardSize = 0.95*qMin(width(), height());
-        int boardX = (width() - boardSize) / 2;
-        int boardY = (0.03*boardSize)+((height() - boardSize) / 2);
+        int boardSize = 0.95*qMin(this->width(), height());
+        int boardX = (this->width() - boardSize) / 2;
+        int boardY = (0.03*boardSize)+((this->height() - boardSize) / 2);
 
         itsGame->setBoard(QRect(boardX, boardY, boardSize, boardSize));
         // ajuster les timers ou autres paramètres en fonction de la nouvelle taille de la fenêtre

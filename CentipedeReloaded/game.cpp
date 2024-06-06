@@ -64,16 +64,17 @@ void Game::createMushrooms()
 
     while (itsMushrooms->size() < MUSHROOMS_AMOUNT)
     {
+        int randomX = randX(eng), randomY = randY(eng);
         // Generate a position
-        int genX = itsBoard.x() + randX(eng) * BOARD_WIDTH;
-        int genY = itsBoard.y() + randY(eng) * BOARD_HEIGHT;
+        int genX = itsBoard.x() + randomX * BOARD_WIDTH;
+        int genY = itsBoard.y() + randomY * BOARD_HEIGHT;
 
         bool validPos = true;
 
         // Check if a mushroom already exist at the same position
         for (vector<Mushroom*>::iterator it = itsMushrooms->begin(); it < itsMushrooms->end(); it++)
         {
-            if ((*it)->getItsPosition().posX == genX && (*it)->getItsPosition().posY == genY)
+            if ((*it)->getItsHitBox().x() == genX && (*it)->getItsHitBox().y() == genY)
             {
                 validPos = false;
                 break;
@@ -106,7 +107,7 @@ void Game::createMushrooms()
         if (itsBullet != nullptr && isColliding(previewHitbox, itsBullet->getItsHitBox())) continue;
 
         // Create the mushroom, must be executed only if the position is valid
-        itsMushrooms->push_back(new Mushroom(genX, genY, mushroomSize));
+        itsMushrooms->push_back(new Mushroom(genX, genY, mushroomSize, Position{randomX, randomY}));
     }
 }
 
@@ -244,13 +245,13 @@ void Game::setBoard(QRect board)
     {
         //int randX = (genX - itsBoard.x()) / BOARD_WIDTH;
         //int randY = (genY - itsBoard.y()) / BOARD_HEIGHT;
+        //int genX = itsBoard.x() + randomX * BOARD_WIDTH;
+        //int genY = itsBoard.y() + randomY * BOARD_HEIGHT;
 
-        (*it)->setItsHitBox(QRect(int(board.x() + (((*it)->getItsHitBox().x() - itsBoard.x()) / BOARD_WIDTH) * BOARD_WIDTH),
-                                  int(board.y() + (((*it)->getItsHitBox().y() - itsBoard.y()) / BOARD_HEIGHT) * BOARD_HEIGHT),
-                                  itsBoard.width()/BOARD_WIDTH,
-                                  itsBoard.width()/BOARD_WIDTH));
-        (*it)->setItsPosition(Position{int(board.x() + (((*it)->getItsHitBox().x() - itsBoard.x()) / BOARD_WIDTH) * BOARD_WIDTH),
-                                       int(board.y() + (((*it)->getItsHitBox().y() - itsBoard.y()) / BOARD_HEIGHT) * BOARD_HEIGHT)});
+        (*it)->setItsHitBox(QRect((board.x() + (*it)->getItsGridPosition().posX * BOARD_WIDTH),
+                                  (board.y() + (*it)->getItsGridPosition().posY * BOARD_HEIGHT),
+                                  board.width()/BOARD_WIDTH,
+                                  board.width()/BOARD_WIDTH));
     }
     //set the size of the player
     itsPlayer->setItsHitBox(QRect(board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2, board.y() + board.height() - (board.width() / BOARD_WIDTH) - 1, board.width()/BOARD_WIDTH, board.width()/BOARD_WIDTH));
