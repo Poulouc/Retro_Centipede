@@ -145,7 +145,7 @@ void Widget::drawCentipede(QPainter & painter)
     //painter.drawImage(0, 0, *itsBackgroundImage);
     for (vector<Centipede *>::iterator it = itsGame->getItsCentipedes()->begin(); it != itsGame->getItsCentipedes()->end(); ++it) {
         BodyPart * currentPart = (*it)->getItsHead();
-        while(currentPart != nullptr)
+        while(currentPart->getItsChild() != nullptr)
         {
             if(currentPart != (*it)->getItsHead())
             {
@@ -153,7 +153,7 @@ void Widget::drawCentipede(QPainter & painter)
                 //painter.drawImage(currentPart->getItsHitBox(), itsCentiBody);
                 painter.setPen(Qt::yellow);
                 painter.setBrush(Qt::SolidPattern);
-                //painter.drawRect(currentPart->getItsHitBox());
+                painter.drawRect(currentPart->getItsHitBox());
             }
             else
             {
@@ -165,7 +165,9 @@ void Widget::drawCentipede(QPainter & painter)
             }
             currentPart = currentPart->getItsChild();
         }
-        delete currentPart;
+        painter.setPen(Qt::darkGreen);
+        painter.setBrush(Qt::SolidPattern);
+        painter.drawRect((*it)->getItsTail()->getItsHitBox());
     }
 }
 
@@ -232,7 +234,7 @@ void Widget::startGame()
     isGameStarted = true;
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
     itsBulletTimer->start(16); // set the speed of it
-    itsCentipedeTimer->start(10); // set the speed of it
+    itsCentipedeTimer->start(16); // set the speed of it
     itsPlayerTimer->start(3); // set the speed of it
     setFixedSize(this->width(), this->height()); // set the size of the window
 }

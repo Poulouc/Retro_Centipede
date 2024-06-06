@@ -49,6 +49,7 @@ void Game::spawnCentipede()
         currentPart->setItsChild(newPart);
         newPart->setItsParent(currentPart);
         currentPart = newPart;
+        newCentipede->setItsTail(currentPart);
     }
     itsCentipedes->push_back(newCentipede);
 }
@@ -304,6 +305,10 @@ void Game::moveCentipede()
     QRect zone = itsBoard;
     for(Centipede * centipede : *itsCentipedes)
     {
+        //centipede->moveForward(CENTIPEDE_SPEED);
+        //return;
+
+
         if(centipede->hasReachedBottom()) zone = itsPlayerZone;
         bool first = centipedeMushroomCollision(centipede);
         bool second = centipedeBoardCollision(centipede, zone);
