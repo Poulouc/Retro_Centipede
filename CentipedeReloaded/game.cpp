@@ -329,19 +329,20 @@ void Game::setBoard(QRect board)
                                   board.width()/BOARD_WIDTH,
                                   board.width()/BOARD_WIDTH));
     }
-    //set the size of the player and the new placement on the board
-    itsPlayer->setItsHitBox(QRect(board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2,
-                                  board.y() + board.height() - (board.height() / BOARD_HEIGHT) - 1,
-                                  board.width()/BOARD_WIDTH,
-                                  board.width()/BOARD_WIDTH));
-    //set the position of the player
-    itsPlayer->setItsPosition({board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2,
-                               board.y() + board.height() - (board.height() / BOARD_HEIGHT) - 1});
     //set the playerZone
     itsPlayerZone = QRect(board.x(),
                           board.y() + (4 * board.height()) / 5,
                           board.width(),
                           board.height() / 5);
+
+    //set the size of the player and the new placement on the board
+    itsPlayer->setItsHitBox(QRect(itsPlayerZone.x() + itsPlayerZone.width()/2 - (board.width() / BOARD_WIDTH)/2,
+                                  itsPlayerZone.y() + itsPlayerZone.height() - (board.height() / BOARD_HEIGHT) - itsPlayerZone.height()/20,
+                                  board.width()/BOARD_WIDTH,
+                                  board.width()/BOARD_WIDTH));
+    //set the position of the player
+    itsPlayer->setItsPosition({itsPlayerZone.x() + itsPlayerZone.width()/2 - (board.width() / BOARD_WIDTH)/2,
+                               itsPlayerZone.y() + itsPlayerZone.height() - (board.height() / BOARD_HEIGHT) - itsPlayerZone.height()/20});
 
     //faire une partie pour centipède
 
