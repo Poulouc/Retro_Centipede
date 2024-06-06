@@ -60,7 +60,7 @@ void Widget::paintEvent(QPaintEvent *event)
         QPainter painter(this);
 
         // ---- EXPERIMENTAL ----
-        painter.fillRect(QRect((width() / 2 - (height() / 31 * 30) / 2), int(height() * 0.05), (height() / 31 * 30), int(height() * 0.95)),
+        painter.fillRect(QRect((width() / 2 - ((height() * 95 / 100) / 31 * 30) / 2), (height() * 5 / 100), ((height() * 95 / 100) / 31 * 30), (height() * 95 / 100)),
                          QBrush(Qt::lightGray, Qt::SolidPattern));
         // ----------------------
 
@@ -218,11 +218,11 @@ void Widget::movePlayer()
 void Widget::startGame()
 {
     ui->stackedWidget->setCurrentIndex(3);
-    itsGame = new Game({(width() / 2 - (height() / 31 * 30) / 2), int(height() * 0.05), (height() / 31 * 30), int(height() * 0.95)});
+    itsGame = new Game({(width() / 2 - ((height() * 95 / 100) / 31 * 30) / 2), (height() * 5 / 100), ((height() * 95 / 100) / 31 * 30), (height() * 95 / 100)});
     isGameStarted = true;
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
     itsBulletTimer->start(16); // set the speed of it
-    itsCentipedeTimer->start(1); // set the speed of it
+    itsCentipedeTimer->start(10); // set the speed of it
     itsPlayerTimer->start(3); // set the speed of it
     setFixedSize(this->width(), this->height()); // set the size of the window
 }

@@ -58,16 +58,16 @@ void Game::createMushrooms()
     random_device rd;
     default_random_engine eng(rd());
 
-    uniform_int_distribution<int> randX(0, itsBoard.width() / 30 - 1);
-    uniform_int_distribution<int> randY(0, itsBoard.height() / 31 - 1);
+    uniform_int_distribution<int> randX(0, 30 - 1);
+    uniform_int_distribution<int> randY(0, 31 - 1);
 
     cout << itsBoard.width() << " " << itsBoard.width() / 30 << " " << itsBoard.height() << " " << itsBoard.height() / 31 << endl;
 
     while (itsMushrooms->size() < MUSHROOMS_AMOUNT)
     {
         // Generate a position
-        int genX = itsBoard.x() + randX(eng) * 30;
-        int genY = itsBoard.y() + randY(eng) * 31;
+        int genX = itsBoard.x() + randX(eng) * (itsBoard.width() / 30);
+        int genY = itsBoard.y() + randY(eng) * (itsBoard.height() / 31);
 
         bool validPos = true;
 
