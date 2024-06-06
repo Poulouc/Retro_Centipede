@@ -17,7 +17,7 @@ private:
     BodyPart* itsHead; /**< Pointer to the head of the centipede. */
     BodyPart* itsTail; /**< Pointer to the tail of the centipede. */
     Direction itsDirection; /**< Direction of movement for the centipede. */
-    bool isGoingDown = true; /**< Flag indicating whether the centipede is moving down. */
+    bool isGoingDown = false; /**< Flag indicating whether the centipede is moving down. */
     bool reachedBottom = false; /**< Flag indicating whether the centipede has reached the bottom of the screen. */
 
 public:

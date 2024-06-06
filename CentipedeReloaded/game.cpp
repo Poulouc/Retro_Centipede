@@ -1,6 +1,7 @@
 #include <random>
 #include "game.h"
 #include <iostream>
+#include <QDebug>
 
 using namespace std;
 
@@ -239,6 +240,7 @@ void Game::sliceCentipede(BodyPart* hittedPart, Centipede * centipede)
         // Check if the hitted part is NOT the tail
         if (hittedPart->getItsChild() != nullptr)
         {
+            Position headPos = centipede->getItsTail()->getItsPosition();
             // Set next part as the head for the new centipede ...
             BodyPart* newTail = hittedPart->getItsChild();
             hittedPart->setItsChild(nullptr);
@@ -265,8 +267,8 @@ void Game::sliceCentipede(BodyPart* hittedPart, Centipede * centipede)
             Centipede * newCentipede = new Centipede(newHead);
             newCentipede->setItsTail(newTail);
             newTail->setItsChild(nullptr);
-            newTail->setItsParent(currentPart);
             itsCentipedes->push_back(newCentipede);
+            newCentipede->setItsDirection({-centipede->getItsDirection().dirX, centipede->getItsDirection().dirY});
         }
 
         // Deletion of the hitted part
