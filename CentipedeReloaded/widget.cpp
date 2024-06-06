@@ -65,11 +65,12 @@ void Widget::resizeEvent(QResizeEvent *event)
     if (itsGame != nullptr)
     {
         // Calculer la taille du itsBoard en fonction de la plus petite dimension de la fenêtre
-        int boardSize = 0.95*qMin(this->width(), height());
-        int boardX = (this->width() - boardSize) / 2;
-        int boardY = (0.03*boardSize)+((this->height() - boardSize) / 2);
+        int boardHeight = height() * 95 / 100;
+        int boardWidth = boardHeight / BOARD_WIDTH * BOARD_HEIGHT;
+        int boardX = width() / 2 - boardWidth / 2;
+        int boardY = height() * 5 / 100;
 
-        itsGame->setBoard(QRect(boardX, boardY, boardSize, boardSize));
+        itsGame->setBoard(QRect(boardX, boardY, boardWidth, boardHeight));
         // ajuster les timers ou autres paramètres en fonction de la nouvelle taille de la fenêtre
         itsBulletTimer->start(4000 / this->height()); // Définir la vitesse du bullet
         itsPlayerTimer->start(2500 / this->width()); // Définir la vitesse du player
@@ -224,12 +225,13 @@ void Widget::startGame()
 {
     ui->stackedWidget->setCurrentIndex(3);
 
-    // Calculer la taille du itsBoard en fonction de la plus petite dimension de la fenêtre
-    int boardSize = 0.95*qMin(width(), height());
-    int boardX = (width() - boardSize) / 2;
-    int boardY = (0.03*boardSize)+((height() - boardSize) / 2);
+    // Calculate game board
+    int boardHeight = height() * 95 / 100;
+    int boardWidth = boardHeight / BOARD_WIDTH * BOARD_HEIGHT;
+    int boardX = width() / 2 - boardWidth / 2;
+    int boardY = height() * 5 / 100;
 
-    itsGame = new Game({boardX, boardY, boardSize, boardSize});
+    itsGame = new Game({ boardX, boardY, boardWidth, boardHeight });
 
     isGameStarted = true;
     itsDisplayTimer->start(16); // Mettre à jour toutes les 16 ms (environ 60fps)

@@ -259,7 +259,10 @@ void Game::setBoard(QRect board)
     itsPlayer->setItsPosition({board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2,
                                board.y() + board.height() - (board.height() / BOARD_HEIGHT) - 1});
     //set the playerZone
-    itsPlayerZone = QRect(board.x(), board.y() + (4 * board.height()) / 5, board.width(), board.height() / 5);
+    itsPlayerZone = QRect(board.x(),
+                          board.y() + (4 * board.height()) / 5,
+                          board.width(),
+                          board.height() / 5);
 
     //faire une partie pour centipède
 
