@@ -25,11 +25,14 @@ public:
     void createMushrooms();
     void shoot();
     void moveBullet();
+    void moveCentipede();
     bool isColliding(Mushroom* mushroom, Player* player);
     bool isColliding(Mushroom* mushroom, Bullet* bullet);
     bool isColliding(Centipede* centipede, Bullet* bullet);
     bool isColliding(Centipede* centipede, Mushroom* mushroom);
     bool isColliding(QRect hitbox1, QRect hitbox2);
+    bool centipedeBoardCollision(Centipede * centipede, QRect board);
+    bool centipedeMushroomCollision(Centipede * centipede);
     void checkCollisions();
     void sliceCentipede(BodyPart* hittedPart);
     void movePlayer(Direction & direction);
