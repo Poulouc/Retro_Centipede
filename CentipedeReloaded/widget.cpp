@@ -103,22 +103,20 @@ void Widget::keyPressEvent(QKeyEvent * event)
 
 void Widget::keyReleaseEvent(QKeyEvent * event)
 {
-    int xCurrentDir = itsPlayerDirection.dirX;
-    int yCurrentDir = itsPlayerDirection.dirY;
-    // Handle key press events for left and right arrow keys
-    if (event->key() == Qt::Key_Z && yCurrentDir != 1)
+    // Handle key release events for left and right arrow keys
+    if (event->key() == Qt::Key_Z && itsPlayerDirection.dirY == -1)
     {
         itsPlayerDirection.dirY = 0;
     }
-    if (event->key() == Qt::Key_Q && xCurrentDir != 1)
+    if (event->key() == Qt::Key_Q && itsPlayerDirection.dirX == -1)
     {
         itsPlayerDirection.dirX = 0;
     }
-    if (event->key() == Qt::Key_S && yCurrentDir != -1)
+    if (event->key() == Qt::Key_S && itsPlayerDirection.dirY == 1)
     {
         itsPlayerDirection.dirY = 0;
     }
-    if (event->key() == Qt::Key_D && xCurrentDir != -1)
+    if (event->key() == Qt::Key_D && itsPlayerDirection.dirX == 1)
     {
         itsPlayerDirection.dirX = 0;
     }

@@ -269,10 +269,15 @@ void Game::setBoard(QRect board)
 void Game::movePlayer(Direction & direction)
 {
     if (itsPlayerZone.x() < itsPlayer->getItsHitBox().x() + direction.dirX * PLAYER_SPEED &&
-        itsPlayerZone.x() + itsPlayerZone.width() > itsPlayer->getItsHitBox().x() + itsPlayer->getItsHitBox().width() + direction.dirX * PLAYER_SPEED &&
-        itsPlayerZone.y() < itsPlayer->getItsHitBox().y() + direction.dirY * PLAYER_SPEED &&
-        itsPlayerZone.y() + itsPlayerZone.height() > itsPlayer->getItsHitBox().y() + itsPlayer->getItsHitBox().height() + direction.dirY * PLAYER_SPEED)
+        itsPlayerZone.x() + itsPlayerZone.width() > itsPlayer->getItsHitBox().x() + itsPlayer->getItsHitBox().width() + direction.dirX * PLAYER_SPEED
+        && (direction.dirX == -PLAYER_SPEED or direction.dirX == PLAYER_SPEED))
     {
-        itsPlayer->updatePos(direction);
+        itsPlayer->updatePos({direction.dirX, 0});
+    }
+    if(itsPlayerZone.y() < itsPlayer->getItsHitBox().y() + direction.dirY * PLAYER_SPEED &&
+        itsPlayerZone.y() + itsPlayerZone.height() > itsPlayer->getItsHitBox().y() + itsPlayer->getItsHitBox().height() + direction.dirY * PLAYER_SPEED
+        && (direction.dirY == -PLAYER_SPEED or direction.dirY == PLAYER_SPEED))
+    {
+        itsPlayer->updatePos({0, direction.dirY});
     }
 }
