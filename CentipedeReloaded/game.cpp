@@ -56,18 +56,16 @@ void Game::createMushrooms()
     random_device rd;
     default_random_engine eng(rd());
 
-    uniform_int_distribution<int> randX(0, itsBoard.width() / BOARD_WIDTH);
-    uniform_int_distribution<int> randY(0, itsBoard.height() / BOARD_HEIGHT);
-
-    // Set the size of the mushrooms
-    int mushroomSize = itsBoard.width() / BOARD_WIDTH;
-
+    uniform_int_distribution<int> randX(0, 30 - 1);
+    uniform_int_distribution<int> randY(0, 31 - 1);
+    int mushroomSize = (itsBoard.width() / BOARD_WIDTH);
     while (itsMushrooms->size() < MUSHROOMS_AMOUNT)
     {
         int randomX = randX(eng), randomY = randY(eng);
+
         // Generate a position
-        int genX = itsBoard.x() + randomX * BOARD_WIDTH;
-        int genY = itsBoard.y() + randomY * BOARD_HEIGHT;
+        int genX = itsBoard.x() + randomX * mushroomSize;
+        int genY = itsBoard.y() + randomY * (itsBoard.height() / BOARD_HEIGHT);
 
         bool validPos = true;
 
@@ -81,7 +79,6 @@ void Game::createMushrooms()
             }
         }
         if (!validPos) continue;
-
 
         // Simulate the mushroom hitbox for next checks
         QRect previewHitbox = QRect(genX, genY, mushroomSize, mushroomSize);
@@ -248,15 +245,19 @@ void Game::setBoard(QRect board)
         //int genX = itsBoard.x() + randomX * BOARD_WIDTH;
         //int genY = itsBoard.y() + randomY * BOARD_HEIGHT;
 
-        (*it)->setItsHitBox(QRect((board.x() + (*it)->getItsGridPosition().posX * BOARD_WIDTH),
-                                  (board.y() + (*it)->getItsGridPosition().posY * BOARD_HEIGHT),
+        (*it)->setItsHitBox(QRect((board.x() + (*it)->getItsGridPosition().posX * (board.width()/BOARD_WIDTH)),
+                                  (board.y() + (*it)->getItsGridPosition().posY * (board.width()/BOARD_WIDTH)),
                                   board.width()/BOARD_WIDTH,
                                   board.width()/BOARD_WIDTH));
     }
     //set the size of the player
-    itsPlayer->setItsHitBox(QRect(board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2, board.y() + board.height() - (board.width() / BOARD_WIDTH) - 1, board.width()/BOARD_WIDTH, board.width()/BOARD_WIDTH));
+    itsPlayer->setItsHitBox(QRect(board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2,
+                                  board.y() + board.height() - (board.height() / BOARD_HEIGHT) - 1,
+                                  board.width()/BOARD_WIDTH,
+                                  board.width()/BOARD_WIDTH));
     //set the position of the player
-    itsPlayer->setItsPosition({board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2, board.y() + board.height() - (board.width() / BOARD_WIDTH) - 1}); // Julien es que tu pourra, si tu vois ça, m'expliquer à quoi sert position stp
+    itsPlayer->setItsPosition({board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2,
+                               board.y() + board.height() - (board.height() / BOARD_HEIGHT) - 1});
     //set the playerZone
     itsPlayerZone = QRect(board.x(), board.y() + (4 * board.height()) / 5, board.width(), board.height() / 5);
 
