@@ -17,6 +17,7 @@ private:
     BodyPart* itsChild = nullptr; /**< Pointer to the child body part */
     QRect itsHitBox = QRect(0, 0, CENTIPEDE_BODYPART_SIZE, CENTIPEDE_BODYPART_SIZE); /**< Rectangle representing the hitbox */
     Position itsPosition = {}; /**< Position of the body part */
+    Position itsTargetPos = {};
 
 public:
     /**
@@ -76,6 +77,10 @@ public:
      * @param child Pointer to the child body part.
      */
     void addChild(BodyPart* child);
+
+    void setItsTargetPos(Position targetPos);
+
+    void updatePos();
 };
 
 #endif // BODYPART_H

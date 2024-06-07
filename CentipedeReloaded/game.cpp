@@ -1,6 +1,8 @@
 #include <random>
 #include "game.h"
 
+#include <iostream>
+
 using namespace std;
 
 Game::Game(QRect board)
@@ -37,18 +39,30 @@ void Game::spawnCentipede()
 {
     Centipede * newCentipede = new Centipede();
     BodyPart * currentPart = newCentipede->getItsHead();
-    currentPart->setItsPosition(CENTIPEDE_SPAWN_POSITION);
-    newCentipede->setItsDirection({-1,1});
-    for(int i = 0; i < CENTIPEDE_LENGTH; i++)
+    Position newPos;
+    Position oldPos;
+
+    newPos.posX = itsBoard.x() + CENTIPEDE_SPAWN_XPOS * (itsBoard.width() / BOARD_WIDTH);
+    newPos.posY = itsBoard.y() + CENTIPEDE_SPAWN_YPOS * (itsBoard.height() / BOARD_HEIGHT);
+    currentPart->setItsPosition(newPos);
+
+    oldPos.posX = newPos.posX - CENTIPEDE_BODYPART_SIZE;
+    oldPos.posY = newPos.posY;
+    currentPart->setItsTargetPos(oldPos);
+
+    newCentipede->setItsDirection({-1,1}); // useless
+    for(int i = 0; i < CENTIPEDE_LENGTH - 1; i++)
     {
         BodyPart * newPart = new BodyPart();
-        Position newPos;
-        newPos.posX = currentPart->getItsPosition().posX + CENTIPEDE_BODYPART_SIZE;
-        newPos.posY = currentPart->getItsPosition().posY;
+        oldPos.posX = newPos.posX;
+        newPos.posX = newPos.posX + CENTIPEDE_BODYPART_SIZE;
         newPart->setItsPosition(newPos);
+        newPart->setItsTargetPos(oldPos);
+
         currentPart->setItsChild(newPart);
         newPart->setItsParent(currentPart);
         currentPart = newPart;
+
         newCentipede->setItsTail(currentPart);
     }
     itsCentipedes->push_back(newCentipede);
@@ -411,22 +425,33 @@ void Game::moveCentipede()
             zone = itsPlayerZone;
 
         // Check for collisions with mushrooms and the game board.
-        bool first = centipedeMushroomCollision(centipede);
-        bool second = centipedeBoardCollision(centipede, zone);
+        //bool first = centipedeMushroomCollision(centipede);
+        //bool second = centipedeBoardCollision(centipede, zone);
 
-        // If there's no collision, move the centipede forward.
-        if(!(first || second))
+        // -------------------
+
+        int i = 1;
+        //cout << i << endl;
+        BodyPart* centiHead = centipede->getItsHead();
+        centiHead->updatePos();
+        Position headPos = centiHead->getItsPosition();
+        if ((headPos.posX % (itsBoard.width() / BOARD_WIDTH)) && (headPos.posY % (itsBoard.height() / BOARD_HEIGHT)))
         {
-            // If the centipede is moving vertically, move it by one step.
-            if(centipede->getVerticalDirection())
+            centiHead->setItsTargetPos({ headPos.posX - CENTIPEDE_BODYPART_SIZE, headPos.posY });
+        }
+
+        BodyPart* prevBP = centiHead;
+        for (BodyPart* bp = centiHead->getItsChild(); bp != nullptr; bp = bp->getItsChild())
+        {
+            i++;
+            //cout << i << endl;
+            bp->updatePos();
+            Position bpPos = bp->getItsPosition();
+            if ((bpPos.posX % (itsBoard.width() / BOARD_WIDTH)) && (bpPos.posY % (itsBoard.height() / BOARD_HEIGHT)))
             {
-                centipede->moveForward(itsBoard.height()/31);
+                bp->setItsTargetPos(prevBP->getItsPosition());
             }
-            // If the centipede is moving horizontally, move it by its standard speed.
-            else
-            {
-                centipede->moveForward(CENTIPEDE_SPEED);
-            }
+            prevBP = bp;
         }
     }
 }

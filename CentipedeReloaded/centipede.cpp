@@ -3,7 +3,12 @@
 // Constructor for the Centipede class.
 Centipede::Centipede(BodyPart * head)
     : itsHead(head), itsTail(head)
-{}
+{
+    while (itsTail->getItsChild() != nullptr)
+    {
+        itsTail = itsTail->getItsChild();
+    }
+}
 
 // Destructor for the Centipede class.
 Centipede::~Centipede()
