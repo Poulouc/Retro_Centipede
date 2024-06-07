@@ -345,6 +345,23 @@ void Game::setBoard(QRect board)
                                itsPlayerZone.y() + itsPlayerZone.height() - (board.height() / BOARD_HEIGHT) - itsPlayerZone.height()/20});
 
     //faire une partie pour centipède
+    for (vector<Centipede *>::iterator it = itsCentipedes->begin(); it != itsCentipedes->end(); ++it)
+    {
+        BodyPart *currentPart = (*it)->getItsHead();
+        while (currentPart != nullptr)
+        {
+            // Calcul des nouvelles coordonnées proportionnelles
+            int newX = board.x() + ((currentPart->getItsHitBox().x() - itsBoard.x() + 0.5) * board.width()) / itsBoard.width();
+            int newY = board.y() + ((currentPart->getItsHitBox().y() - itsBoard.y() + 0.5) * board.height()) / itsBoard.height();
+
+            // Mise à jour de la hitbox et de la position du segment
+            currentPart->setItsHitBox({newX, newY, (board.width() / BOARD_WIDTH), (board.height() / BOARD_HEIGHT)});
+            currentPart->setItsPosition({newX, newY});
+
+            // Passer au segment suivant
+            currentPart = currentPart->getItsChild();
+        }
+    }
 
 
     //set the board

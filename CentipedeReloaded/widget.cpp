@@ -37,6 +37,7 @@ Widget::Widget(QWidget *parent)
     itsPlayerDirection.dirX = 0;
     itsPlayerDirection.dirY = 0;
 
+    setMinimumSize(400, 300);
     connect(itsDisplayTimer, SIGNAL(timeout()), this, SLOT(update()));
     connect(itsPlayerTimer, SIGNAL(timeout()), this, SLOT(movePlayer()));
     connect(itsBulletTimer, SIGNAL(timeout()), this, SLOT(moveBullet()));
@@ -60,7 +61,7 @@ void Widget::paintEvent(QPaintEvent *event)
     {
         Q_UNUSED(event); //pour éviter les avertissements du compilateur concernant des variables non utilisées
         QPainter painter(this);
-        painter.fillRect(itsGameBoard, QBrush(Qt::lightGray, Qt::SolidPattern));
+        painter.fillRect(itsGame->getItsBoard(), QBrush(Qt::lightGray, Qt::SolidPattern));
         drawCentipede(painter);
         drawPlayer(painter);
         drawBullet(painter);
@@ -76,16 +77,17 @@ void Widget::resizeEvent(QResizeEvent *event)
     Q_UNUSED(event);
     if (itsGame != nullptr)
     {
-        // Calculer la taille du itsBoard en fonction de la plus petite dimension de la fenêtre
+        // Calculate the size of itsBoard based on the smallest dimension of the window
         int boardHeight = height() * 95 / 100;
         int boardWidth = boardHeight / BOARD_WIDTH * BOARD_HEIGHT;
         int boardX = width() / 2 - boardWidth / 2;
         int boardY = height() * 5 / 100;
 
         itsGame->setBoard(QRect(boardX, boardY, boardWidth, boardHeight));
-        // ajuster les timers ou autres paramètres en fonction de la nouvelle taille de la fenêtre
-        itsBulletTimer->start(4000 / boardHeight); // Définir la vitesse du bullet
-        itsPlayerTimer->start(2500 / boardWidth); // Définir la vitesse du player
+        // Adjust timers or other parameters based on the new window size
+        itsCentipedeTimer->start(4000 / boardWidth); // set the speed of it
+        itsBulletTimer->start(3000 / boardHeight); // Set the speed of the bullet
+        itsPlayerTimer->start(2500 / boardWidth); // Set the speed of the player
     }
 }
 
@@ -265,10 +267,10 @@ void Widget::startGame()
     itsGame = new Game({ boardX, boardY, boardWidth, boardHeight });
     isGameStarted = true;
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
-    itsBulletTimer->start(16); // set the speed of it
-    itsCentipedeTimer->start(16); // set the speed of it
-    itsPlayerTimer->start(16); // set the speed of it
-    //setFixedSize(this->width(), this->height()); // set the size of the window
+    itsCentipedeTimer->start(4000 / boardWidth); // set the speed of it
+    itsBulletTimer->start(3000 / boardHeight); // Set the speed of the bullet
+    itsPlayerTimer->start(2500 / boardWidth); // Set the speed of the player
+
 }
 
 void Widget::endGame()
