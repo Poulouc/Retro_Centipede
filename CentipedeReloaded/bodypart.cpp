@@ -33,7 +33,12 @@ void BodyPart::addChild(BodyPart * child)
 void BodyPart::setItsPosition(Position pos)
 {
     itsPosition = pos;
-    itsHitBox = {pos.posX, pos.posY, CENTIPEDE_BODYPART_SIZE, CENTIPEDE_BODYPART_SIZE};
+    itsHitBox = {pos.posX, pos.posY, itsHitBox.width(), itsHitBox.height()};
+}
+
+void BodyPart::setItsHitBox(QRect hitbox)
+{
+    itsHitBox = hitbox;
 }
 
 void BodyPart::setItsChild(BodyPart * child)

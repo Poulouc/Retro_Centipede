@@ -76,6 +76,12 @@ public:
      * @param child Pointer to the child body part.
      */
     void addChild(BodyPart* child);
+
+    /**
+     * @brief Adds a set the hitBox of the bodyPart.
+     * @param hitbox is QRect who replace the hitBox.
+     */
+    void setItsHitBox(QRect hitbox);
 };
 
 #endif // BODYPART_H
