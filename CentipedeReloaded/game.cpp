@@ -47,7 +47,11 @@ void Game::spawnCentipede()
         Position newPos;
         newPos.posX = currentPart->getItsPosition().posX + CENTIPEDE_BODYPART_SIZE;
         newPos.posY = currentPart->getItsPosition().posY;
-        newPart->setItsPosition(newPos);
+        // Update the hitbox and position of the segment
+        newPart->setItsHitBox({newPos.posX, newPos.posY, (itsBoard.width() / BOARD_WIDTH), (itsBoard.height() / BOARD_HEIGHT)});
+        newPart->setItsPosition({newPos.posX, newPos.posY});
+        currentPart->setItsHitBox({newPos.posX, newPos.posY, (itsBoard.width() / BOARD_WIDTH), (itsBoard.height() / BOARD_HEIGHT)});
+        currentPart->setItsPosition({newPos.posX, newPos.posY});
         currentPart->setItsChild(newPart);
         newPart->setItsParent(currentPart);
         currentPart = newPart;
