@@ -213,7 +213,11 @@ void Game::checkCollisions()
                     delete *itDel;
                 }
                 itsCentipedes->clear();
-                itsPlayer->setItsPosition({ itsBoard.x() + itsBoard.width()/2 - PLAYER_SIZE/2, itsBoard.y() + itsBoard.height() - PLAYER_SIZE - 2});
+
+                //set the position of the player
+                itsPlayer->setItsPosition({itsPlayerZone.x() + itsPlayerZone.width()/2 - (itsBoard.width() / BOARD_WIDTH)/2,
+                                           itsPlayerZone.y() + itsPlayerZone.height() - (itsBoard.height() / BOARD_HEIGHT) - itsPlayerZone.height()/20});
+                itsPlayer->updatePos({0,0});
                 spawnCentipede();
                 return;
             }
@@ -344,21 +348,21 @@ void Game::setBoard(QRect board)
     itsPlayer->setItsPosition({itsPlayerZone.x() + itsPlayerZone.width()/2 - (board.width() / BOARD_WIDTH)/2,
                                itsPlayerZone.y() + itsPlayerZone.height() - (board.height() / BOARD_HEIGHT) - itsPlayerZone.height()/20});
 
-    //faire une partie pour centipède
+    // Update centipede segments for proportional resizing
     for (vector<Centipede *>::iterator it = itsCentipedes->begin(); it != itsCentipedes->end(); ++it)
     {
         BodyPart *currentPart = (*it)->getItsHead();
         while (currentPart != nullptr)
         {
-            // Calcul des nouvelles coordonnées proportionnelles
+            // Calculate new proportional coordinates
             int newX = board.x() + ((currentPart->getItsHitBox().x() - itsBoard.x() + 0.5) * board.width()) / itsBoard.width();
             int newY = board.y() + ((currentPart->getItsHitBox().y() - itsBoard.y() + 0.5) * board.height()) / itsBoard.height();
 
-            // Mise à jour de la hitbox et de la position du segment
+            // Update the hitbox and position of the segment
             currentPart->setItsHitBox({newX, newY, (board.width() / BOARD_WIDTH), (board.height() / BOARD_HEIGHT)});
             currentPart->setItsPosition({newX, newY});
 
-            // Passer au segment suivant
+            // Move to the next segment
             currentPart = currentPart->getItsChild();
         }
     }

@@ -44,7 +44,7 @@ const int BULLET_SPEED = 5; /**< The speed of the bullet */
 const int BULLET_SIZE = 5; /**< The size of the bullet */
 
 // Variables for game
-const int MUSHROOMS_AMOUNT = 0;
+const int MUSHROOMS_AMOUNT = 30;
 const int BOARD_WIDTH = 30; /**< The width of the game board */
 const int BOARD_HEIGHT = 31; /**< The height of the game board */
 
