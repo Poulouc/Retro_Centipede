@@ -248,7 +248,6 @@ void Game::sliceCentipede(BodyPart* hittedPart, Centipede * centipede)
         // Check if the hitted part is NOT the tail
         if (hittedPart->getItsChild() != nullptr)
         {
-            Position headPos = centipede->getItsTail()->getItsPosition();
             // Set next part as the head for the new centipede ...
             BodyPart* newTail = hittedPart->getItsChild();
             hittedPart->setItsChild(nullptr);
@@ -379,8 +378,18 @@ void Game::setBoard(QRect board)
 // Moves the player based on the provided direction.
 void Game::movePlayer(Direction & direction)
 {
+    bool willItTouch = false;
+    QRect nextPos = {itsPlayer->getItsHitBox().x() + direction.dirX * PLAYER_SPEED, itsPlayer->getItsHitBox().y() + direction.dirY * PLAYER_SPEED, itsPlayer->getItsHitBox().width(), itsPlayer->getItsHitBox().height()};
+    for (vector<Mushroom*>::iterator it = itsMushrooms->begin(); it < itsMushrooms->end(); it++)
+    {
+        if(isColliding(nextPos, (*it)->getItsHitBox())){
+            willItTouch = true;
+            break;
+        }
+    }
+
     // Check if the player can move horizontally within the player zone
-    if (itsPlayerZone.x() < itsPlayer->getItsHitBox().x() + direction.dirX * PLAYER_SPEED &&
+    if (!willItTouch && itsPlayerZone.x() < itsPlayer->getItsHitBox().x() + direction.dirX * PLAYER_SPEED &&
         itsPlayerZone.x() + itsPlayerZone.width() > itsPlayer->getItsHitBox().x() + itsPlayer->getItsHitBox().width() + direction.dirX * PLAYER_SPEED
         && (direction.dirX == -PLAYER_SPEED or direction.dirX == PLAYER_SPEED))
     {
@@ -388,7 +397,7 @@ void Game::movePlayer(Direction & direction)
         itsPlayer->updatePos({direction.dirX, 0});
     }
     // Check if the player can move vertically within the player zone
-    if(itsPlayerZone.y() < itsPlayer->getItsHitBox().y() + direction.dirY * PLAYER_SPEED &&
+    if(!willItTouch && itsPlayerZone.y() < itsPlayer->getItsHitBox().y() + direction.dirY * PLAYER_SPEED &&
         itsPlayerZone.y() + itsPlayerZone.height() > itsPlayer->getItsHitBox().y() + itsPlayer->getItsHitBox().height() + direction.dirY * PLAYER_SPEED
         && (direction.dirY == -PLAYER_SPEED or direction.dirY == PLAYER_SPEED))
     {
