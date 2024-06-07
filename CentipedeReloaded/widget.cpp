@@ -82,6 +82,8 @@ void Widget::resizeEvent(QResizeEvent *event)
         int boardX = width() / 2 - boardWidth / 2;
         int boardY = height() * 5 / 100;
 
+        itsGameBoard = { boardX, boardY, boardWidth, boardHeight };
+
         itsGame->setBoard(QRect(boardX, boardY, boardWidth, boardHeight));
         // ajuster les timers ou autres paramètres en fonction de la nouvelle taille de la fenêtre
         itsBulletTimer->start(4000 / boardHeight); // Définir la vitesse du bullet
@@ -261,13 +263,14 @@ void Widget::startGame()
     int boardWidth = boardHeight / BOARD_WIDTH * BOARD_HEIGHT;
     int boardX = width() / 2 - boardWidth / 2;
     int boardY = height() * 5 / 100;
+    itsGameBoard = { boardX, boardY, boardWidth, boardHeight };
 
     itsGame = new Game({ boardX, boardY, boardWidth, boardHeight });
     isGameStarted = true;
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
     itsBulletTimer->start(16); // set the speed of it
     itsCentipedeTimer->start(16); // set the speed of it
-    itsPlayerTimer->start(16); // set the speed of it
+    itsPlayerTimer->start(3); // set the speed of it
     //setFixedSize(this->width(), this->height()); // set the size of the window
 }
 
