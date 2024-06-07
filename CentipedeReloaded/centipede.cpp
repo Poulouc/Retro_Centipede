@@ -32,9 +32,20 @@ Direction Centipede::getItsDirection()
 // Moves the centipede forward by a certain distance.
 void Centipede::moveForward(int distance)
 {
+    BodyPart * currentPart = itsTail;
     Position partPos = itsHead->getItsPosition();
     Position newPos;
-    int bodyCounter = CENTIPEDE_LENGTH;
+    //int bodyCounter = CENTIPEDE_LENGTH;
+
+    // Move each body part of the centipede.
+    while(currentPart != itsHead)
+    {
+        newPos = currentPart->getItsParent()->getItsPosition();
+        newPos.posX -= currentPart->getItsHitBox().width() * itsDirection.dirX;
+
+        currentPart->setItsPosition(newPos);
+        currentPart = currentPart->getItsParent();
+    }
 
     // Move the head of the centipede.
     if(isGoingDown)
@@ -42,44 +53,13 @@ void Centipede::moveForward(int distance)
         newPos.posY = partPos.posY + distance * itsDirection.dirY;
         newPos.posX = partPos.posX;
         itsHead->setItsPosition(newPos);
-        //isGoingDown = false;
+        isGoingDown = false;
     }
     else
     {
         newPos.posX = partPos.posX + distance * itsDirection.dirX;
         newPos.posY = partPos.posY;
         itsHead->setItsPosition(newPos);
-    }
-    BodyPart * currentPart = itsTail;
-    // Move each body part of the centipede.
-    while(currentPart != itsHead)
-    {
-        Position currentPos = currentPart->getItsPosition();
-        Position parentPos = currentPart->getItsParent()->getItsPosition();
-        Direction newDir;
-        if(currentPos.posX < parentPos.posX) newDir.dirX = 1;
-        else if(currentPos.posX == parentPos.posX) newDir.dirX = 0;
-        else newDir.dirX = -1;
-
-        if(currentPos.posY < parentPos.posY) newDir.dirY = 1;
-        else if(currentPos.posY == parentPos.posY) newDir.dirY = 0;
-        else newDir.dirY = -1;
-        if(currentPos.posY != parentPos.posY)
-        {
-            newPos.posX = parentPos.posX;
-            int distanceY = abs(currentPos.posY - parentPos.posY) * newDir.dirY;
-            newPos.posY = currentPos.posY + distanceY;
-        }
-        if(currentPos.posX != parentPos.posX)
-        {
-            newPos.posY = parentPos.posY;
-            int distanceX = abs(currentPos.posX - parentPos.posX) * newDir.dirX;
-            newPos.posX = currentPos.posX + distanceX;
-        }
-
-
-        currentPart->setItsPosition(newPos);
-        currentPart = currentPart->getItsParent();
     }
 }
 
