@@ -26,10 +26,10 @@ Widget::Widget(QWidget *parent)
     itsPlayerTimer = new QTimer(this);
 
     // Loading assets
-    itsCentiBody.load("../imageDoss/centibody.png");
-    itsCentiHead.load("../imageDoss/centihead.png");
-    itsAvatar.load("../imageDoss/avatar.png");
-    itsMushrooms.load("../imageDoss/mushrooms.png");
+    itsCentiBody.load("../../../imageDoss/centibody.png");
+    itsCentiHead.load("../../../imageDoss/centihead.png");
+    itsAvatar.load("../../../imageDoss/avatar.png");
+    itsMushrooms.load("../../../imageDoss/mushrooms.png");
 
     // Initialize the direction of the player
     itsPlayerDirection.dirX = 0;
@@ -152,10 +152,10 @@ void Widget::keyReleaseEvent(QKeyEvent * event)
 void Widget::drawPlayer(QPainter & painter)
 {
     // Draw the player at his position
-    //painter.drawImage(itsGame->getItsPlayer()->getItsHitBox(), itsAvatar);
-    painter.setPen(Qt::gray);
+    painter.drawImage(itsGame->getItsPlayer()->getItsHitBox(), itsAvatar);
+    /*painter.setPen(Qt::gray);
     painter.setBrush(Qt::SolidPattern);
-    painter.drawRect(itsGame->getItsPlayer()->getItsHitBox());
+    painter.drawRect(itsGame->getItsPlayer()->getItsHitBox());*/
 }
 
 void Widget::drawMushrooms(QPainter & painter)
@@ -163,8 +163,7 @@ void Widget::drawMushrooms(QPainter & painter)
     //painter.drawImage(0, 0, *itsBackgroundImage);
     for(Mushroom * mushroom : *itsGame->getItsMushrooms())
     {
-        //painter.drawImage((*it)->getItsHitBox(), itsMushrooms);
-        painter.setBrush(Qt::SolidPattern);
+        /*painter.setBrush(Qt::SolidPattern);
         if(mushroom->getItsState() == 4)
         {
             painter.setPen(Qt::red);
@@ -184,34 +183,37 @@ void Widget::drawMushrooms(QPainter & painter)
         {
             painter.setPen(Qt::green);
             painter.drawRect(mushroom->getItsHitBox());
-        }
+        }*/
+        painter.drawImage(mushroom->getItsHitBox(), itsMushrooms);
     }
 }
 
 void Widget::drawCentipede(QPainter & painter)
 {
-    //painter.drawImage(0, 0, *itsBackgroundImage);
+    //painter.drawImage(0, 0, itsBackgroundImage);
     for (vector<Centipede *>::iterator it = itsGame->getItsCentipedes()->begin(); it != itsGame->getItsCentipedes()->end(); ++it) {
         BodyPart * currentPart = (*it)->getItsHead();
 
         // displays the tail
-        painter.setPen(Qt::darkGreen);
+        painter.drawImage((*it)->getItsTail()->getItsHitBox(), itsCentiBody);
+        /*painter.setPen(Qt::darkGreen);
         painter.setBrush(Qt::SolidPattern);
-        painter.drawRect((*it)->getItsTail()->getItsHitBox());
+        painter.drawRect((*it)->getItsTail()->getItsHitBox());*/
 
         // displays the head
-        painter.setPen(Qt::blue);
+        painter.drawImage((*it)->getItsHead()->getItsHitBox(), itsCentiHead);
+        /*painter.setPen(Qt::blue);
         painter.setBrush(Qt::SolidPattern);
-        painter.drawRect((*it)->getItsHead()->getItsHitBox());
+        painter.drawRect((*it)->getItsHead()->getItsHitBox());*/
         while(currentPart->getItsChild() != nullptr)
         {
             if(currentPart != (*it)->getItsHead())
             {
                 //displays the bodyparts
-                //painter.drawImage(currentPart->getItsHitBox(), itsCentiBody);
-                painter.setPen(Qt::cyan);
+                painter.drawImage(currentPart->getItsHitBox(), itsCentiBody);
+                /*painter.setPen(Qt::cyan);
                 painter.setBrush(Qt::SolidPattern);
-                painter.drawRect(currentPart->getItsHitBox());
+                painter.drawRect(currentPart->getItsHitBox());*/
             }
             currentPart = currentPart->getItsChild();
         }
