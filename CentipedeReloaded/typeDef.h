@@ -28,9 +28,9 @@ struct Direction
 
 // Variables for centipede
 const int CENTIPEDE_SPEED = 1;
-const int CENTIPEDE_LENGTH = 20;
+const int CENTIPEDE_LENGTH = 8;
 const int CENTIPEDE_BODYPART_SIZE = 10;
-const Position CENTIPEDE_SPAWN_POSITION = {400, 100};
+const Position CENTIPEDE_SPAWN_POSITION = {400, 300};
 
 // Variables for player
 const int PLAYER_SPEED = 1; /**< The speed of the player */
