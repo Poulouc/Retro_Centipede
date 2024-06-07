@@ -1,46 +1,54 @@
 #include "centipede.h"
 
+// Constructor for the Centipede class.
 Centipede::Centipede(BodyPart * head)
-    :itsHead(head), itsTail(head)
+    : itsHead(head), itsTail(head)
 {}
 
+// Destructor for the Centipede class.
 Centipede::~Centipede()
 {
 
 }
 
+// Returns the head of the centipede.
 BodyPart* Centipede::getItsHead()
 {
     return itsHead;
 }
 
+// Returns the tail of the centipede.
 BodyPart* Centipede::getItsTail()
 {
     return itsTail;
 }
 
+// Returns the direction of the centipede.
 Direction Centipede::getItsDirection()
 {
     return itsDirection;
 }
 
+// Moves the centipede forward by a certain distance.
 void Centipede::moveForward(int distance)
 {
     BodyPart * currentPart = itsTail;
     Position partPos = itsHead->getItsPosition();
     Position newPos;
-    int bodyCounter = CENTIPEDE_LENGTH;
+    //int bodyCounter = CENTIPEDE_LENGTH;
 
-    while(currentPart != itsHead) // moves the body
+    // Move each body part of the centipede.
+    while(currentPart != itsHead)
     {
         newPos = currentPart->getItsParent()->getItsPosition();
-        newPos.posX -= CENTIPEDE_BODYPART_SIZE * itsDirection.dirX;
+        newPos.posX -= currentPart->getItsHitBox().width() * itsDirection.dirX;
 
         currentPart->setItsPosition(newPos);
         currentPart = currentPart->getItsParent();
     }
 
-    if(isGoingDown) // moves the head
+    // Move the head of the centipede.
+    if(isGoingDown)
     {
         newPos.posY = partPos.posY + distance * itsDirection.dirY;
         newPos.posX = partPos.posX;
@@ -55,11 +63,13 @@ void Centipede::moveForward(int distance)
     }
 }
 
+// Sets the direction of the centipede.
 void Centipede::setItsDirection(Direction dir)
 {
     itsDirection = dir;
 }
 
+// Calculates and returns the next position of the centipede.
 Position Centipede::getNextPosition(int distance)
 {
     Position nextPos;
@@ -77,16 +87,19 @@ Position Centipede::getNextPosition(int distance)
     return nextPos;
 }
 
+// Returns true if the centipede is moving vertically downwards.
 bool Centipede::getVerticalDirection()
 {
     return isGoingDown;
 }
 
+// Returns true if the centipede has reached the bottom of the screen.
 bool Centipede::hasReachedBottom()
 {
     return reachedBottom;
 }
 
+// Sets the vertical direction of the centipede.
 void Centipede::setVerticalDirection(bool isCentipedeGoingDown)
 {
     isGoingDown = isCentipedeGoingDown;

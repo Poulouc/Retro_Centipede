@@ -5,21 +5,19 @@
 using namespace std;
 
 Widget::Widget(QWidget *parent)
-    : QWidget(parent), ui(new Ui::Widget)
+    : QWidget(parent), ui(new Ui::Widget), isGameStarted(false)
 {
     ui->setupUi(this);
-    setWindowTitle("Centipede Reloaded - v1.0");
-    isGameStarted = false;
-    connect(ui->playButton, SIGNAL(clicked()), this, SLOT(startGame()));
-    connect(ui->back_button, SIGNAL(clicked()), this, SLOT(backToMenu()));
-    connect(ui->back_button_2, SIGNAL(clicked()), this, SLOT(backToMenu()));
 
-    // ---- EXPERIMENTAL ----
+    // Change title of the window and set minimum size of the window
+    setWindowTitle("Centipede Reloaded - v1.0");
+    setMinimumSize(400, 300);
+
+    // Change background color of the widget
     QPalette bgColor = QPalette();
     bgColor.setColor(QPalette::Window, Qt::darkGray);
     setAutoFillBackground(true);
     setPalette(bgColor);
-    // ----------------------
 
     // Create timers for updating the GUI, the centipede, the bullet, the player
     itsDisplayTimer = new QTimer(this);
@@ -28,15 +26,21 @@ Widget::Widget(QWidget *parent)
     itsPlayerTimer = new QTimer(this);
 
     // Loading assets
-    itsCentiBody.load("../imageDoss/centibody.png");
-    itsCentiHead.load("../imageDoss/centihead.png");
-    itsAvatar.load("../imageDoss/avatar.png");
-    itsMushrooms.load("../imageDoss/mushrooms.png");
+    itsCentiBody.load("../../../imageDoss/centibody.png");
+    itsCentiHead.load("../../../imageDoss/centihead.png");
+    itsAvatar.load("../../../imageDoss/avatar.png");
+    itsMushrooms.load("../../../imageDoss/mushrooms.png");
 
     // Initialize the direction of the player
     itsPlayerDirection.dirX = 0;
     itsPlayerDirection.dirY = 0;
 
+    // Connect buttons to their method
+    connect(ui->playButton, SIGNAL(clicked()), this, SLOT(startGame()));
+    connect(ui->back_button, SIGNAL(clicked()), this, SLOT(backToMenu()));
+    connect(ui->back_button_2, SIGNAL(clicked()), this, SLOT(backToMenu()));
+
+    // Connect timers to their method
     connect(itsDisplayTimer, SIGNAL(timeout()), this, SLOT(update()));
     connect(itsPlayerTimer, SIGNAL(timeout()), this, SLOT(movePlayer()));
     connect(itsBulletTimer, SIGNAL(timeout()), this, SLOT(moveBullet()));
@@ -45,53 +49,63 @@ Widget::Widget(QWidget *parent)
 
 Widget::~Widget()
 {
+    // Delete all pointers
     delete ui;
     delete itsBulletTimer;
     delete itsCentipedeTimer;
     delete itsDisplayTimer;
     delete itsPlayerTimer;
     delete itsGame;
-    //delete itsPlayerDirection;
 }
 
 void Widget::paintEvent(QPaintEvent *event)
 {
+    // Avoid warnings of unused variable of Qt
+    Q_UNUSED(event);
     if (isGameStarted)
     {
-        Q_UNUSED(event); //pour éviter les avertissements du compilateur concernant des variables non utilisées
         QPainter painter(this);
+
+        // Paint in light gray the area of the game board
         painter.fillRect(itsGameBoard, QBrush(Qt::lightGray, Qt::SolidPattern));
+
+        // Draw each entities of the game
         drawCentipede(painter);
         drawPlayer(painter);
         drawBullet(painter);
         drawMushrooms(painter);
         drawHeadUpDisplay(painter);
 
+        // Check if the game has ended
         endGame();
     }
 }
 
 void Widget::resizeEvent(QResizeEvent *event)
 {
+    // Avoid warnings of unused variable of Qt
     Q_UNUSED(event);
     if (itsGame != nullptr)
     {
-        // Calculer la taille du itsBoard en fonction de la plus petite dimension de la fenêtre
+        // Calculate the size of itsBoard based on the smallest dimension of the window
         int boardHeight = height() * 95 / 100;
         int boardWidth = boardHeight / BOARD_WIDTH * BOARD_HEIGHT;
         int boardX = width() / 2 - boardWidth / 2;
         int boardY = height() * 5 / 100;
+        itsGameBoard = { boardX, boardY, boardWidth, boardHeight };
 
         itsGame->setBoard(QRect(boardX, boardY, boardWidth, boardHeight));
-        // ajuster les timers ou autres paramètres en fonction de la nouvelle taille de la fenêtre
-        itsBulletTimer->start(4000 / boardHeight); // Définir la vitesse du bullet
-        itsPlayerTimer->start(2500 / boardWidth); // Définir la vitesse du player
+
+        // Adjust timers or other parameters based on the new window size
+        itsCentipedeTimer->start(4000 / boardWidth); // set the speed of it
+        itsBulletTimer->start(3000 / boardHeight); // Set the speed of the bullet
+        itsPlayerTimer->start(2500 / boardWidth); // Set the speed of the player
     }
 }
 
 void Widget::keyPressEvent(QKeyEvent * event)
 {
-    // Handle key press events for left and right arrow keys
+    // Handle key press events for Z, Q, S, D and Space keys
     if (event->key() == Qt::Key_Z)
     {
         itsPlayerDirection.dirY = -1;
@@ -116,7 +130,7 @@ void Widget::keyPressEvent(QKeyEvent * event)
 
 void Widget::keyReleaseEvent(QKeyEvent * event)
 {
-    // Handle key release events for left and right arrow keys
+    // Handle key release events for Z, Q, S and D keys
     if (event->key() == Qt::Key_Z && itsPlayerDirection.dirY == -1)
     {
         itsPlayerDirection.dirY = 0;
@@ -137,11 +151,11 @@ void Widget::keyReleaseEvent(QKeyEvent * event)
 
 void Widget::drawPlayer(QPainter & painter)
 {
-    //à compléter avec le liens
-    //painter.drawImage(itsGame->getItsPlayer()->getItsHitBox(), itsAvatar);
-    painter.setPen(Qt::gray);
+    // Draw the player at his position
+    painter.drawImage(itsGame->getItsPlayer()->getItsHitBox(), itsAvatar);
+    /*painter.setPen(Qt::gray);
     painter.setBrush(Qt::SolidPattern);
-    painter.drawRect(itsGame->getItsPlayer()->getItsHitBox());
+    painter.drawRect(itsGame->getItsPlayer()->getItsHitBox());*/
 }
 
 void Widget::drawMushrooms(QPainter & painter)
@@ -149,46 +163,66 @@ void Widget::drawMushrooms(QPainter & painter)
     //painter.drawImage(0, 0, *itsBackgroundImage);
     for(Mushroom * mushroom : *itsGame->getItsMushrooms())
     {
-        //painter.drawImage((*it)->getItsHitBox(), itsMushrooms);
-        painter.setPen(Qt::red);
-        painter.setBrush(Qt::SolidPattern);
-        painter.drawRect(mushroom->getItsHitBox());
+        /*painter.setBrush(Qt::SolidPattern);
+        if(mushroom->getItsState() == 4)
+        {
+            painter.setPen(Qt::red);
+            painter.drawRect(mushroom->getItsHitBox());
+        }
+        else if(mushroom->getItsState() == 3)
+        {
+            painter.setPen(Qt::magenta);
+            painter.drawRect(mushroom->getItsHitBox());
+        }
+        else if(mushroom->getItsState() == 2)
+        {
+            painter.setPen(Qt::yellow);
+            painter.drawRect(mushroom->getItsHitBox());
+        }
+        else if(mushroom->getItsState() == 1)
+        {
+            painter.setPen(Qt::green);
+            painter.drawRect(mushroom->getItsHitBox());
+        }*/
+        painter.drawImage(mushroom->getItsHitBox(), itsMushrooms);
     }
 }
 
 void Widget::drawCentipede(QPainter & painter)
 {
-    //painter.drawImage(0, 0, *itsBackgroundImage);
+    //painter.drawImage(0, 0, itsBackgroundImage);
     for (vector<Centipede *>::iterator it = itsGame->getItsCentipedes()->begin(); it != itsGame->getItsCentipedes()->end(); ++it) {
         BodyPart * currentPart = (*it)->getItsHead();
+
+        // displays the tail
+        painter.drawImage((*it)->getItsTail()->getItsHitBox(), itsCentiBody);
+        /*painter.setPen(Qt::darkGreen);
+        painter.setBrush(Qt::SolidPattern);
+        painter.drawRect((*it)->getItsTail()->getItsHitBox());*/
+
+        // displays the head
+        painter.drawImage((*it)->getItsHead()->getItsHitBox(), itsCentiHead);
+        /*painter.setPen(Qt::blue);
+        painter.setBrush(Qt::SolidPattern);
+        painter.drawRect((*it)->getItsHead()->getItsHitBox());*/
         while(currentPart->getItsChild() != nullptr)
         {
             if(currentPart != (*it)->getItsHead())
             {
-                //display the bodys
-                //painter.drawImage(currentPart->getItsHitBox(), itsCentiBody);
-                painter.setPen(Qt::yellow);
+                //displays the bodyparts
+                painter.drawImage(currentPart->getItsHitBox(), itsCentiBody);
+                /*painter.setPen(Qt::cyan);
                 painter.setBrush(Qt::SolidPattern);
-                painter.drawRect(currentPart->getItsHitBox());
-            }
-            else
-            {
-                //display the head
-                //painter.drawImage(currentPart->getItsHitBox(), itsCentiHead);
-                painter.setPen(Qt::blue);
-                painter.setBrush(Qt::SolidPattern);
-                painter.drawRect(currentPart->getItsHitBox());
+                painter.drawRect(currentPart->getItsHitBox());*/
             }
             currentPart = currentPart->getItsChild();
         }
-        painter.setPen(Qt::darkGreen);
-        painter.setBrush(Qt::SolidPattern);
-        painter.drawRect((*it)->getItsTail()->getItsHitBox());
     }
 }
 
 void Widget::drawBullet(QPainter & painter)
 {
+    // Check if the bullet exists
     if(itsGame->getItsBullet() != nullptr)
     {
         //painter.drawRect(itsGame->getItsBullet()->getItsHitBox());
@@ -236,22 +270,22 @@ void Widget::movePlayer()
 
 void Widget::startGame()
 {
+    // Set the stacked widget on an empty widget
     ui->stackedWidget->setCurrentIndex(3);
 
-    // Calculate game board
     // Calculate game board
     int boardHeight = height() * 95 / 100;
     int boardWidth = boardHeight / BOARD_WIDTH * BOARD_HEIGHT;
     int boardX = width() / 2 - boardWidth / 2;
     int boardY = height() * 5 / 100;
+    itsGameBoard = { boardX, boardY, boardWidth, boardHeight };
 
     itsGame = new Game({ boardX, boardY, boardWidth, boardHeight });
     isGameStarted = true;
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
-    itsBulletTimer->start(16); // set the speed of it
-    itsCentipedeTimer->start(16); // set the speed of it
-    itsPlayerTimer->start(3); // set the speed of it
-    //setFixedSize(this->width(), this->height()); // set the size of the window
+    itsCentipedeTimer->start(4000 / boardWidth); // set the speed of it
+    itsBulletTimer->start(3000 / boardHeight); // Set the speed of the bullet
+    itsPlayerTimer->start(2500 / boardWidth); // Set the speed of the player
 }
 
 void Widget::endGame()
@@ -272,6 +306,13 @@ void Widget::endGame()
     itsPlayerTimer->stop();
 
     isGameStarted = false;
+
+    // ---- EXPERIMENTAL ----
+    QPalette bgColor = QPalette();
+    bgColor.setColor(QPalette::Window, Qt::darkGray);
+    setAutoFillBackground(true);
+    setPalette(bgColor);
+    // ----------------------
 }
 
 void Widget::backToMenu()
