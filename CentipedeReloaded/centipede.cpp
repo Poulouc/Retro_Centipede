@@ -43,7 +43,7 @@ void Centipede::moveForward(int distance)
         newPos = currentPart->getItsParent()->getItsPosition();
         newPos.posX -= currentPart->getItsHitBox().width() * itsDirection.dirX;
 
-       currentPart->setItsPosition(newPos);
+        currentPart->setItsPosition(newPos);
         currentPart = currentPart->getItsParent();
     }
 

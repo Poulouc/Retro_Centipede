@@ -213,7 +213,7 @@ void Game::checkCollisions()
                     delete *itDel;
                 }
                 itsCentipedes->clear();
-                itsPlayer->setItsPosition({ itsBoard.x() + itsBoard.width()/2 - PLAYER_SIZE/2, itsBoard.y() + itsBoard.height() - PLAYER_SIZE - 2});
+                itsPlayer->setItsPosition({ itsBoard.x() + itsBoard.width()/2 - PLAYER_SIZE/2, itsBoard.y() + itsBoard.height() - PLAYER_SIZE*2 - 4});
                 spawnCentipede();
                 return;
             }
@@ -413,7 +413,7 @@ void Game::moveCentipede()
             // If the centipede is moving vertically, move it by one step.
             if(centipede->getVerticalDirection())
             {
-                centipede->moveForward(CENTIPEDE_SPEED);
+                centipede->moveForward(itsBoard.height()/31);
             }
             // If the centipede is moving horizontally, move it by its standard speed.
             else
