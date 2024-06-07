@@ -248,10 +248,6 @@ void Game::sliceCentipede(BodyPart* hittedPart, Centipede * centipede)
         // Check if the hitted part is NOT the tail
         if (hittedPart->getItsChild() != nullptr)
         {
-<<<<<<< HEAD
-            //Position headPos = centipede->getItsTail()->getItsPosition();
-=======
->>>>>>> 30a9317b2974ffee7b4cd26e1afa00e065bab20f
             // Set next part as the head for the new centipede ...
             BodyPart* newTail = hittedPart->getItsChild();
             hittedPart->setItsChild(nullptr);
