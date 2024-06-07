@@ -171,6 +171,13 @@ public:
     bool centipedeMushroomCollision(Centipede * centipede);
 
     /**
+     * @brief Manages collision between two centipedes
+     * @param centipede Pointer to the centipede.
+     * @return True if there is a collision, otherwise false.
+     */
+    bool centipedeToCentipedeCollision(Centipede * centipede);
+
+    /**
      * @brief Checks if the game has been won.
      * @return True if the game has been won, otherwise false.
      */

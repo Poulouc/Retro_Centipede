@@ -388,9 +388,10 @@ void Game::moveCentipede()
         // Check for collisions with mushrooms and the game board.
         bool first = centipedeMushroomCollision(centipede);
         bool second = centipedeBoardCollision(centipede, zone);
+        bool third = centipedeToCentipedeCollision(centipede);
 
         // If there's no collision, move the centipede forward.
-        if(!(first || second))
+        if(!(first || second || third))
         {
             // If the centipede is moving vertically, move it by one step.
             if(centipede->getVerticalDirection())
@@ -455,6 +456,33 @@ bool Game::centipedeBoardCollision(Centipede * centipede, QRect board)
         centipede->setItsDirection({centipede->getItsDirection().dirX, -1});
         centipede->setVerticalDirection(false);
         return true;
+    }
+    return false;
+}
+
+bool Game::centipedeToCentipedeCollision(Centipede * centipede)
+{
+    for(Centipede * currentCenti : *itsCentipedes)
+    {
+        if(isColliding(centipede->getItsHead()->getItsHitBox(), currentCenti->getItsHead()->getItsHitBox()) && currentCenti != centipede)
+        {
+            if(centipede->getVerticalDirection())
+            {
+            }
+            else
+            {
+                int distance = abs(currentCenti->getItsHead()->getItsHitBox().x() - centipede->getItsHead()->getItsPosition().posX) - CENTIPEDE_BODYPART_SIZE;
+                centipede->moveForward(distance);
+                centipede->setVerticalDirection(true);
+                centipede->moveForward(itsBoard.height()/31);
+                centipede->setItsDirection({-centipede->getItsDirection().dirX, centipede->getItsDirection().dirY});
+
+                currentCenti->setVerticalDirection(true);
+                currentCenti->moveForward(itsBoard.height()/31);
+                currentCenti->setItsDirection({-currentCenti->getItsDirection().dirX, currentCenti->getItsDirection().dirY});
+                return true;
+            }
+        }
     }
     return false;
 }
