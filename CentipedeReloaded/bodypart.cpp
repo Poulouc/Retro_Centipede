@@ -34,7 +34,12 @@ void BodyPart::setItsPosition(Position pos)
 {
     itsPreviousPosition = itsPosition;
     itsPosition = pos;
-    itsHitBox = {pos.posX, pos.posY, CENTIPEDE_BODYPART_SIZE, CENTIPEDE_BODYPART_SIZE};
+    itsHitBox = {pos.posX, pos.posY, itsHitBox.width(), itsHitBox.height()};
+}
+
+void BodyPart::setItsHitBox(QRect hitbox)
+{
+    itsHitBox = hitbox;
 }
 
 Position BodyPart::getItsPreviousPosition()
