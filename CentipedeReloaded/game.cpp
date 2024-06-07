@@ -307,6 +307,9 @@ void Game::sliceCentipede(BodyPart* hittedPart, Centipede * centipede)
                 break;
             }
         }
+
+        // Increase the score of 100
+        itsScore += 100;
     }
 }
 
