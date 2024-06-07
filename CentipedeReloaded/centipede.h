@@ -19,6 +19,8 @@ private:
     Direction itsDirection; /**< Direction of movement for the centipede. */
     bool isGoingDown = false; /**< Flag indicating whether the centipede is moving down. */
     bool reachedBottom = false; /**< Flag indicating whether the centipede has reached the bottom of the screen. */
+    bool wasMovingRight = false;
+    bool wasMovingLeft = false;
 
 public:
     /**
@@ -31,12 +33,6 @@ public:
      * @brief Destroys the Centipede object.
      */
     ~Centipede();
-
-    /**
-     * @brief Moves the centipede forward by a specified distance.
-     * @param distance The distance to move the centipede forward.
-     */
-    void moveForward(int distance);
 
     /**
      * @brief Gets a pointer to the head BodyPart of the centipede.
@@ -98,6 +94,11 @@ public:
      * @param hasReachedBottom True if the centipede has reached the bottom, otherwise false.
      */
     void setHasReachedBottom(bool hasReachedBottom);
+
+    void setWasMovingRight(bool value);
+    void setWasMovingLeft(bool value);
+    bool getWasMovingRight();
+    bool getWasMovingLeft();
 };
 
 #endif // CENTIPEDE_H

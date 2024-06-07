@@ -34,40 +34,6 @@ Direction Centipede::getItsDirection()
     return itsDirection;
 }
 
-// Moves the centipede forward by a certain distance.
-void Centipede::moveForward(int distance)
-{
-    BodyPart * currentPart = itsTail;
-    Position partPos = itsHead->getItsPosition();
-    Position newPos;
-    int bodyCounter = CENTIPEDE_LENGTH;
-
-    // Move each body part of the centipede.
-    while(currentPart != itsHead)
-    {
-        newPos = currentPart->getItsParent()->getItsPosition();
-        newPos.posX -= CENTIPEDE_BODYPART_SIZE * itsDirection.dirX;
-
-        currentPart->setItsPosition(newPos);
-        currentPart = currentPart->getItsParent();
-    }
-
-    // Move the head of the centipede.
-    if(isGoingDown)
-    {
-        newPos.posY = partPos.posY + distance * itsDirection.dirY;
-        newPos.posX = partPos.posX;
-        itsHead->setItsPosition(newPos);
-        isGoingDown = false;
-    }
-    else
-    {
-        newPos.posX = partPos.posX + distance * itsDirection.dirX;
-        newPos.posY = partPos.posY;
-        itsHead->setItsPosition(newPos);
-    }
-}
-
 // Sets the direction of the centipede.
 void Centipede::setItsDirection(Direction dir)
 {
@@ -93,7 +59,7 @@ Position Centipede::getNextPosition(int distance)
 }
 
 // Returns true if the centipede is moving vertically downwards.
-bool Centipede::getVerticalDirection()
+bool Centipede::isVerticalDirection()
 {
     return isGoingDown;
 }
@@ -119,3 +85,24 @@ void Centipede::setItsTail(BodyPart * tail)
 {
     itsTail = tail;
 }
+
+void Centipede::setWasMovingRight(bool value)
+{
+    wasMovingRight = value;
+}
+
+void Centipede::setWasMovingLeft(bool value)
+{
+    wasMovingLeft = value;
+}
+
+bool Centipede::getWasMovingRight()
+{
+    return wasMovingRight;
+}
+
+bool Centipede::getWasMovingLeft()
+{
+    return wasMovingLeft;
+}
+
