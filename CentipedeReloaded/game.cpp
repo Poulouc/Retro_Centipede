@@ -1,7 +1,5 @@
 #include <random>
 #include "game.h"
-#include <iostream>
-#include <QDebug>
 
 using namespace std;
 
@@ -67,7 +65,9 @@ void Game::createMushrooms()
 
     uniform_int_distribution<int> randX(0, 30 - 1);
     uniform_int_distribution<int> randY(0, 31 - 1);
+
     int mushroomSize = (itsBoard.width() / BOARD_WIDTH);
+
     while (itsMushrooms->size() < MUSHROOMS_AMOUNT)
     {
         int randomX = randX(eng), randomY = randY(eng);
@@ -113,7 +113,7 @@ void Game::createMushrooms()
         if (itsBullet != nullptr && isColliding(previewHitbox, itsBullet->getItsHitBox())) continue;
 
         // Create the mushroom, must be executed only if the position is valid
-        itsMushrooms->push_back(new Mushroom(genX, genY, mushroomSize, Position{randomX, randomY}));
+        itsMushrooms->push_back(new Mushroom(genX, genY, mushroomSize, { randomX, randomY }));
     }
 }
 
@@ -121,8 +121,8 @@ void Game::shoot()
 {
     if (itsBullet == nullptr)
     {
-        int newX = itsPlayer->getItsPosition().posX /*+ PLAYER_SIZE / 2 - BULLET_SIZE / 2*/;
-        int newY = itsPlayer->getItsPosition().posY /*+ PLAYER_SIZE / 2 - BULLET_SIZE / 2*/;
+        int newX = itsPlayer->getItsPosition().posX + (itsBoard.width() / BOARD_WIDTH) / 2 - BULLET_SIZE / 2;
+        int newY = itsPlayer->getItsPosition().posY;
         itsBullet = new Bullet(newX, newY);
     }
 }
@@ -190,13 +190,13 @@ void Game::checkCollisions()
         {
             if (isColliding((*it)->getItsHitBox(), itsBullet->getItsHitBox()))
             {
-                Mushroom * mushroom = *it;
-                (mushroom)->damage();
-                if (mushroom->getItsState() <= 0)
+                (*it)->damage();
+                if ((*it)->getItsState() <= 0)
                 {
                     itsScore += 4;
+                    Mushroom* toDelete = *it;
                     itsMushrooms->erase(it);
-                    delete mushroom;
+                    delete toDelete;
                 }
                 itsBullet = nullptr;
                 break;
@@ -277,21 +277,45 @@ void Game::sliceCentipede(BodyPart* hittedPart, Centipede * centipede)
             newCentipede->setItsDirection({-centipede->getItsDirection().dirX, centipede->getItsDirection().dirY});
         }
 
+        // Add a new mushroom at the position of the hitted part
+        int posX = hittedPart->getItsPosition().posX - (hittedPart->getItsPosition().posX - itsBoard.x()) % BOARD_WIDTH;
+        int posY = hittedPart->getItsPosition().posY - (hittedPart->getItsPosition().posY - itsBoard.y()) % BOARD_HEIGHT;
+        int gridX = (posX - itsBoard.x()) / BOARD_WIDTH;
+        int gridY = (posY - itsBoard.y()) / BOARD_HEIGHT;
+        itsMushrooms->push_back(new Mushroom(posX, posY, itsBoard.width() / BOARD_WIDTH, { gridX, gridY }));
+
         // Deletion of the hitted part
         delete hittedPart;
+
+        // Increase the score of 10
+        itsScore += 10;
     }
     else // headshot
     {
-        for (vector<Centipede*>::iterator it = itsCentipedes->begin(); it != itsCentipedes->end(); ++it)
+        // Search the centipede that correspond to the hitted head
+        for (vector<Centipede*>::iterator it = itsCentipedes->begin(); it < itsCentipedes->end(); it++)
         {
             Centipede * centipede = *it;
             if (centipede->getItsHead() == hittedPart)
             {
+                // Store centipede to delete it and remove it from the vector
+                Centipede* toDelete = *it;
                 itsCentipedes->erase(it);
-                delete centipede;
+
+                // Generate a new mushroom at the position of the head of the centipede
+                int posX = hittedPart->getItsPosition().posX - (hittedPart->getItsPosition().posX - itsBoard.x()) % BOARD_WIDTH;
+                int posY = hittedPart->getItsPosition().posY - (hittedPart->getItsPosition().posY - itsBoard.y()) % BOARD_HEIGHT;
+                int gridX = (posX - itsBoard.x()) / BOARD_WIDTH;
+                int gridY = (posY - itsBoard.y()) / BOARD_HEIGHT;
+                itsMushrooms->push_back(new Mushroom(posX, posY, itsBoard.width() / BOARD_WIDTH, { gridX, gridY }));
+
+                delete toDelete;
                 break;
             }
         }
+
+        // Increase the score of 100
+        itsScore += 100;
     }
 }
 
@@ -369,6 +393,7 @@ void Game::setBoard(QRect board)
         }
     }
 
+    // pour le tir aussi
 
     //set the board
     itsBoard = board;

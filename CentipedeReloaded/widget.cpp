@@ -5,21 +5,19 @@
 using namespace std;
 
 Widget::Widget(QWidget *parent)
-    : QWidget(parent), ui(new Ui::Widget)
+    : QWidget(parent), ui(new Ui::Widget), isGameStarted(false)
 {
     ui->setupUi(this);
-    setWindowTitle("Centipede Reloaded - v1.0");
-    isGameStarted = false;
-    connect(ui->playButton, SIGNAL(clicked()), this, SLOT(startGame()));
-    connect(ui->back_button, SIGNAL(clicked()), this, SLOT(backToMenu()));
-    connect(ui->back_button_2, SIGNAL(clicked()), this, SLOT(backToMenu()));
 
-    // ---- EXPERIMENTAL ----
+    // Change title of the window and set minimum size of the window
+    setWindowTitle("Centipede Reloaded - v1.0");
+    setMinimumSize(400, 300);
+
+    // Change background color of the widget
     QPalette bgColor = QPalette();
     bgColor.setColor(QPalette::Window, Qt::darkGray);
     setAutoFillBackground(true);
     setPalette(bgColor);
-    // ----------------------
 
     // Create timers for updating the GUI, the centipede, the bullet, the player
     itsDisplayTimer = new QTimer(this);
@@ -37,7 +35,12 @@ Widget::Widget(QWidget *parent)
     itsPlayerDirection.dirX = 0;
     itsPlayerDirection.dirY = 0;
 
-    setMinimumSize(400, 300);
+    // Connect buttons to their method
+    connect(ui->playButton, SIGNAL(clicked()), this, SLOT(startGame()));
+    connect(ui->back_button, SIGNAL(clicked()), this, SLOT(backToMenu()));
+    connect(ui->back_button_2, SIGNAL(clicked()), this, SLOT(backToMenu()));
+
+    // Connect timers to their method
     connect(itsDisplayTimer, SIGNAL(timeout()), this, SLOT(update()));
     connect(itsPlayerTimer, SIGNAL(timeout()), this, SLOT(movePlayer()));
     connect(itsBulletTimer, SIGNAL(timeout()), this, SLOT(moveBullet()));
@@ -46,34 +49,41 @@ Widget::Widget(QWidget *parent)
 
 Widget::~Widget()
 {
+    // Delete all pointers
     delete ui;
     delete itsBulletTimer;
     delete itsCentipedeTimer;
     delete itsDisplayTimer;
     delete itsPlayerTimer;
     delete itsGame;
-    //delete itsPlayerDirection;
 }
 
 void Widget::paintEvent(QPaintEvent *event)
 {
+    // Avoid warnings of unused variable of Qt
+    Q_UNUSED(event);
     if (isGameStarted)
     {
-        Q_UNUSED(event); //pour éviter les avertissements du compilateur concernant des variables non utilisées
         QPainter painter(this);
-        painter.fillRect(itsGame->getItsBoard(), QBrush(Qt::lightGray, Qt::SolidPattern));
+
+        // Paint in light gray the area of the game board
+        painter.fillRect(itsGameBoard, QBrush(Qt::lightGray, Qt::SolidPattern));
+
+        // Draw each entities of the game
         drawCentipede(painter);
         drawPlayer(painter);
         drawBullet(painter);
         drawMushrooms(painter);
         drawHeadUpDisplay(painter);
 
+        // Check if the game has ended
         endGame();
     }
 }
 
 void Widget::resizeEvent(QResizeEvent *event)
 {
+    // Avoid warnings of unused variable of Qt
     Q_UNUSED(event);
     if (itsGame != nullptr)
     {
@@ -82,8 +92,10 @@ void Widget::resizeEvent(QResizeEvent *event)
         int boardWidth = boardHeight / BOARD_WIDTH * BOARD_HEIGHT;
         int boardX = width() / 2 - boardWidth / 2;
         int boardY = height() * 5 / 100;
+        itsGameBoard = { boardX, boardY, boardWidth, boardHeight };
 
         itsGame->setBoard(QRect(boardX, boardY, boardWidth, boardHeight));
+
         // Adjust timers or other parameters based on the new window size
         itsCentipedeTimer->start(4000 / boardWidth); // set the speed of it
         itsBulletTimer->start(3000 / boardHeight); // Set the speed of the bullet
@@ -93,7 +105,7 @@ void Widget::resizeEvent(QResizeEvent *event)
 
 void Widget::keyPressEvent(QKeyEvent * event)
 {
-    // Handle key press events for left and right arrow keys
+    // Handle key press events for Z, Q, S, D and Space keys
     if (event->key() == Qt::Key_Z)
     {
         itsPlayerDirection.dirY = -1;
@@ -118,7 +130,7 @@ void Widget::keyPressEvent(QKeyEvent * event)
 
 void Widget::keyReleaseEvent(QKeyEvent * event)
 {
-    // Handle key release events for left and right arrow keys
+    // Handle key release events for Z, Q, S and D keys
     if (event->key() == Qt::Key_Z && itsPlayerDirection.dirY == -1)
     {
         itsPlayerDirection.dirY = 0;
@@ -139,7 +151,7 @@ void Widget::keyReleaseEvent(QKeyEvent * event)
 
 void Widget::drawPlayer(QPainter & painter)
 {
-    //à compléter avec le liens
+    // Draw the player at his position
     //painter.drawImage(itsGame->getItsPlayer()->getItsHitBox(), itsAvatar);
     painter.setPen(Qt::gray);
     painter.setBrush(Qt::SolidPattern);
@@ -208,6 +220,7 @@ void Widget::drawCentipede(QPainter & painter)
 
 void Widget::drawBullet(QPainter & painter)
 {
+    // Check if the bullet exists
     if(itsGame->getItsBullet() != nullptr)
     {
         //painter.drawRect(itsGame->getItsBullet()->getItsHitBox());
@@ -255,14 +268,15 @@ void Widget::movePlayer()
 
 void Widget::startGame()
 {
+    // Set the stacked widget on an empty widget
     ui->stackedWidget->setCurrentIndex(3);
 
-    // Calculate game board
     // Calculate game board
     int boardHeight = height() * 95 / 100;
     int boardWidth = boardHeight / BOARD_WIDTH * BOARD_HEIGHT;
     int boardX = width() / 2 - boardWidth / 2;
     int boardY = height() * 5 / 100;
+    itsGameBoard = { boardX, boardY, boardWidth, boardHeight };
 
     itsGame = new Game({ boardX, boardY, boardWidth, boardHeight });
     isGameStarted = true;
@@ -270,7 +284,6 @@ void Widget::startGame()
     itsCentipedeTimer->start(4000 / boardWidth); // set the speed of it
     itsBulletTimer->start(3000 / boardHeight); // Set the speed of the bullet
     itsPlayerTimer->start(2500 / boardWidth); // Set the speed of the player
-
 }
 
 void Widget::endGame()
@@ -291,6 +304,13 @@ void Widget::endGame()
     itsPlayerTimer->stop();
 
     isGameStarted = false;
+
+    // ---- EXPERIMENTAL ----
+    QPalette bgColor = QPalette();
+    bgColor.setColor(QPalette::Window, Qt::darkGray);
+    setAutoFillBackground(true);
+    setPalette(bgColor);
+    // ----------------------
 }
 
 void Widget::backToMenu()
