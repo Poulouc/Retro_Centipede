@@ -81,6 +81,8 @@ public:
     void setItsTargetPos(Position targetPos);
 
     void updatePos();
+
+    Position getNextTarget(Direction centiedeDir, int caseLength);
 };
 
 #endif // BODYPART_H

@@ -85,7 +85,7 @@ public:
      * @brief Gets the vertical direction of movement for the centipede.
      * @return True if the centipede is moving down, otherwise false.
      */
-    bool getVerticalDirection();
+    bool isVerticalDirection();
 
     /**
      * @brief Sets the vertical direction of movement for the centipede.

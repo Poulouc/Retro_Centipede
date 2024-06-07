@@ -92,3 +92,10 @@ void BodyPart::updatePos()
 
     itsHitBox = {itsPosition.posX, itsPosition.posY, CENTIPEDE_BODYPART_SIZE, CENTIPEDE_BODYPART_SIZE };
 }
+
+Position BodyPart::getNextTarget(Direction centipedeDir, int caseLength)
+{
+    int xTarget = itsTargetPos.posX + centipedeDir.dirX * caseLength;
+    int yTarget = itsTargetPos.posY + centipedeDir.dirY * caseLength;
+    return { xTarget, yTarget };
+}

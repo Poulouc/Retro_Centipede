@@ -50,7 +50,7 @@ void Game::spawnCentipede()
     oldPos.posY = newPos.posY;
     currentPart->setItsTargetPos(oldPos);
 
-    newCentipede->setItsDirection({-1,1}); // useless
+    newCentipede->setItsDirection({ -1, 0 });
     for(int i = 0; i < CENTIPEDE_LENGTH - 1; i++)
     {
         BodyPart * newPart = new BodyPart();
@@ -154,7 +154,9 @@ bool Game::isColliding(QRect hitbox1, QRect hitbox2)
 
 bool Game::centipedeMushroomCollision(Centipede * centipede)
 {
-    QRect centipedeHitBox = {centipede->getNextPosition(CENTIPEDE_SPEED).posX, centipede->getNextPosition(CENTIPEDE_SPEED).posY, CENTIPEDE_BODYPART_SIZE, CENTIPEDE_BODYPART_SIZE};
+    QRect centipedeHitBox = { centipede->getItsHead()->getNextTarget(centipede->getItsDirection()).posX,
+                              centipede->getItsHead()->getNextTarget(centipede->getItsDirection()).posY,
+                              CENTIPEDE_BODYPART_SIZE, CENTIPEDE_BODYPART_SIZE };
     for(vector<Mushroom*>::iterator it = getItsMushrooms()->begin(); it != itsMushrooms->end(); ++it)
     {
         Mushroom * mushroom = *it;
@@ -162,7 +164,7 @@ bool Game::centipedeMushroomCollision(Centipede * centipede)
         QRect mushroomHitBox = mushroom->getItsHitBox();
         if(isColliding(centipedeHitBox, mushroomHitBox))
         {
-            if(centipede->getVerticalDirection())
+            if(centipede->isVerticalDirection())
             {
                 itsMushrooms->erase(it);
                 delete mushroom;
@@ -430,7 +432,7 @@ void Game::moveCentipede()
 
         // -------------------
 
-        int i = 1;
+        //int i = 1;
         //cout << i << endl;
         BodyPart* centiHead = centipede->getItsHead();
         centiHead->updatePos();
@@ -443,7 +445,7 @@ void Game::moveCentipede()
         BodyPart* prevBP = centiHead;
         for (BodyPart* bp = centiHead->getItsChild(); bp != nullptr; bp = bp->getItsChild())
         {
-            i++;
+            //i++;
             //cout << i << endl;
             bp->updatePos();
             Position bpPos = bp->getItsPosition();
@@ -460,7 +462,7 @@ void Game::moveCentipede()
 bool Game::centipedeBoardCollision(Centipede * centipede, QRect board)
 {
     QRect centipedeHitBox;
-    if(centipede->getVerticalDirection())
+    if(centipede->isVerticalDirection())
     {
         centipedeHitBox = {centipede->getNextPosition(itsBoard.height()/31).posX, centipede->getNextPosition(itsBoard.height()/31).posY, CENTIPEDE_BODYPART_SIZE, CENTIPEDE_BODYPART_SIZE};
     }
