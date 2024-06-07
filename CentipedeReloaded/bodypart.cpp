@@ -32,8 +32,14 @@ void BodyPart::addChild(BodyPart * child)
 
 void BodyPart::setItsPosition(Position pos)
 {
+    itsPreviousPosition = itsPosition;
     itsPosition = pos;
     itsHitBox = {pos.posX, pos.posY, CENTIPEDE_BODYPART_SIZE, CENTIPEDE_BODYPART_SIZE};
+}
+
+Position BodyPart::getItsPreviousPosition()
+{
+    return itsPreviousPosition;
 }
 
 void BodyPart::setItsChild(BodyPart * child)

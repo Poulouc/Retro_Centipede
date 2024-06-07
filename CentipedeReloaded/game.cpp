@@ -395,7 +395,7 @@ void Game::moveCentipede()
             // If the centipede is moving vertically, move it by one step.
             if(centipede->getVerticalDirection())
             {
-                centipede->moveForward(itsBoard.height()/31);
+                centipede->moveForward(CENTIPEDE_SPEED);
             }
             // If the centipede is moving horizontally, move it by its standard speed.
             else

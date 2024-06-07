@@ -17,6 +17,7 @@ private:
     BodyPart* itsChild = nullptr; /**< Pointer to the child body part */
     QRect itsHitBox = QRect(0, 0, CENTIPEDE_BODYPART_SIZE, CENTIPEDE_BODYPART_SIZE); /**< Rectangle representing the hitbox */
     Position itsPosition = {}; /**< Position of the body part */
+    Position itsPreviousPosition = {}; /**< Previous position of the body part */
 
 public:
     /**
@@ -34,6 +35,12 @@ public:
      * @return The position of the body part.
      */
     Position getItsPosition();
+
+    /**
+     * @brief Gets the previous position of the body part.
+     * @return The previous position of the body part.
+     */
+    Position getItsPreviousPosition();
 
     /**
      * @brief Gets the child body part.
