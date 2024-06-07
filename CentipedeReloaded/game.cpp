@@ -45,7 +45,11 @@ void Game::spawnCentipede()
         Position newPos;
         newPos.posX = currentPart->getItsPosition().posX + CENTIPEDE_BODYPART_SIZE;
         newPos.posY = currentPart->getItsPosition().posY;
-        newPart->setItsPosition(newPos);
+        // Update the hitbox and position of the segment
+        newPart->setItsHitBox({newPos.posX, newPos.posY, (itsBoard.width() / BOARD_WIDTH), (itsBoard.height() / BOARD_HEIGHT)});
+        newPart->setItsPosition({newPos.posX, newPos.posY});
+        currentPart->setItsHitBox({newPos.posX, newPos.posY, (itsBoard.width() / BOARD_WIDTH), (itsBoard.height() / BOARD_HEIGHT)});
+        currentPart->setItsPosition({newPos.posX, newPos.posY});
         currentPart->setItsChild(newPart);
         newPart->setItsParent(currentPart);
         currentPart = newPart;
@@ -213,7 +217,11 @@ void Game::checkCollisions()
                     delete *itDel;
                 }
                 itsCentipedes->clear();
-                itsPlayer->setItsPosition({ itsBoard.x() + itsBoard.width()/2 - PLAYER_SIZE/2, itsBoard.y() + itsBoard.height() - PLAYER_SIZE - 2});
+
+                //set the position of the player
+                itsPlayer->setItsPosition({itsPlayerZone.x() + itsPlayerZone.width()/2 - (itsBoard.width() / BOARD_WIDTH)/2,
+                                           itsPlayerZone.y() + itsPlayerZone.height() - (itsBoard.height() / BOARD_HEIGHT) - itsPlayerZone.height()/20});
+                itsPlayer->updatePos({0,0});
                 spawnCentipede();
                 return;
             }
@@ -240,7 +248,10 @@ void Game::sliceCentipede(BodyPart* hittedPart, Centipede * centipede)
         // Check if the hitted part is NOT the tail
         if (hittedPart->getItsChild() != nullptr)
         {
+<<<<<<< HEAD
             //Position headPos = centipede->getItsTail()->getItsPosition();
+=======
+>>>>>>> 30a9317b2974ffee7b4cd26e1afa00e065bab20f
             // Set next part as the head for the new centipede ...
             BodyPart* newTail = hittedPart->getItsChild();
             hittedPart->setItsChild(nullptr);
@@ -368,7 +379,24 @@ void Game::setBoard(QRect board)
     itsPlayer->setItsPosition({itsPlayerZone.x() + itsPlayerZone.width()/2 - (board.width() / BOARD_WIDTH)/2,
                                itsPlayerZone.y() + itsPlayerZone.height() - (board.height() / BOARD_HEIGHT) - itsPlayerZone.height()/20});
 
-    //faire une partie pour centipède
+    // Update centipede segments for proportional resizing
+    for (vector<Centipede *>::iterator it = itsCentipedes->begin(); it != itsCentipedes->end(); ++it)
+    {
+        BodyPart *currentPart = (*it)->getItsHead();
+        while (currentPart != nullptr)
+        {
+            // Calculate new proportional coordinates
+            int newX = board.x() + ((currentPart->getItsHitBox().x() - itsBoard.x() + 0.5) * board.width()) / itsBoard.width();
+            int newY = board.y() + ((currentPart->getItsHitBox().y() - itsBoard.y() + 0.5) * board.height()) / itsBoard.height();
+
+            // Update the hitbox and position of the segment
+            currentPart->setItsHitBox({newX, newY, (board.width() / BOARD_WIDTH), (board.height() / BOARD_HEIGHT)});
+            currentPart->setItsPosition({newX, newY});
+
+            // Move to the next segment
+            currentPart = currentPart->getItsChild();
+        }
+    }
 
     // pour le tir aussi
 
@@ -379,8 +407,18 @@ void Game::setBoard(QRect board)
 // Moves the player based on the provided direction.
 void Game::movePlayer(Direction & direction)
 {
+    bool willItTouch = false;
+    QRect nextPos = {itsPlayer->getItsHitBox().x() + direction.dirX * PLAYER_SPEED, itsPlayer->getItsHitBox().y() + direction.dirY * PLAYER_SPEED, itsPlayer->getItsHitBox().width(), itsPlayer->getItsHitBox().height()};
+    for (vector<Mushroom*>::iterator it = itsMushrooms->begin(); it < itsMushrooms->end(); it++)
+    {
+        if(isColliding(nextPos, (*it)->getItsHitBox())){
+            willItTouch = true;
+            break;
+        }
+    }
+
     // Check if the player can move horizontally within the player zone
-    if (itsPlayerZone.x() < itsPlayer->getItsHitBox().x() + direction.dirX * PLAYER_SPEED &&
+    if (!willItTouch && itsPlayerZone.x() < itsPlayer->getItsHitBox().x() + direction.dirX * PLAYER_SPEED &&
         itsPlayerZone.x() + itsPlayerZone.width() > itsPlayer->getItsHitBox().x() + itsPlayer->getItsHitBox().width() + direction.dirX * PLAYER_SPEED
         && (direction.dirX == -PLAYER_SPEED or direction.dirX == PLAYER_SPEED))
     {
@@ -388,7 +426,7 @@ void Game::movePlayer(Direction & direction)
         itsPlayer->updatePos({direction.dirX, 0});
     }
     // Check if the player can move vertically within the player zone
-    if(itsPlayerZone.y() < itsPlayer->getItsHitBox().y() + direction.dirY * PLAYER_SPEED &&
+    if(!willItTouch && itsPlayerZone.y() < itsPlayer->getItsHitBox().y() + direction.dirY * PLAYER_SPEED &&
         itsPlayerZone.y() + itsPlayerZone.height() > itsPlayer->getItsHitBox().y() + itsPlayer->getItsHitBox().height() + direction.dirY * PLAYER_SPEED
         && (direction.dirY == -PLAYER_SPEED or direction.dirY == PLAYER_SPEED))
     {

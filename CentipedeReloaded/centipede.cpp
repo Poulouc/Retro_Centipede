@@ -35,15 +35,15 @@ void Centipede::moveForward(int distance)
     BodyPart * currentPart = itsTail;
     Position partPos = itsHead->getItsPosition();
     Position newPos;
-    int bodyCounter = CENTIPEDE_LENGTH;
+    //int bodyCounter = CENTIPEDE_LENGTH;
 
     // Move each body part of the centipede.
     while(currentPart != itsHead)
     {
         newPos = currentPart->getItsParent()->getItsPosition();
-        newPos.posX -= CENTIPEDE_BODYPART_SIZE * itsDirection.dirX;
+        newPos.posX -= currentPart->getItsHitBox().width() * itsDirection.dirX;
 
-        currentPart->setItsPosition(newPos);
+       currentPart->setItsPosition(newPos);
         currentPart = currentPart->getItsParent();
     }
 

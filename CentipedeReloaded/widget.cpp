@@ -9,8 +9,9 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // Change title of the window
+    // Change title of the window and set minimum size of the window
     setWindowTitle("Centipede Reloaded - v1.0");
+    setMinimumSize(400, 300);
 
     // Change background color of the widget
     QPalette bgColor = QPalette();
@@ -86,7 +87,7 @@ void Widget::resizeEvent(QResizeEvent *event)
     Q_UNUSED(event);
     if (itsGame != nullptr)
     {
-        // Calculate the size of itsBoard with the smallest dimension of the window
+        // Calculate the size of itsBoard based on the smallest dimension of the window
         int boardHeight = height() * 95 / 100;
         int boardWidth = boardHeight / BOARD_WIDTH * BOARD_HEIGHT;
         int boardX = width() / 2 - boardWidth / 2;
@@ -94,9 +95,11 @@ void Widget::resizeEvent(QResizeEvent *event)
         itsGameBoard = { boardX, boardY, boardWidth, boardHeight };
 
         itsGame->setBoard(QRect(boardX, boardY, boardWidth, boardHeight));
-        // Adjust timers with the window size
-        itsBulletTimer->start(4000 / boardHeight);
-        itsPlayerTimer->start(2500 / boardWidth);
+
+        // Adjust timers or other parameters based on the new window size
+        itsCentipedeTimer->start(4000 / boardWidth); // set the speed of it
+        itsBulletTimer->start(3000 / boardHeight); // Set the speed of the bullet
+        itsPlayerTimer->start(2500 / boardWidth); // Set the speed of the player
     }
 }
 
@@ -278,10 +281,9 @@ void Widget::startGame()
     itsGame = new Game({ boardX, boardY, boardWidth, boardHeight });
     isGameStarted = true;
     itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
-    itsBulletTimer->start(16); // set the speed of it
-    itsCentipedeTimer->start(16); // set the speed of it
-    itsPlayerTimer->start(3); // set the speed of it
-    //setFixedSize(this->width(), this->height()); // set the size of the window
+    itsCentipedeTimer->start(4000 / boardWidth); // set the speed of it
+    itsBulletTimer->start(3000 / boardHeight); // Set the speed of the bullet
+    itsPlayerTimer->start(2500 / boardWidth); // Set the speed of the player
 }
 
 void Widget::endGame()
