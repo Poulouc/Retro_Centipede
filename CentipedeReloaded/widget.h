@@ -141,7 +141,6 @@ private:
     QImage itsAvatar; /**< Image of the player */
     QImage itsMushrooms; /**< Image of the mushrooms */
     Direction itsPlayerDirection; /**< Direction of the player */
-    QRect itsGameBoard; /**< Rectangle representing the game board */
     bool isGameStarted; /**< Flag indicating whether the game has started */
 };
 
