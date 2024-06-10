@@ -99,9 +99,9 @@ protected:
     void drawHeadUpDisplay(QPainter & painter);
 
     /**
-     * @brief Ends the game and performs cleanup.
+     * @brief Pauses the game and its timers.
      */
-    void endGame();
+    void pauseGame();
 
 private slots:
     /**
@@ -125,6 +125,16 @@ private slots:
     void startGame();
 
     /**
+     * @brief Resumes the game.
+     */
+    void resumeGame();
+
+    /**
+     * @brief Ends the game and performs cleanup.
+     */
+    void endGame();
+
+    /**
      * @brief Returns to the main menu.
      */
     void backToMenu();
@@ -142,7 +152,8 @@ private:
     QImage itsMushrooms; /**< Image of the mushrooms */
     Direction itsPlayerDirection; /**< Direction of the player */
     QRect itsGameBoard; /**< Rectangle representing the game board */
-    bool isGameStarted; /**< Flag indicating whether the game has started */
+    bool isGameStarted = false; /**< Flag indicating whether the game has started */
+    bool isGamePaused = false;
 };
 
 #endif // WIDGET_H

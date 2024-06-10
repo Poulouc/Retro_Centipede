@@ -38,6 +38,8 @@ Widget::Widget(QWidget *parent)
     connect(ui->playButton, SIGNAL(clicked()), this, SLOT(startGame()));
     connect(ui->back_button, SIGNAL(clicked()), this, SLOT(backToMenu()));
     connect(ui->back_button_2, SIGNAL(clicked()), this, SLOT(backToMenu()));
+    connect(ui->resumeGameButton, SIGNAL(clicked()), this, SLOT(resumeGame()));
+    connect(ui->backToMenuButton, SIGNAL(clicked()), this, SLOT(backToMenu()));
 
     // Connect timers to their method
     connect(itsDisplayTimer, SIGNAL(timeout()), this, SLOT(update()));
@@ -61,7 +63,7 @@ void Widget::paintEvent(QPaintEvent *event)
 {
     // Avoid warnings of unused variable of Qt
     Q_UNUSED(event);
-    if (isGameStarted)
+    if (isGameStarted && !isGamePaused)
     {
         QPainter painter(this);
 
@@ -102,6 +104,7 @@ void Widget::resizeEvent(QResizeEvent *event)
 
 void Widget::keyPressEvent(QKeyEvent * event)
 {
+    if(!isGameStarted) return;
     // Handle key press events for Z, Q, S, D and Space keys
     if (event->key() == Qt::Key_Z)
     {
@@ -122,6 +125,17 @@ void Widget::keyPressEvent(QKeyEvent * event)
     if (event->key() == Qt::Key_Space)
     {
         itsGame->shoot();
+    }
+    if (event->key() == Qt::Key_Escape)
+    {
+        if(isGamePaused)
+        {
+            resumeGame();
+        }
+        else
+        {
+            pauseGame();
+        }
     }
 }
 
@@ -265,8 +279,10 @@ void Widget::movePlayer()
 
 void Widget::startGame()
 {
+    qDebug() << isGameStarted;
     // Set the stacked widget on an empty widget
     ui->stackedWidget->setCurrentIndex(3);
+    this->update();
 
     // Calculate game board
     int boardHeight = height() * 95 / 100;
@@ -300,19 +316,38 @@ void Widget::endGame()
     itsBulletTimer->stop();
     itsCentipedeTimer->stop();
     itsPlayerTimer->stop();
-
     isGameStarted = false;
+    this->update();
+}
 
-    // ---- EXPERIMENTAL ----
-    QPalette bgColor = QPalette();
-    bgColor.setColor(QPalette::Window, Qt::darkGray);
-    setAutoFillBackground(true);
-    setPalette(bgColor);
-    // ----------------------
+void Widget::pauseGame()
+{
+    itsDisplayTimer->stop();
+    itsBulletTimer->stop();
+    itsCentipedeTimer->stop();
+    itsPlayerTimer->stop();
+
+    isGamePaused = true;
+    ui->stackedWidget->setCurrentIndex(4);
+    this->update();
+}
+
+void Widget::resumeGame()
+{
+    itsDisplayTimer->start();
+    itsBulletTimer->start();
+    itsCentipedeTimer->start();
+    itsPlayerTimer->start();
+
+    isGamePaused = false;
+    ui->stackedWidget->setCurrentIndex(3);
 }
 
 void Widget::backToMenu()
 {
+    isGameStarted = false;
+    isGamePaused = false;
+    delete itsGame;
     ui->stackedWidget->setCurrentIndex(0);
 }
 
