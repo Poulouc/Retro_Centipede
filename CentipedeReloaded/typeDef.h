@@ -45,7 +45,7 @@ const int MUSHROOM_SIZE = 10; /**< The size of the mushroom */
 const int BULLET_SPEED = 5; /**< The speed of the bullet */
 
 // Variables for game
-const int MUSHROOMS_AMOUNT = 50; /**< The number of mushrooms in the game */
+const int MUSHROOMS_AMOUNT = 30; /**< The number of mushrooms in the game */
 const int BOARD_WIDTH = 30; /**< The width of the game board */
 const int BOARD_HEIGHT = 31; /**< The height of the game board */
 

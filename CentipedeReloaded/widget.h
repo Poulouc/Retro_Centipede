@@ -122,7 +122,7 @@ private slots:
     /**
      * @brief Starts the game.
      */
-    void startGame();
+    void startGame(int level = 1);
 
     /**
      * @brief Resumes the game.
