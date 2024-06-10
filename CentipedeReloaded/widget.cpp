@@ -39,8 +39,8 @@ Widget::Widget(QWidget *parent)
     connect(ui->playButton, SIGNAL(clicked()), this, SLOT(startGame()));
     connect(ui->back_button, SIGNAL(clicked()), this, SLOT(backToMenu()));
     connect(ui->back_button_2, SIGNAL(clicked()), this, SLOT(backToMenu()));
-    //connect(ui->ButtonHowToPlay, SIGNAL(clicked()), this, SLOT(goToHowToPlay()));
-    //connect(ui->backButtonToMenuHowToPlay, SIGNAL(clicked()), this, SLOT(backToMenu()));
+    connect(ui->buttonHowToPlay, SIGNAL(clicked()), this, SLOT(goToHowToPlay()));
+    connect(ui->backButtonToMenuHowToPlay, SIGNAL(clicked()), this, SLOT(backToMenu()));
     connect(ui->resumeGameButton, SIGNAL(clicked()), this, SLOT(resumeGame()));
     connect(ui->backToMenuButton, SIGNAL(clicked()), this, SLOT(backToMenu()));
 
