@@ -139,6 +139,8 @@ private slots:
      */
     void backToMenu();
 
+    void goToHowToPlay();
+
 private:
     Ui::Widget *ui; /**< The UI object */
     QTimer * itsDisplayTimer = nullptr; /**< Timer for updating the display */
