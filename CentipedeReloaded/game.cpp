@@ -1,7 +1,6 @@
 #include <random>
 #include "game.h"
 
-#include <iostream>
 using namespace std;
 
 Game::Game(QRect board)
@@ -72,7 +71,7 @@ void Game::createMushrooms()
     default_random_engine eng(rd());
 
     uniform_int_distribution<int> randX(0, 30 - 1);
-    uniform_int_distribution<int> randY(0, 31 - 1);
+    uniform_int_distribution<int> randY(1, 31 - 1);
 
     int mushroomSize = (itsBoard.width() / BOARD_WIDTH);
 
@@ -262,13 +261,6 @@ void Game::sliceCentipede(BodyPart* hittedPart, Centipede * centipede)
         int gridX = (posX - itsBoard.x()) / (itsBoard.width() / BOARD_WIDTH);
         int gridY = (posY - itsBoard.y()) / (itsBoard.height() / BOARD_HEIGHT);
 
-        cout << " ---- CENTIPEDE  SLICED ----" << endl
-             << "Hitted part pos: (" << hittedPart->getItsPosition().posX << ", " << hittedPart->getItsPosition().posY << ")" << endl
-             << "Mushroom pos: (" << posX << ", " << posY << ")" << endl
-             << "Mushroom grid pos: (" << gridX << ", " << gridY << ")" << endl
-             << "Board pos: (" << itsBoard.x() << ", " << itsBoard.y() << ")" << endl
-             << " ---------------------------" << endl;
-
         itsMushrooms->push_back(new Mushroom(posX, posY, itsBoard.width() / BOARD_WIDTH, { gridX, gridY }));
 
         // Deletion of the hitted part
@@ -439,12 +431,8 @@ void Game::moveCentipede()
 
         BodyPart* centiHead = centipede->getItsHead();
         centiHead->updatePos();
+
         Position headPos = centiHead->getItsPosition();
-        cout << "new head pos : (" << headPos.posX << ", " << headPos.posY << " | " <<
-                (headPos.posX - itsBoard.x()) / (itsBoard.width() / BOARD_WIDTH) << ", " << (headPos.posY - itsBoard.y()) / (itsBoard.height() / BOARD_HEIGHT) <<
-                ") [ break in (" << (headPos.posX - itsBoard.x()) % (itsBoard.width() / BOARD_WIDTH) << ", " <<
-                (headPos.posY - itsBoard.y()) % (itsBoard.height() / BOARD_HEIGHT) << ") ] L: " << centipede->getWasMovingLeft() <<
-                " - R: " << centipede->getWasMovingRight() << " - V: " << centipede->isVerticalDirection() << endl;
         if (((headPos.posX - itsBoard.x()) % (itsBoard.width() / BOARD_WIDTH) == 0) && ((headPos.posY - itsBoard.y()) % (itsBoard.height() / BOARD_HEIGHT) == 0))
         {
             if (centipede->isVerticalDirection())
@@ -466,7 +454,6 @@ void Game::moveCentipede()
             if (centipedeBoardCollision(centipede, itsCentipedeZone)) centipedeBoardCollision(centipede, itsCentipedeZone);
             if (centipedeMushroomCollision(centipede)) centipedeMushroomCollision(centipede);
 
-            cout << "< " << centipede->getItsDirection().dirX << " | " << centipede->getItsDirection().dirY << " >" << endl;
             centiHead->setItsTargetPos({ headPos.posX + centipede->getItsDirection().dirX * CENTIPEDE_BODYPART_SIZE,
                                          headPos.posY + centipede->getItsDirection().dirY * CENTIPEDE_BODYPART_SIZE});
         }
@@ -496,7 +483,22 @@ bool Game::centipedeBoardCollision(Centipede * centipede, QRect board)
                             centipede->getItsHead()->getNextTarget(centipede->getItsDirection(), (itsBoard.width() / BOARD_WIDTH)).posY,
                             CENTIPEDE_BODYPART_SIZE, CENTIPEDE_BODYPART_SIZE };
 
-    if (headNextHitBox.x() < board.x()) // left side of the board
+    if (centipede->isVerticalDirection())
+    {
+        if (headNextHitBox.y() <= board.y()) // top of the board
+        {
+            centipede->setItsDirection({0, 1}); // Go down
+            centipede->setHasReachedBottom(false);
+            return true;
+        }
+        else if (headNextHitBox.y() + headNextHitBox.height() >= board.y() + board.height()) // bottom of the board
+        {
+            centipede->setItsDirection({0, -1}); // Go up
+            centipede->setHasReachedBottom(true);
+            return true;
+        }
+    }
+    else if (headNextHitBox.x() < board.x()) // left side of the board
     {
         if (!centipede->hasReachedBottom())
         {
@@ -523,22 +525,6 @@ bool Game::centipedeBoardCollision(Centipede * centipede, QRect board)
         centipede->setVerticalDirection(true);
         centipede->setWasMovingRight(true);
         return true;
-    }
-    else if (centipede->isVerticalDirection())
-    {
-        cout << board.width() / BOARD_WIDTH << endl;
-        if (headNextHitBox.y() <= board.y()) // top of the board
-        {
-            centipede->setItsDirection({0, 1}); // Go down
-            centipede->setHasReachedBottom(false);
-            return true;
-        }
-        else if (headNextHitBox.y() - headNextHitBox.height() >= board.y() + board.height()) // bottom of the board
-        {
-            centipede->setItsDirection({1, 0}); // Go up
-            centipede->setHasReachedBottom(true);
-            return true;
-        }
     }
     return false;
 }
@@ -595,6 +581,9 @@ bool Game::centipedeToCentipedeCollision(Centipede * centipede)
             {
                 if (!centipede->isVerticalDirection() && centipede->getItsDirection().dirX == -currentCenti->getItsDirection().dirX)
                 {
+                    BodyPart* prevBP = currentCenti->getItsHead();
+                    prevBP->updatePos();
+
                     for (Centipede* centi: { centipede, currentCenti })
                     {
                         if (centi->getItsDirection().dirX == -1) centi->setWasMovingLeft(true);
@@ -603,6 +592,16 @@ bool Game::centipedeToCentipedeCollision(Centipede * centipede)
                         centipedeBoardCollision(centi, itsCentipedeZone);
                         centi->setVerticalDirection(true);
                     }
+
+                    prevBP->setItsTargetPos({ prevBP->getItsPosition().posX + centipede->getItsDirection().dirX * CENTIPEDE_BODYPART_SIZE,
+                                              prevBP->getItsPosition().posY + centipede->getItsDirection().dirY * CENTIPEDE_BODYPART_SIZE});
+
+                    for (BodyPart* bp = prevBP->getItsChild(); bp != nullptr; bp = bp->getItsChild())
+                    {
+                        bp->updatePos();
+                        bp->setItsTargetPos(prevBP->getItsPosition());
+                    }
+
                     treatedCentipedes->push_back(currentCenti);
                 }
                 return true;

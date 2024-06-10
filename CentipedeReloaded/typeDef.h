@@ -31,7 +31,7 @@ const int CENTIPEDE_SPEED = 1;
 const int CENTIPEDE_LENGTH = 8;
 const int CENTIPEDE_BODYPART_SIZE = 13;
 const int CENTIPEDE_SPAWN_XPOS = 15;
-const int CENTIPEDE_SPAWN_YPOS = 25;
+const int CENTIPEDE_SPAWN_YPOS = 0;
 
 // Variables for player
 const int PLAYER_SPEED = 1; /**< The speed of the player */
@@ -45,7 +45,7 @@ const int BULLET_SPEED = 5; /**< The speed of the bullet */
 const int BULLET_SIZE = 5; /**< The size of the bullet */
 
 // Variables for game
-const int MUSHROOMS_AMOUNT = 0; /**< The number of mushrooms in the game */
+const int MUSHROOMS_AMOUNT = 30; /**< The number of mushrooms in the game */
 const int BOARD_WIDTH = 30; /**< The width of the game board */
 const int BOARD_HEIGHT = 31; /**< The height of the game board */
 
