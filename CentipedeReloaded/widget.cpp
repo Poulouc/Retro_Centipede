@@ -67,7 +67,7 @@ void Widget::paintEvent(QPaintEvent *event)
         QPainter painter(this);
 
         // Paint in light gray the area of the game board
-        painter.fillRect(itsGameBoard, QBrush(Qt::lightGray, Qt::SolidPattern));
+        painter.fillRect(itsGame->getItsBoard(), QBrush(Qt::lightGray, Qt::SolidPattern));
 
         // Draw each entities of the game
         drawCentipede(painter);
@@ -88,11 +88,15 @@ void Widget::resizeEvent(QResizeEvent *event)
     if (itsGame != nullptr)
     {
         // Calculate the size of itsBoard based on the smallest dimension of the window
-        int boardHeight = height() * 95 / 100;
-        int boardWidth = boardHeight / BOARD_WIDTH * BOARD_HEIGHT;
+        int maxHeight = height() * 95 / 100; // 95% of the window height
+        int maxBoardHeight = maxHeight;
+
+        // Find the largest multiple of BOARD_HEIGHT that fits within the available height
+        int boardHeight = (maxBoardHeight / BOARD_HEIGHT) * BOARD_HEIGHT;
+        int boardWidth = boardHeight * BOARD_WIDTH / BOARD_HEIGHT;
         int boardX = width() / 2 - boardWidth / 2;
         int boardY = height() * 5 / 100;
-        itsGameBoard = { boardX, boardY, boardWidth, boardHeight };
+
 
         itsGame->setBoard(QRect(boardX, boardY, boardWidth, boardHeight));
 
@@ -102,6 +106,7 @@ void Widget::resizeEvent(QResizeEvent *event)
         itsPlayerTimer->start(2500 / boardWidth); // Set the speed of the player
     }
 }
+
 
 void Widget::keyPressEvent(QKeyEvent * event)
 {
@@ -278,7 +283,6 @@ void Widget::startGame()
     int boardWidth = boardHeight / BOARD_WIDTH * BOARD_HEIGHT;
     int boardX = width() / 2 - boardWidth / 2;
     int boardY = height() * 5 / 100;
-    itsGameBoard = { boardX, boardY, boardWidth, boardHeight };
 
     itsGame = new Game({ boardX, boardY, boardWidth, boardHeight });
     isGameStarted = true;
