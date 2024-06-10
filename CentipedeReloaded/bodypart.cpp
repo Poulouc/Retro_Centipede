@@ -87,10 +87,10 @@ void BodyPart::updatePos()
     {
         cout << "(" << itsPosition.posX << ", " << itsPosition.posY << ") -> (" <<
                 itsTargetPos.posX << ", " << itsTargetPos.posY << ")" << endl;
-        throw string("Target pos not valid");
+        throw string("L'un des BodyPart ne se déplace plus");
     }
 
-    itsHitBox = {itsPosition.posX, itsPosition.posY, CENTIPEDE_BODYPART_SIZE, CENTIPEDE_BODYPART_SIZE };
+    itsHitBox = { itsPosition.posX, itsPosition.posY, CENTIPEDE_BODYPART_SIZE, CENTIPEDE_BODYPART_SIZE };
 }
 
 Position BodyPart::getNextTarget(Direction centipedeDir, int caseLength)
@@ -98,4 +98,9 @@ Position BodyPart::getNextTarget(Direction centipedeDir, int caseLength)
     int xTarget = itsTargetPos.posX + centipedeDir.dirX * caseLength;
     int yTarget = itsTargetPos.posY + centipedeDir.dirY * caseLength;
     return { xTarget, yTarget };
+}
+
+Position BodyPart::getItsTarget()
+{
+    return itsTargetPos;
 }

@@ -1,5 +1,7 @@
 #include "centipede.h"
 
+using namespace std;
+
 // Constructor for the Centipede class.
 Centipede::Centipede(BodyPart * head)
     : itsHead(head), itsTail(head)
@@ -45,7 +47,7 @@ Position Centipede::getNextPosition(int distance)
 {
     Position nextPos;
     Position currentPos = itsHead->getItsPosition();
-    if(isGoingDown)
+    if (isGoingDown)
     {
         nextPos.posY = currentPos.posY + distance * itsDirection.dirY;
         nextPos.posX = currentPos.posX;
@@ -88,12 +90,26 @@ void Centipede::setItsTail(BodyPart * tail)
 
 void Centipede::setWasMovingRight(bool value)
 {
-    wasMovingRight = value;
+    if (!wasMovingLeft)
+    {
+        wasMovingRight = value;
+    }
+    else
+    {
+        throw string("flag right but left already flagged");
+    }
 }
 
 void Centipede::setWasMovingLeft(bool value)
 {
-    wasMovingLeft = value;
+    if (!wasMovingRight)
+    {
+        wasMovingLeft = value;
+    }
+    else
+    {
+        throw string("flag right but left already flagged");
+    }
 }
 
 bool Centipede::getWasMovingRight()
@@ -105,4 +121,3 @@ bool Centipede::getWasMovingLeft()
 {
     return wasMovingLeft;
 }
-
