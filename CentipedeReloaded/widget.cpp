@@ -39,11 +39,13 @@ Widget::Widget(QWidget *parent)
     connect(ui->playButton, SIGNAL(clicked()), this, SLOT(startGame()));
     connect(ui->back_button, SIGNAL(clicked()), this, SLOT(backToMenu()));
     connect(ui->back_button_2, SIGNAL(clicked()), this, SLOT(backToMenu()));
-    connect(ui->ButtonHowToPlay, SIGNAL(clicked()), this, SLOT(goToHowToPlay()));
-    connect(ui->backButtonToMenuHowToPlay, SIGNAL(clicked()), this, SLOT(backToMenu()));
+    //connect(ui->ButtonHowToPlay, SIGNAL(clicked()), this, SLOT(goToHowToPlay()));
+    //connect(ui->backButtonToMenuHowToPlay, SIGNAL(clicked()), this, SLOT(backToMenu()));
+    connect(ui->resumeGameButton, SIGNAL(clicked()), this, SLOT(resumeGame()));
+    connect(ui->backToMenuButton, SIGNAL(clicked()), this, SLOT(backToMenu()));
 
     //Set steel shits for the ui
-    ui->HowToPlay->setStyleSheet("../../../styleSheets/styleSheetHowtoPlay");
+    //ui->HowToPlay->setStyleSheet("../../../styleSheets/styleSheetHowtoPlay");
 
     // Connect timers to their method
     connect(itsDisplayTimer, SIGNAL(timeout()), this, SLOT(update()));
@@ -67,7 +69,7 @@ void Widget::paintEvent(QPaintEvent *event)
 {
     // Avoid warnings of unused variable of Qt
     Q_UNUSED(event);
-    if (isGameStarted)
+    if (isGameStarted && !isGamePaused)
     {
         QPainter painter(this);
 
@@ -115,6 +117,7 @@ void Widget::resizeEvent(QResizeEvent *event)
 
 void Widget::keyPressEvent(QKeyEvent * event)
 {
+    if(!isGameStarted) return;
     // Handle key press events for Z, Q, S, D and Space keys
     if (event->key() == Qt::Key_Z)
     {
@@ -135,6 +138,17 @@ void Widget::keyPressEvent(QKeyEvent * event)
     if (event->key() == Qt::Key_Space)
     {
         itsGame->shoot();
+    }
+    if (event->key() == Qt::Key_Escape)
+    {
+        if(isGamePaused)
+        {
+            resumeGame();
+        }
+        else
+        {
+            pauseGame();
+        }
     }
 }
 
@@ -161,11 +175,18 @@ void Widget::keyReleaseEvent(QKeyEvent * event)
 
 void Widget::drawPlayer(QPainter & painter)
 {
-    // Draw the player at his position
-    painter.drawImage(itsGame->getItsPlayer()->getItsHitBox(), itsAvatar);
-    /*painter.setPen(Qt::gray);
-    painter.setBrush(Qt::SolidPattern);
-    painter.drawRect(itsGame->getItsPlayer()->getItsHitBox());*/
+    if(SHOW_HITBOXES)
+    {
+        // shows the player hitbox
+        painter.setPen(Qt::gray);
+        painter.setBrush(Qt::SolidPattern);
+        painter.drawRect(itsGame->getItsPlayer()->getItsHitBox());
+    }
+    else
+    {
+        // Draws the player at his position
+        painter.drawImage(itsGame->getItsPlayer()->getItsHitBox(), itsAvatar);
+    }
 }
 
 void Widget::drawMushrooms(QPainter & painter)
@@ -173,57 +194,80 @@ void Widget::drawMushrooms(QPainter & painter)
     //painter.drawImage(0, 0, *itsBackgroundImage);
     for(Mushroom * mushroom : *itsGame->getItsMushrooms())
     {
-        /*painter.setBrush(Qt::SolidPattern);
-        if(mushroom->getItsState() == 4)
+        if(SHOW_HITBOXES)
         {
-            painter.setPen(Qt::red);
-            painter.drawRect(mushroom->getItsHitBox());
+            // displays the mushroom hitbox
+            painter.setBrush(Qt::SolidPattern);
+            if(mushroom->getItsState() == 4)
+            {
+                painter.setPen(Qt::red);
+                painter.drawRect(mushroom->getItsHitBox());
+            }
+            else if(mushroom->getItsState() == 3)
+            {
+                painter.setPen(Qt::magenta);
+                painter.drawRect(mushroom->getItsHitBox());
+            }
+            else if(mushroom->getItsState() == 2)
+            {
+                painter.setPen(Qt::yellow);
+                painter.drawRect(mushroom->getItsHitBox());
+            }
+            else if(mushroom->getItsState() == 1)
+            {
+                painter.setPen(Qt::green);
+                painter.drawRect(mushroom->getItsHitBox());
+            }
         }
-        else if(mushroom->getItsState() == 3)
+        else
         {
-            painter.setPen(Qt::magenta);
-            painter.drawRect(mushroom->getItsHitBox());
+            // displays the mushroom image
+            painter.drawImage(mushroom->getItsHitBox(), itsMushrooms);
         }
-        else if(mushroom->getItsState() == 2)
-        {
-            painter.setPen(Qt::yellow);
-            painter.drawRect(mushroom->getItsHitBox());
-        }
-        else if(mushroom->getItsState() == 1)
-        {
-            painter.setPen(Qt::green);
-            painter.drawRect(mushroom->getItsHitBox());
-        }*/
-        painter.drawImage(mushroom->getItsHitBox(), itsMushrooms);
     }
 }
 
 void Widget::drawCentipede(QPainter & painter)
 {
-    //painter.drawImage(0, 0, itsBackgroundImage);
     for (vector<Centipede *>::iterator it = itsGame->getItsCentipedes()->begin(); it != itsGame->getItsCentipedes()->end(); ++it) {
         BodyPart * currentPart = (*it)->getItsHead();
 
-        // displays the tail
-        painter.drawImage((*it)->getItsTail()->getItsHitBox(), itsCentiBody);
-        /*painter.setPen(Qt::darkGreen);
-        painter.setBrush(Qt::SolidPattern);
-        painter.drawRect((*it)->getItsTail()->getItsHitBox());*/
+        if(SHOW_HITBOXES)
+        {
+            // displays the tail hitbox
+            painter.setPen(Qt::darkGreen);
+            painter.setBrush(Qt::SolidPattern);
+            painter.drawRect((*it)->getItsTail()->getItsHitBox());
 
-        // displays the head
-        painter.drawImage((*it)->getItsHead()->getItsHitBox(), itsCentiHead);
-        /*painter.setPen(Qt::blue);
-        painter.setBrush(Qt::SolidPattern);
-        painter.drawRect((*it)->getItsHead()->getItsHitBox());*/
+            // displays the head hitbox
+            painter.setPen(Qt::blue);
+            painter.setBrush(Qt::SolidPattern);
+            painter.drawRect((*it)->getItsHead()->getItsHitBox());
+        }
+        else
+        {
+            // displays the tail image
+            painter.drawImage((*it)->getItsTail()->getItsHitBox(), itsCentiBody);
+            // displays the head image
+            painter.drawImage((*it)->getItsHead()->getItsHitBox(), itsCentiHead);
+        }
+
         while(currentPart->getItsChild() != nullptr)
         {
             if(currentPart != (*it)->getItsHead())
             {
-                //displays the bodyparts
-                painter.drawImage(currentPart->getItsHitBox(), itsCentiBody);
-                /*painter.setPen(Qt::cyan);
-                painter.setBrush(Qt::SolidPattern);
-                painter.drawRect(currentPart->getItsHitBox());*/
+                if(SHOW_HITBOXES)
+                {
+                    // displays the bodypart hitbox
+                    painter.setPen(Qt::cyan);
+                    painter.setBrush(Qt::SolidPattern);
+                    painter.drawRect(currentPart->getItsHitBox());
+                }
+                else
+                {
+                    // displays the bodypart image
+                    painter.drawImage(currentPart->getItsHitBox(), itsCentiBody);
+                }
             }
             currentPart = currentPart->getItsChild();
         }
@@ -235,10 +279,18 @@ void Widget::drawBullet(QPainter & painter)
     // Check if the bullet exists
     if(itsGame->getItsBullet() != nullptr)
     {
-        //painter.drawRect(itsGame->getItsBullet()->getItsHitBox());
-        painter.setPen(Qt::green);
-        painter.setBrush(Qt::SolidPattern);
-        painter.drawRect(itsGame->getItsBullet()->getItsHitBox());
+        if(SHOW_HITBOXES)
+        {
+            // displays the bullet hitbox
+            painter.setPen(Qt::green);
+            painter.setBrush(Qt::SolidPattern);
+            painter.drawRect(itsGame->getItsBullet()->getItsHitBox());
+        }
+        else
+        {
+            // displays the bullet image
+            painter.drawRect(itsGame->getItsBullet()->getItsHitBox());
+        }
     }
 }
 
@@ -280,8 +332,10 @@ void Widget::movePlayer()
 
 void Widget::startGame()
 {
+    qDebug() << isGameStarted;
     // Set the stacked widget on an empty widget
     ui->stackedWidget->setCurrentIndex(3);
+    this->update();
 
     // Calculate game board
     int boardHeight = height() * 95 / 100;
@@ -313,19 +367,38 @@ void Widget::endGame()
     itsBulletTimer->stop();
     itsCentipedeTimer->stop();
     itsPlayerTimer->stop();
-
     isGameStarted = false;
+    this->update();
+}
 
-    // ---- EXPERIMENTAL ----
-    QPalette bgColor = QPalette();
-    bgColor.setColor(QPalette::Window, Qt::darkGray);
-    setAutoFillBackground(true);
-    setPalette(bgColor);
-    // ----------------------
+void Widget::pauseGame()
+{
+    itsDisplayTimer->stop();
+    itsBulletTimer->stop();
+    itsCentipedeTimer->stop();
+    itsPlayerTimer->stop();
+
+    isGamePaused = true;
+    ui->stackedWidget->setCurrentIndex(4);
+    this->update();
+}
+
+void Widget::resumeGame()
+{
+    itsDisplayTimer->start();
+    itsBulletTimer->start();
+    itsCentipedeTimer->start();
+    itsPlayerTimer->start();
+
+    isGamePaused = false;
+    ui->stackedWidget->setCurrentIndex(3);
 }
 
 void Widget::backToMenu()
 {
+    isGameStarted = false;
+    isGamePaused = false;
+    delete itsGame;
     ui->stackedWidget->setCurrentIndex(0);
 }
 
