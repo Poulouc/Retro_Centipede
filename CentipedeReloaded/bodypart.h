@@ -18,6 +18,7 @@ private:
     QRect itsHitBox = QRect(0, 0, CENTIPEDE_BODYPART_SIZE, CENTIPEDE_BODYPART_SIZE); /**< Rectangle representing the hitbox */
     Position itsPosition = {}; /**< Position of the body part */
     Position itsPreviousPosition = {}; /**< Previous position of the body part */
+    Position itsTargetPos = {};
 
 public:
     /**
@@ -89,6 +90,14 @@ public:
      * @param hitbox is QRect who replace the hitBox.
      */
     void setItsHitBox(QRect hitbox);
+
+    void setItsTargetPos(Position targetPos);
+
+    void updatePos();
+
+    Position getNextTarget(Direction centiedeDir, int caseLength);
+
+    Position getItsTarget();
 };
 
 #endif // BODYPART_H
