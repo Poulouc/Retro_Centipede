@@ -56,6 +56,7 @@ void Game::spawnCentipede()
         newPos.posX = newPos.posX + CENTIPEDE_BODYPART_SIZE;
         newPart->setItsPosition(newPos);
         newPart->setItsTargetPos(oldPos);
+
         currentPart->setItsChild(newPart);
         newPart->setItsParent(currentPart);
         currentPart = newPart;
@@ -128,9 +129,10 @@ void Game::shoot()
 {
     if (itsBullet == nullptr)
     {
-        int newX = itsPlayer->getItsPosition().posX + (itsBoard.width() / BOARD_WIDTH) / 2 - BULLET_SIZE / 2;
+        int bulletSize = itsBoard.width()/100;
+        int newX = itsPlayer->getItsPosition().posX + (itsBoard.width() / BOARD_WIDTH) / 2 - bulletSize / 2;
         int newY = itsPlayer->getItsPosition().posY;
-        itsBullet = new Bullet(newX, newY);
+        itsBullet = new Bullet(newX, newY, bulletSize);
     }
 }
 
@@ -331,12 +333,14 @@ QRect Game::getItsBoard()
 void Game::setBoard(QRect board)
 {
     //set the size of the mushrooms and their new placement
+    int CellWidth = board.width()/BOARD_WIDTH;
+    int CellHeight = board.height()/BOARD_HEIGHT;
     for (vector<Mushroom*>::iterator it = itsMushrooms->begin(); it < itsMushrooms->end(); it++)
     {
-        (*it)->setItsHitBox(QRect((board.x() + (*it)->getItsGridPosition().posX * (board.width()/BOARD_WIDTH)),
-                                  (board.y() + (*it)->getItsGridPosition().posY * (board.width()/BOARD_WIDTH)),
-                                  board.width()/BOARD_WIDTH,
-                                  board.width()/BOARD_WIDTH));
+        (*it)->setItsHitBox(QRect(board.x() + CellWidth * (*it)->getItsGridPosition().posX,
+                                  board.y() + CellWidth * (*it)->getItsGridPosition().posY,
+                                  CellWidth,
+                                  CellWidth));
     }
     //set the playerZone
     itsPlayerZone = QRect(board.x(),
@@ -345,13 +349,13 @@ void Game::setBoard(QRect board)
                           board.height() / 5);
 
     //set the size of the player and the new placement on the board
-    itsPlayer->setItsHitBox(QRect(itsPlayerZone.x() + itsPlayerZone.width()/2 - (board.width() / BOARD_WIDTH)/2,
-                                  itsPlayerZone.y() + itsPlayerZone.height() - (board.height() / BOARD_HEIGHT) - itsPlayerZone.height()/20,
-                                  board.width()/BOARD_WIDTH,
-                                  board.width()/BOARD_WIDTH));
+    itsPlayer->setItsHitBox(QRect(itsPlayerZone.x() + itsPlayerZone.width()/2 - CellWidth/2,
+                                  itsPlayerZone.y() + itsPlayerZone.height() - CellHeight - itsPlayerZone.height()/20,
+                                  CellWidth,
+                                  CellWidth));
     //set the position of the player
-    itsPlayer->setItsPosition({itsPlayerZone.x() + itsPlayerZone.width()/2 - (board.width() / BOARD_WIDTH)/2,
-                               itsPlayerZone.y() + itsPlayerZone.height() - (board.height() / BOARD_HEIGHT) - itsPlayerZone.height()/20});
+    itsPlayer->setItsPosition({itsPlayerZone.x() + itsPlayerZone.width()/2 - CellWidth/2,
+                               itsPlayerZone.y() + itsPlayerZone.height() - CellHeight - itsPlayerZone.height()/20});
 
     // Update centipede segments for proportional resizing
     for (vector<Centipede *>::iterator it = itsCentipedes->begin(); it != itsCentipedes->end(); ++it)
@@ -364,15 +368,13 @@ void Game::setBoard(QRect board)
             int newY = board.y() + ((currentPart->getItsHitBox().y() - itsBoard.y() + 0.5) * board.height()) / itsBoard.height();
 
             // Update the hitbox and position of the segment
-            currentPart->setItsHitBox({newX, newY, (board.width() / BOARD_WIDTH), (board.height() / BOARD_HEIGHT)});
+            currentPart->setItsHitBox({newX, newY, CellWidth, CellWidth});
             currentPart->setItsPosition({newX, newY});
 
             // Move to the next segment
             currentPart = currentPart->getItsChild();
         }
     }
-
-    // pour le tir aussi
 
     //set the board
     itsBoard = board;

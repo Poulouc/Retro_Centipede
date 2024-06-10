@@ -42,11 +42,12 @@ const int MUSHROOM_SIZE = 10; /**< The size of the mushroom */
 
 // Variables for bullet
 const int BULLET_SPEED = 5; /**< The speed of the bullet */
-const int BULLET_SIZE = 5; /**< The size of the bullet */
 
 // Variables for game
 const int MUSHROOMS_AMOUNT = 30; /**< The number of mushrooms in the game */
 const int BOARD_WIDTH = 30; /**< The width of the game board */
 const int BOARD_HEIGHT = 31; /**< The height of the game board */
+
+const bool SHOW_HITBOXES = true;
 
 #endif // TYPEDEF_H

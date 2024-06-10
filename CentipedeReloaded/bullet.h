@@ -22,7 +22,7 @@ public:
      * @param x The x-coordinate of the bullet's initial position.
      * @param y The y-coordinate of the bullet's initial position.
      */
-    Bullet(int x, int y);
+    Bullet(int x, int y, int size);
 
     /**
      * @brief Destructor for the Bullet class.
@@ -45,6 +45,16 @@ public:
      * @return The position of the bullet.
      */
     Position getItsPosition();
+
+    /**
+     * @brief Sets the position of the bullet.
+     */
+    void setItsPosition(Position position);
+
+    /**
+     * @brief Sets the hitbox of the bullet.
+     */
+    void setItsHitBox(QRect hitbox);
 };
 
 #endif // BULLET_H

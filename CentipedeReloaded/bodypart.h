@@ -85,6 +85,12 @@ public:
      */
     void addChild(BodyPart* child);
 
+    /**
+     * @brief Adds a set the hitBox of the bodyPart.
+     * @param hitbox is QRect who replace the hitBox.
+     */
+    void setItsHitBox(QRect hitbox);
+
     void setItsTargetPos(Position targetPos);
 
     void updatePos();
@@ -92,12 +98,6 @@ public:
     Position getNextTarget(Direction centiedeDir, int caseLength);
 
     Position getItsTarget();
-
-    /**
-     * @brief Adds a set the hitBox of the bodyPart.
-     * @param hitbox is QRect who replace the hitBox.
-     */
-    void setItsHitBox(QRect hitbox);
 };
 
 #endif // BODYPART_H

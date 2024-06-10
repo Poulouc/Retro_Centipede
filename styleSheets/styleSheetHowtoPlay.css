@@ -1,0 +1,36 @@
+/* Style pour le conteneur rectangle */
+#container {
+    background-color: #145A32; /* Vert foncé */
+    border-radius: 10px; /* Coins arrondis */
+    padding: 20px; /* Espacement intérieur */
+}
+
+/* Style pour le texte à l'intérieur du rectangle */
+#text {
+    color: #82E0AA; /* Vert clair */
+    font-size: 18px;
+}
+
+/* Style pour les boutons */
+QPushButton {
+    color: #145A32; /* Texte en vert foncé */
+    background-color: #82E0AA; /* Fond en vert clair */
+    border: 2px solid #145A32; /* Bordure en vert foncé */
+    border-radius: 15px; /* Coins arrondis */
+    padding: 10px 20px; /* Espacement intérieur */
+    font-size: 16px;
+}
+
+/* Style pour les boutons lorsqu'ils sont survolés */
+QPushButton:hover {
+    background-color: #58D68D; /* Fond en vert plus clair */
+    border: 2px solid #145A32; /* Bordure en vert foncé */
+    color: #145A32; /* Texte en vert foncé */
+}
+
+/* Style pour les boutons lorsqu'ils sont pressés */
+QPushButton:pressed {
+    background-color: #145A32; /* Fond en vert foncé */
+    border: 2px solid #145A32; /* Bordure en vert foncé */
+    color: #82E0AA; /* Texte en vert clair */
+}
