@@ -320,33 +320,41 @@ void Widget::movePlayer()
     itsGame->movePlayer(itsPlayerDirection);
 }
 
-void Widget::startGame()
+void Widget::startGame(int level)
 {
-    qDebug() << isGameStarted;
-    // Set the stacked widget on an empty widget
-    ui->stackedWidget->setCurrentIndex(3);
-    this->update();
-
-    // Calculate game board
     int boardHeight = height() * 95 / 100;
     int boardWidth = boardHeight / BOARD_WIDTH * BOARD_HEIGHT;
-    int boardX = width() / 2 - boardWidth / 2;
-    int boardY = height() * 5 / 100;
-    itsGameBoard = { boardX, boardY, boardWidth, boardHeight };
+    int baseCentipedeTimer = (4000 / boardWidth);
+    itsCentipedeTimer->start(baseCentipedeTimer - level/10); // set the speed of it
+    if(!isGameStarted)
+    {
+        // Set the stacked widget on an empty widget
+        ui->stackedWidget->setCurrentIndex(3);
+        this->update();
 
-    itsGame = new Game({ boardX, boardY, boardWidth, boardHeight });
-    isGameStarted = true;
-    itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
-    itsCentipedeTimer->start(4000 / boardWidth); // set the speed of it
-    itsBulletTimer->start(3000 / boardHeight); // Set the speed of the bullet
-    itsPlayerTimer->start(2500 / boardWidth); // Set the speed of the player
+        // Calculate game board
+        int boardX = width() / 2 - boardWidth / 2;
+        int boardY = height() * 5 / 100;
+        itsGameBoard = { boardX, boardY, boardWidth, boardHeight };
+
+        itsGame = new Game({ boardX, boardY, boardWidth, boardHeight });
+        isGameStarted = true;
+        itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
+        itsBulletTimer->start(3000 / boardHeight); // Set the speed of the bullet
+        itsPlayerTimer->start(2500 / boardWidth); // Set the speed of the player
+    }
+    else
+    {
+        itsGame->spawnCentipede();
+    }
 }
 
 void Widget::endGame()
 {
-    if (itsGame->isGameWon())
+    if (itsGame->isLevelWon())
     {
-        ui->stackedWidget->setCurrentIndex(1);
+        startGame(itsGame->getCurrentLevel());
+        return;
     }
     else if (itsGame->isGameLosed())
     {
