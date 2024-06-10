@@ -39,6 +39,11 @@ Widget::Widget(QWidget *parent)
     connect(ui->playButton, SIGNAL(clicked()), this, SLOT(startGame()));
     connect(ui->back_button, SIGNAL(clicked()), this, SLOT(backToMenu()));
     connect(ui->back_button_2, SIGNAL(clicked()), this, SLOT(backToMenu()));
+    connect(ui->ButtonHowToPlay, SIGNAL(clicked()), this, SLOT(goToHowToPlay()));
+    connect(ui->backButtonToMenuHowToPlay, SIGNAL(clicked()), this, SLOT(backToMenu()));
+
+    //Set steel shits for the ui
+    ui->HowToPlay->setStyleSheet("../../../styleSheets/styleSheetHowtoPlay");
 
     // Connect timers to their method
     connect(itsDisplayTimer, SIGNAL(timeout()), this, SLOT(update()));
@@ -322,6 +327,11 @@ void Widget::endGame()
 void Widget::backToMenu()
 {
     ui->stackedWidget->setCurrentIndex(0);
+}
+
+void Widget::goToHowToPlay()
+{
+    ui->stackedWidget->setCurrentIndex(5);
 }
 
 void Widget::moveCentipede()
