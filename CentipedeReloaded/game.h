@@ -30,6 +30,8 @@ private:
     Player* itsPlayer; /**< Pointer to the player */
     QRect itsBoard; /**< Rectangle representing the game board */
     QRect itsPlayerZone; /**< Rectangle representing the player's zone */
+    QRect itsCentipedeZone;
+    std::vector<Centipede*>* treatedCentipedes;
 
 public:
     /**
@@ -169,6 +171,13 @@ public:
      * @return True if a collision is detected, otherwise false.
      */
     bool centipedeMushroomCollision(Centipede * centipede);
+
+    /**
+     * @brief Manages collision between two centipedes
+     * @param centipede Pointer to the centipede.
+     * @return True if there is a collision, otherwise false.
+     */
+    bool centipedeToCentipedeCollision(Centipede * centipede);
 
     /**
      * @brief Checks if the game has been won.

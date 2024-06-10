@@ -18,6 +18,7 @@ private:
     QRect itsHitBox = QRect(0, 0, CENTIPEDE_BODYPART_SIZE, CENTIPEDE_BODYPART_SIZE); /**< Rectangle representing the hitbox */
     Position itsPosition = {}; /**< Position of the body part */
     Position itsTargetPos = {};
+    Position itsPreviousPosition = {}; /**< Previous position of the body part */
 
 public:
     /**
@@ -35,6 +36,12 @@ public:
      * @return The position of the body part.
      */
     Position getItsPosition();
+
+    /**
+     * @brief Gets the previous position of the body part.
+     * @return The previous position of the body part.
+     */
+    Position getItsPreviousPosition();
 
     /**
      * @brief Gets the child body part.
@@ -85,6 +92,12 @@ public:
     Position getNextTarget(Direction centiedeDir, int caseLength);
 
     Position getItsTarget();
+
+    /**
+     * @brief Adds a set the hitBox of the bodyPart.
+     * @param hitbox is QRect who replace the hitBox.
+     */
+    void setItsHitBox(QRect hitbox);
 };
 
 #endif // BODYPART_H
