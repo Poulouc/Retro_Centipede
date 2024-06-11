@@ -463,7 +463,6 @@ void Widget::spiderAppear()
         if (chance < itsSpiderAppearProbability) {
             itsGame->createSpider();
             itsSpiderTimer->start(4000 / itsGame->getItsBoard().width());
-            cout << "Spider Appear!" << endl;
             // Réinitialiser la probabilité et le temps écoulé
             itsSpiderAppearTimer->stop();
             itsSpiderAppearProbability = 5;

@@ -276,13 +276,6 @@ void Game::sliceCentipede(BodyPart* hittedPart, Centipede * centipede)
         int gridX = (posX - itsBoard.x()) / (itsBoard.width() / BOARD_WIDTH);
         int gridY = (posY - itsBoard.y()) / (itsBoard.height() / BOARD_HEIGHT);
 
-        //cout << " ---- CENTIPEDE  SLICED ----" << endl
-             //<< "Hitted part pos: (" << hittedPart->getItsPosition().posX << ", " << hittedPart->getItsPosition().posY << ")" << endl
-             //<< "Mushroom pos: (" << posX << ", " << posY << ")" << endl
-             //<< "Mushroom grid pos: (" << gridX << ", " << gridY << ")" << endl
-             //<< "Board pos: (" << itsBoard.x() << ", " << itsBoard.y() << ")" << endl
-             //<< " ---------------------------" << endl;
-
         itsMushrooms->push_back(new Mushroom(posX, posY, itsBoard.width() / BOARD_WIDTH, { gridX, gridY }));
 
         // Deletion of the hitted part
@@ -461,12 +454,6 @@ void Game::moveCentipede()
         BodyPart* centiHead = centipede->getItsHead();
         centiHead->updatePos();
         Position headPos = centiHead->getItsPosition();
-        /**
-        cout << "new head pos : (" << headPos.posX << ", " << headPos.posY <<
-                ") [ break in (" << (headPos.posX - itsBoard.x()) % (itsBoard.width() / BOARD_WIDTH) << ", " <<
-                (headPos.posY - itsBoard.y()) % (itsBoard.height() / BOARD_HEIGHT) << ") ] L: " << centipede->getWasMovingLeft() <<
-                " - R: " << centipede->getWasMovingRight() << " - V: " << centipede->isVerticalDirection() << endl;
-        **/
         if (((headPos.posX - itsBoard.x()) % (itsBoard.width() / BOARD_WIDTH) == 0) && ((headPos.posY - itsBoard.y()) % (itsBoard.height() / BOARD_HEIGHT) == 0))
         {
             if (centipede->isVerticalDirection())
@@ -490,7 +477,6 @@ void Game::moveCentipede()
             centipedeBoardCollision(centipede, zone);
             if (centipedeMushroomCollision(centipede)) centipedeMushroomCollision(centipede);
 
-            //cout << "< " << centipede->getItsDirection().dirX << " | " << centipede->getItsDirection().dirY << " >" << endl;
             centiHead->setItsTargetPos({ headPos.posX + centipede->getItsDirection().dirX * CENTIPEDE_BODYPART_SIZE,
                                          headPos.posY + centipede->getItsDirection().dirY * CENTIPEDE_BODYPART_SIZE});
         }
