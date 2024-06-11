@@ -35,6 +35,7 @@ private:
     QRect itsPlayerZone; /**< Rectangle representing the player's zone */
     int itsCurrentLevel = 1; /**< The current level */
     bool isRafaleActive = false; /** Flag indicating wether the 'rafale' powerup is active */
+    bool isPiercingActive = false; /** Flag indicating wether the 'transperçant' powerup is active */
 
 public:
     /**
@@ -218,10 +219,22 @@ public:
     bool getIsRafaleActive();
 
     /**
+     * @brief Checks if the piercing powerup is active.
+     * @return True if the piercing powerup is active, otherwise false.
+     */
+    bool getIsPiercingActive();
+
+    /**
      * @brief Sets isRafaleActive to the given state.
      * @param isActive The state to set isRafaleActive to.
      */
     void setIsRafaleActive(bool isActive);
+
+    /**
+     * @brief Sets isPiercingActive to the given state.
+     * @param isActive The state to set isPiercingActive to.
+     */
+    void setIsPiercingActive(bool isActive);
 
     /**
      * @brief Moves the centipede.

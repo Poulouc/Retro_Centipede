@@ -45,13 +45,15 @@ const int MUSHROOM_SIZE = 10; /**< The size of the mushroom */
 const int BULLET_SPEED = 5; /**< The speed of the bullet */
 
 // Variables for game
-const int MUSHROOMS_AMOUNT = 0; /**< The number of mushrooms in the game */
+const int MUSHROOMS_AMOUNT = 90; /**< The number of mushrooms in the game */
 const int BOARD_WIDTH = 30; /**< The width of the game board */
 const int BOARD_HEIGHT = 31; /**< The height of the game board */
 
+// Variables for powerups
 const int POWERUP_DROPRATE = 100; /**< The chance in percent for a powerup to appear when a mushroom is broken by a bullet */
 const int POWERUP_RAFALE_DURATION = 4; /**< The duration in seconds of the 'rafale' powerup */
 const int POWERUP_RAFALE_FIRERATE = 4; /**< The number of shots per second of the 'rafale' powerup */
+const int POWERUP_PIERCING_DURATION = 5; /**< The duration in second of the 'piercing' powerup */
 
 const bool SHOW_HITBOXES = true;
 

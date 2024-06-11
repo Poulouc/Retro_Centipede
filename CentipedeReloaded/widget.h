@@ -160,6 +160,11 @@ private slots:
      */
     void rafaleShot();
 
+    /**
+     * @brief Called when the 'piercing' powerup ends.
+     */
+    void piercingEnd();
+
 private:
     Ui::Widget *ui; /**< The UI object */
     QTimer * itsDisplayTimer = nullptr; /**< Timer for updating the display */
@@ -168,6 +173,7 @@ private:
     QTimer * itsPlayerTimer = nullptr; /**< Timer for moving the player */
     QTimer * itsPowerUpMovementTimer = nullptr; /**< Timer for moving powerups */
     QTimer * itsRafaleTimer = nullptr; /**< Timer for the powerup 'Rafale' */
+    QTimer * itsPiercingTimer = nullptr; /**< Timer for the powerup 'Piercing' */
     Game * itsGame = nullptr; /**< Pointer to the game object */
     QImage itsCentiHead; /**< Image of the centipede head */
     QImage itsCentiBody; /**< Image of the centipede body */

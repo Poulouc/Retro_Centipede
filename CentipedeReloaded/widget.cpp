@@ -26,6 +26,7 @@ Widget::Widget(QWidget *parent)
     itsPlayerTimer = new QTimer(this);
     itsPowerUpMovementTimer = new QTimer(this);
     itsRafaleTimer = new QTimer(this);
+    itsPiercingTimer = new QTimer(this);
 
     // Loading assets
     itsCentiBody.load("../../../imageDoss/centibody.png");
@@ -56,6 +57,7 @@ Widget::Widget(QWidget *parent)
     connect(itsCentipedeTimer, SIGNAL(timeout()), this, SLOT(moveCentipede()));
     connect(itsPowerUpMovementTimer, SIGNAL(timeout()), this, SLOT(movePowerUps()));
     connect(itsRafaleTimer, SIGNAL(timeout()), this, SLOT(rafaleShot()));
+    connect(itsPiercingTimer, SIGNAL(timeout()), this, SLOT(piercingEnd()));
 }
 
 Widget::~Widget()
@@ -66,6 +68,9 @@ Widget::~Widget()
     delete itsCentipedeTimer;
     delete itsDisplayTimer;
     delete itsPlayerTimer;
+    delete itsPowerUpMovementTimer;
+    delete itsRafaleTimer;
+    delete itsPiercingTimer;
     delete itsGame;
 }
 
@@ -368,6 +373,10 @@ void Widget::movePowerUps()
         remainingRafaleShots = POWERUP_RAFALE_FIRERATE * POWERUP_RAFALE_DURATION;
         itsRafaleTimer->start(1000/POWERUP_RAFALE_FIRERATE);
     }
+    if(itsGame->getIsPiercingActive() && !itsPiercingTimer->isActive())
+    {
+        itsPiercingTimer->start(1000*POWERUP_PIERCING_DURATION);
+    }
 }
 
 void Widget::startGame(int level)
@@ -418,6 +427,8 @@ void Widget::endGame()
     itsCentipedeTimer->stop();
     itsPlayerTimer->stop();
     itsPowerUpMovementTimer->stop();
+    itsRafaleTimer->stop();
+    itsPiercingTimer->stop();
     isGameStarted = false;
     this->update();
 }
@@ -476,4 +487,10 @@ void Widget::rafaleShot()
         itsGame->shoot();
         remainingRafaleShots--;
     }
+}
+
+void Widget::piercingEnd()
+{
+    itsGame->setIsPiercingActive(false);
+    itsPiercingTimer->stop();
 }

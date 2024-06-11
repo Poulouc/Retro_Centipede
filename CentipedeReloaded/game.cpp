@@ -252,7 +252,7 @@ void Game::checkCollisions()
                     itsMushrooms->erase(mit);
                     delete mushroom;
                 }
-                toDelete.push_back(bit);
+                if(!isPiercingActive) toDelete.push_back(bit);
                 break;
             }
         }
@@ -275,6 +275,7 @@ void Game::checkCollisions()
                 isRafaleActive = true;
                 break;
             case transpercant:
+                isPiercingActive = true;
                 break;
             case herbicide:
                 break;
@@ -314,8 +315,11 @@ void Game::checkCollisions()
                     BodyPart * newTail = centiPart->getItsParent();
                     sliceCentipede(centiPart, centipede);
                     centipede->setItsTail(newTail);
-                    itsBullets.erase(bit);
-                    delete bullet;
+                    if(!isPiercingActive)
+                    {
+                        itsBullets.erase(bit);
+                        delete bullet;
+                    }
                     return;
                 }
             }
@@ -459,9 +463,19 @@ bool Game::getIsRafaleActive()
     return isRafaleActive;
 }
 
+bool Game::getIsPiercingActive()
+{
+    return isPiercingActive;
+}
+
 void Game::setIsRafaleActive(bool isActive)
 {
     isRafaleActive = isActive;
+}
+
+void Game::setIsPiercingActive(bool isActive)
+{
+    isPiercingActive = isActive;
 }
 
 void Game::setBoard(QRect board)
