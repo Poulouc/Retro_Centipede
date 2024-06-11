@@ -176,7 +176,8 @@ private:
     Direction itsPlayerDirection; /**< Direction of the player */
     QRect itsGameBoard; /**< Rectangle representing the game board */
     bool isGameStarted = false; /**< Flag indicating whether the game has started */
-    bool isGamePaused = false;
+    bool isGamePaused = false; /**< Flag indicating wether the game is paused */
+    int remainingRafaleShots; /** Number of shots remaining for the rafale powerup */
 };
 
 #endif // WIDGET_H

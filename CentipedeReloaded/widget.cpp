@@ -25,6 +25,7 @@ Widget::Widget(QWidget *parent)
     itsBulletTimer = new QTimer(this);
     itsPlayerTimer = new QTimer(this);
     itsPowerUpMovementTimer = new QTimer(this);
+    itsRafaleTimer = new QTimer(this);
 
     // Loading assets
     itsCentiBody.load("../../../imageDoss/centibody.png");
@@ -141,7 +142,7 @@ void Widget::keyPressEvent(QKeyEvent * event)
     }
     if (event->key() == Qt::Key_Space)
     {
-        itsGame->shoot();
+        if(!itsGame->getIsRafaleActive()) itsGame->shoot();
     }
     if (event->key() == Qt::Key_Escape)
     {
@@ -281,19 +282,19 @@ void Widget::drawCentipede(QPainter & painter)
 void Widget::drawBullet(QPainter & painter)
 {
     // Check if the bullet exists
-    if(itsGame->getItsBullet() != nullptr)
+    for(Bullet* bullet : itsGame->getItsBullets())
     {
         if(SHOW_HITBOXES)
         {
             // displays the bullet hitbox
             painter.setPen(Qt::green);
             painter.setBrush(Qt::SolidPattern);
-            painter.drawRect(itsGame->getItsBullet()->getItsHitBox());
+            painter.drawRect(bullet->getItsHitBox());
         }
         else
         {
             // displays the bullet image
-            painter.drawRect(itsGame->getItsBullet()->getItsHitBox());
+            painter.drawRect(bullet->getItsHitBox());
         }
     }
 }
@@ -309,9 +310,11 @@ void Widget::drawPowerUps(QPainter & painter)
             case rafale:
                 painter.setPen(Qt::black);
                 painter.setBrush(Qt::SolidPattern);
+                break;
             case transpercant:
                 painter.setPen(Qt::yellow);
                 painter.setBrush(Qt::SolidPattern);
+                break;
             case herbicide:
                 painter.setPen(Qt::green);
                 painter.setBrush(Qt::SolidPattern);
@@ -345,7 +348,7 @@ void Widget::drawHeadUpDisplay(QPainter & painter)
 
 void Widget::moveBullet()
 {
-    if(itsGame->getItsBullet() != nullptr) itsGame->moveBullet();
+    itsGame->moveBullets();
 
     // ---- EXPERIMENTAL ----
     itsGame->checkCollisions();
@@ -360,6 +363,11 @@ void Widget::movePlayer()
 void Widget::movePowerUps()
 {
     itsGame->movePowerUps();
+    if(itsGame->getIsRafaleActive() && !itsRafaleTimer->isActive())
+    {
+        remainingRafaleShots = POWERUP_RAFALE_FIRERATE * POWERUP_RAFALE_DURATION;
+        itsRafaleTimer->start(1000/POWERUP_RAFALE_FIRERATE);
+    }
 }
 
 void Widget::startGame(int level)
@@ -458,5 +466,14 @@ void Widget::moveCentipede()
 
 void Widget::rafaleShot()
 {
-
+    if(remainingRafaleShots == 0)
+    {
+        itsGame->setIsRafaleActive(false);
+        itsRafaleTimer->stop();
+    }
+    else
+    {
+        itsGame->shoot();
+        remainingRafaleShots--;
+    }
 }

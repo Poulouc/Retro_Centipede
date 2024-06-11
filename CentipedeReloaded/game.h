@@ -28,13 +28,13 @@ private:
     int itsScore; /**< The game score */
     std::vector<Centipede*>* itsCentipedes; /**< Pointer to the vector of centipedes */
     std::vector<Mushroom*>* itsMushrooms; /**< Pointer to the vector of mushrooms */
-    std::vector<PowerUp*> itsPowerups;
-    Bullet* itsBullet; /**< Pointer to the bullet */
+    std::vector<PowerUp*> itsPowerups; /**< Vector containing all active powerups */
+    std::vector<Bullet*> itsBullets; /**< Vector containing bullets */
     Player* itsPlayer; /**< Pointer to the player */
     QRect itsBoard; /**< Rectangle representing the game board */
     QRect itsPlayerZone; /**< Rectangle representing the player's zone */
-    int itsCurrentLevel = 1;
-    bool isRafaleActive = false;
+    int itsCurrentLevel = 1; /**< The current level */
+    bool isRafaleActive = false; /** Flag indicating wether the 'rafale' powerup is active */
 
 public:
     /**
@@ -64,9 +64,9 @@ public:
     void shoot();
 
     /**
-     * @brief Moves the bullet.
+     * @brief Moves the bullets.
      */
-    void moveBullet();
+    void moveBullets();
 
     /**
      * @brief Checks for collision between a mushroom and the player.
@@ -144,10 +144,10 @@ public:
     std::vector<Mushroom*>* getItsMushrooms();
 
     /**
-     * @brief Gets the bullet.
-     * @return Pointer to the bullet.
+     * @brief Gets the bullet vector.
+     * @return Vector containing all bullets.
      */
-    Bullet* getItsBullet();
+    std::vector<Bullet*> getItsBullets();
 
     /**
      * @brief Gets the player.
@@ -210,6 +210,18 @@ public:
      * @return True if the game has been lost, otherwise false.
      */
     bool isGameLosed();
+
+    /**
+     * @brief Checks if the rafale powerup is active.
+     * @return True if the rafale powerup is active, otherwise false.
+     */
+    bool getIsRafaleActive();
+
+    /**
+     * @brief Sets isRafaleActive to the given state.
+     * @param isActive The state to set isRafaleActive to.
+     */
+    void setIsRafaleActive(bool isActive);
 
     /**
      * @brief Moves the centipede.
