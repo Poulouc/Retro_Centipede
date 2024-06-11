@@ -57,4 +57,8 @@ const int POWERUP_PIERCING_DURATION = 5; /**< The duration in second of the 'pie
 
 const bool SHOW_HITBOXES = true;
 
+//Variable for the Spider
+const int INCREMENT_INTERVAL = 5;
+const int SPIDER_SPEED = 1;
+
 #endif // TYPEDEF_H

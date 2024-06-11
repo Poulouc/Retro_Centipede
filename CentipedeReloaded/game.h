@@ -15,6 +15,7 @@
 #include "typeDef.h"
 #include "powerup.h"
 #include <random>
+#include "spider.h"
 
 /**
  * @class Game
@@ -36,6 +37,7 @@ private:
     int itsCurrentLevel = 1; /**< The current level */
     bool isRafaleActive = false; /** Flag indicating wether the 'rafale' powerup is active */
     bool isPiercingActive = false; /** Flag indicating wether the 'transperçant' powerup is active */
+    Spider* itsSpider;
 
 public:
     /**
@@ -211,7 +213,6 @@ public:
      * @return True if the game has been lost, otherwise false.
      */
     bool isGameLosed();
-
     /**
      * @brief Checks if the rafale powerup is active.
      * @return True if the rafale powerup is active, otherwise false.
@@ -248,6 +249,22 @@ public:
      * @return True if a collision is detected, otherwise false.
      */
     bool centipedeBoardCollision(Centipede * centipede, QRect board);
+
+    /**
+     * @brief createSpider make appear the spider
+     */
+    void createSpider();
+
+    /**
+     * @brief Gets the spider.
+     * @return Pointer to the spider.
+     */
+    Spider * getItsSpider();
+
+    /**
+     * @brief Moves the spider.
+     */
+    void moveSpider();
 };
 
 #endif // GAME_H

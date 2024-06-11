@@ -105,6 +105,11 @@ protected:
     void drawHeadUpDisplay(QPainter & painter);
 
     /**
+     * @brief Draws the spider display on the widget using QPainter.
+     * @param painter The QPainter object used for drawing.
+     */
+    void drawSpider(QPainter & painter);
+    /**
      * @brief Pauses the game and its timers.
      */
     void pauseGame();
@@ -165,6 +170,12 @@ private slots:
      */
     void piercingEnd();
 
+
+    void moveSpider();
+
+
+    void spiderAppear();
+
 private:
     Ui::Widget *ui; /**< The UI object */
     QTimer * itsDisplayTimer = nullptr; /**< Timer for updating the display */
@@ -174,6 +185,8 @@ private:
     QTimer * itsPowerUpMovementTimer = nullptr; /**< Timer for moving powerups */
     QTimer * itsRafaleTimer = nullptr; /**< Timer for the powerup 'Rafale' */
     QTimer * itsPiercingTimer = nullptr; /**< Timer for the powerup 'Piercing' */
+    QTimer * itsSpiderAppearTimer = nullptr;
+    QTimer * itsSpiderTimer = nullptr;
     Game * itsGame = nullptr; /**< Pointer to the game object */
     QImage itsCentiHead; /**< Image of the centipede head */
     QImage itsCentiBody; /**< Image of the centipede body */
@@ -183,7 +196,9 @@ private:
     QRect itsGameBoard; /**< Rectangle representing the game board */
     bool isGameStarted = false; /**< Flag indicating whether the game has started */
     bool isGamePaused = false; /**< Flag indicating wether the game is paused */
-    int remainingRafaleShots; /** Number of shots remaining for the rafale powerup */
+    int remainingRafaleShots; /**< Number of shots remaining for the rafale powerup */
+    int itsElapsedTime;
+    int itsSpiderAppearProbability;
 };
 
 #endif // WIDGET_H

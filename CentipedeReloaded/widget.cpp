@@ -27,6 +27,8 @@ Widget::Widget(QWidget *parent)
     itsPowerUpMovementTimer = new QTimer(this);
     itsRafaleTimer = new QTimer(this);
     itsPiercingTimer = new QTimer(this);
+    itsSpiderAppearTimer = new QTimer(this);
+    itsSpiderTimer = new QTimer(this);
 
     // Loading assets
     itsCentiBody.load("../../../imageDoss/centibody.png");
@@ -58,6 +60,8 @@ Widget::Widget(QWidget *parent)
     connect(itsPowerUpMovementTimer, SIGNAL(timeout()), this, SLOT(movePowerUps()));
     connect(itsRafaleTimer, SIGNAL(timeout()), this, SLOT(rafaleShot()));
     connect(itsPiercingTimer, SIGNAL(timeout()), this, SLOT(piercingEnd()));
+    connect(itsSpiderAppearTimer, SIGNAL(timeout()), this, SLOT(spiderAppear()));
+    connect(itsSpiderTimer, SIGNAL(timeout()), this, SLOT(moveSpider()));
 }
 
 Widget::~Widget()
@@ -92,6 +96,7 @@ void Widget::paintEvent(QPaintEvent *event)
         drawMushrooms(painter);
         drawPowerUps(painter);
         drawHeadUpDisplay(painter);
+        drawSpider(painter);
 
         // Check if the game has ended
         endGame();
@@ -121,6 +126,10 @@ void Widget::resizeEvent(QResizeEvent *event)
         itsCentipedeTimer->start(4000 / boardWidth); // set the speed of it
         itsBulletTimer->start(3000 / boardHeight); // Set the speed of the bullet
         itsPlayerTimer->start(2500 / boardWidth); // Set the speed of the player
+        if(itsGame->getItsSpider() != nullptr)
+        {
+            itsSpiderTimer->start(4000 / boardWidth);
+        }
     }
 }
 
@@ -341,8 +350,8 @@ void Widget::drawHeadUpDisplay(QPainter & painter)
     (this->height()*0.04), QString("Score: %1").arg(itsGame->getItsScore()));
 
     // Draw the game name
-    painter.drawText((this->width()*0.5 - (QFontMetrics(font).boundingRect(QString("Centipede Reloaded")).width()/2))
-    , (this->height()*0.04), QString("Centipede Reloaded"));
+    painter.drawText((this->width()*0.5 - (QFontMetrics(font).boundingRect(QString("Niveau: %1").arg(itsGame->getCurrentLevel())).width()/2))
+    , (this->height()*0.04), QString("Niveau: %1").arg(itsGame->getCurrentLevel()));
 
     // Draw the life count
     painter.drawText((this->width()*0.9 - (QFontMetrics(font).boundingRect(QString("Life: %1").arg(itsGame->getItsPlayer()->getItsHp())).width()/2))
@@ -402,11 +411,14 @@ void Widget::startGame(int level)
         itsBulletTimer->start(3000 / boardHeight); // Set the speed of the bullet
         itsPlayerTimer->start(2500 / boardWidth); // Set the speed of the player
         itsPowerUpMovementTimer->start(baseCentipedeTimer - level/10);
+        itsSpiderAppearTimer->start(1000);//à mettre là ou le niveau 2 demarre
+        itsSpiderAppearProbability = INCREMENT_INTERVAL;//Set the minimum probability for the spider to appear
     }
     else
     {
         itsGame->spawnCentipede();
     }
+
 }
 
 void Widget::endGame()
@@ -440,6 +452,8 @@ void Widget::pauseGame()
     itsCentipedeTimer->stop();
     itsPlayerTimer->stop();
     itsPowerUpMovementTimer->stop();
+    itsSpiderAppearTimer->stop();
+    itsSpiderTimer->stop();
 
     isGamePaused = true;
     ui->stackedWidget->setCurrentIndex(4);
@@ -453,6 +467,8 @@ void Widget::resumeGame()
     itsCentipedeTimer->start();
     itsPlayerTimer->start();
     itsPowerUpMovementTimer->start();
+    itsSpiderAppearTimer->start();
+    itsSpiderTimer->start();
 
     isGamePaused = false;
     ui->stackedWidget->setCurrentIndex(3);
@@ -493,4 +509,61 @@ void Widget::piercingEnd()
 {
     itsGame->setIsPiercingActive(false);
     itsPiercingTimer->stop();
+}
+
+void Widget::drawSpider(QPainter & painter)
+{
+    // Check if the spider exists
+    if(itsGame->getItsSpider() != nullptr)
+    {
+        if(SHOW_HITBOXES)
+        {
+            // displays the spider hitbox
+            painter.setPen(Qt::magenta);
+            painter.setBrush(Qt::SolidPattern);
+            painter.drawRect(itsGame->getItsSpider()->getItsHitBox());
+        }
+        else
+        {
+            // displays the spider image
+            //painter.drawRect(itsGame->getItsBullet()->getItsHitBox());
+        }
+    }
+}
+
+void Widget::spiderAppear()
+{
+    if (isGameStarted && !isGamePaused && itsGame->getItsSpider() == nullptr) {
+        itsElapsedTime += 1; // Augmenter le temps écoulé de 1 seconde
+
+        if (itsElapsedTime % INCREMENT_INTERVAL == 0) {
+            // Augmenter la probabilité d'apparition de 5% toutes les 5 secondes
+            if (itsSpiderAppearProbability <= 100) {
+                itsSpiderAppearProbability += 5;; // La probabilité ne doit pas dépasser 100%
+            }
+        }
+
+        int chance = rand() % 100;
+        if (chance < itsSpiderAppearProbability) {
+            itsGame->createSpider();
+            itsSpiderTimer->start(4000 / itsGame->getItsBoard().width());
+            // Réinitialiser la probabilité et le temps écoulé
+            itsSpiderAppearTimer->stop();
+            itsSpiderAppearProbability = 5;
+            itsElapsedTime = 0;
+        }
+    }
+}
+
+void Widget::moveSpider()
+{
+    if(itsGame->getItsSpider() != nullptr)
+    {
+        itsGame->moveSpider();
+    }
+    else
+    {
+        itsSpiderTimer->stop();
+        itsSpiderAppearTimer->start(1000);
+    }
 }
