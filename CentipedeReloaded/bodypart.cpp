@@ -44,6 +44,7 @@ void BodyPart::setItsPosition(Position pos)
 void BodyPart::setItsHitBox(QRect hitbox)
 {
     itsHitBox = hitbox;
+    itsPosition = {hitbox.x(), hitbox.y()};
 }
 
 Position BodyPart::getItsPreviousPosition()
@@ -98,7 +99,7 @@ void BodyPart::updatePos()
     {
         cout << "(" << itsPosition.posX << ", " << itsPosition.posY << ") -> (" <<
                 itsTargetPos.posX << ", " << itsTargetPos.posY << ")" << endl;
-        throw string("L'un des BodyPart ne se déplace plus");
+        //throw string("L'un des BodyPart ne se déplace plus");
     }
 
     itsHitBox = { itsPosition.posX, itsPosition.posY, CENTIPEDE_BODYPART_SIZE, CENTIPEDE_BODYPART_SIZE };

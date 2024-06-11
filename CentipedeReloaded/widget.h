@@ -93,6 +93,12 @@ protected:
     void drawMushrooms(QPainter & painter);
 
     /**
+     * @brief Draws the powerups on the widget using QPainter.
+     * @param painter The QPainter object used for drawing.
+     */
+    void drawPowerUps(QPainter & painter);
+
+    /**
      * @brief Draws the heads-up display on the widget using QPainter.
      * @param painter The QPainter object used for drawing.
      */
@@ -120,6 +126,11 @@ private slots:
     void moveBullet();
 
     /**
+     * @brief Moves powerups.
+     */
+    void movePowerUps();
+
+    /**
      * @brief Starts the game.
      */
     void startGame(int level = 1);
@@ -139,7 +150,15 @@ private slots:
      */
     void backToMenu();
 
+    /**
+     * @brief Displays the 'How to play' page.
+     */
     void goToHowToPlay();
+
+    /**
+     * @brief Used to shoot during the 'rafale' powerup.
+     */
+    void rafaleShot();
 
 private:
     Ui::Widget *ui; /**< The UI object */
@@ -147,6 +166,8 @@ private:
     QTimer * itsCentipedeTimer = nullptr; /**< Timer for moving the centipede */
     QTimer * itsBulletTimer = nullptr; /**< Timer for moving the bullet */
     QTimer * itsPlayerTimer = nullptr; /**< Timer for moving the player */
+    QTimer * itsPowerUpMovementTimer = nullptr; /**< Timer for moving powerups */
+    QTimer * itsRafaleTimer = nullptr; /**< Timer for the powerup 'Rafale' */
     Game * itsGame = nullptr; /**< Pointer to the game object */
     QImage itsCentiHead; /**< Image of the centipede head */
     QImage itsCentiBody; /**< Image of the centipede body */

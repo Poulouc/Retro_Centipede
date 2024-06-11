@@ -33,6 +33,12 @@ Game::~Game()
     // Deletion of the bullet and the player
     delete itsBullet;
     delete itsPlayer;
+
+    // Deletion of powerups
+    for(PowerUp* powerup : itsPowerups)
+    {
+        delete powerup;
+    }
 }
 
 void Game::spawnCentipede()
@@ -148,6 +154,30 @@ void Game::moveBullet()
     }
 }
 
+void Game::movePowerUps()
+{
+    vector<vector<PowerUp*>::iterator> toDelete;
+    for(vector<PowerUp*>::iterator it = itsPowerups.begin(); it != itsPowerups.end(); ++it)
+    {
+        PowerUp* powerup = *it;
+        if(powerup->getItsPosition().posY - powerup->getItsHitbox().height()*4 - 1 > itsBoard.width())
+        {
+            toDelete.push_back(it);
+            delete powerup;
+        }
+        else
+        {
+            Position currentPos = powerup->getItsPosition();
+            powerup->setItsPosition({currentPos.posX, currentPos.posY + 1});
+        }
+    }
+    for(vector<PowerUp*>::iterator it : toDelete)
+    {
+        itsPowerups.erase(it);
+    }
+    toDelete.clear();
+}
+
 bool Game::isColliding(QRect hitbox1, QRect hitbox2)
 {
     return hitbox1.intersects(hitbox2);
@@ -181,12 +211,50 @@ void Game::checkCollisions()
                 {
                     itsScore += 4;
                     Mushroom* toDelete = *it;
+
+                    random_device rd;
+                    default_random_engine eng(rd());
+                    uniform_int_distribution<unsigned int> distr(1, 100);
+                    if(distr(eng) > (100-POWERUP_RATE))
+                    {
+                        uniform_int_distribution<unsigned int> typeDistr(0,2);
+                        PowerUp* newPowerup = new PowerUp((powerupType)typeDistr(eng)); // selects a random powerup
+                        int powerupWidth = itsBoard.width()/60;
+                        newPowerup->setItsHitbox({0, 0, powerupWidth, powerupWidth});
+                        int caseSize = itsBoard.width()/BOARD_WIDTH;
+                        int xPos = itsBoard.x() + toDelete->getItsGridPosition().posX * caseSize;
+                        int yPos = itsBoard.y() + toDelete->getItsGridPosition().posY * caseSize;
+                        newPowerup->setItsPosition({xPos + caseSize/2 - powerupWidth/2, yPos + caseSize/2 - powerupWidth/2});
+                        itsPowerups.push_back(newPowerup);
+                    }
+
                     itsMushrooms->erase(it);
                     delete toDelete;
                 }
                 itsBullet = nullptr;
                 break;
             }
+        }
+    }
+
+    for(vector<PowerUp*>::iterator it = itsPowerups.begin(); it != itsPowerups.end(); ++it)
+    {
+        PowerUp* powerup = *it;
+        if(isColliding(powerup->getItsHitbox(), itsPlayer->getItsHitBox())) // the player takes the powerup
+        {
+            switch(powerup->getItsType())
+            {
+            case rafale:
+                isRafaleActive = true;
+                break;
+            case transpercant:
+                break;
+            case herbicide:
+                break;
+            }
+            itsPowerups.erase(it);
+            delete powerup;
+            break;
         }
     }
 
@@ -300,8 +368,8 @@ void Game::sliceCentipede(BodyPart* hittedPart, Centipede * centipede)
                 // Generate a new mushroom at the position of the head of the centipede
                 int posX = hittedPart->getItsPosition().posX - (hittedPart->getItsPosition().posX - itsBoard.x()) % (itsBoard.width() / BOARD_WIDTH);
                 int posY = hittedPart->getItsPosition().posY - (hittedPart->getItsPosition().posY - itsBoard.y()) % (itsBoard.height() / BOARD_HEIGHT);
-                int gridX = (posX - itsBoard.x()) / BOARD_WIDTH;
-                int gridY = (posY - itsBoard.y()) / BOARD_HEIGHT;
+                int gridX = (posX - itsBoard.x()) / (itsBoard.width() / BOARD_WIDTH);
+                int gridY = (posY - itsBoard.y()) / (itsBoard.height() / BOARD_HEIGHT);
                 itsMushrooms->push_back(new Mushroom(posX, posY, itsBoard.width() / BOARD_WIDTH, { gridX, gridY }));
 
                 delete toDelete;

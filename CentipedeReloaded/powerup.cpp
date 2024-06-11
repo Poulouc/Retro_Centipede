@@ -7,6 +7,7 @@ PowerUp::PowerUp(powerupType type) {
 void PowerUp::setItsHitbox(QRect newHitbox)
 {
     itsHitBox = newHitbox;
+    itsPos = {newHitbox.x(), newHitbox.y()};
 }
 
 void PowerUp::setItsPosition(Position newPos)
@@ -23,4 +24,9 @@ QRect PowerUp::getItsHitbox()
 Position PowerUp::getItsPosition()
 {
     return itsPos;
+}
+
+powerupType PowerUp::getItsType()
+{
+    return itsType;
 }

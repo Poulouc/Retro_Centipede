@@ -16,6 +16,7 @@ public:
     PowerUp(powerupType type);
     Position getItsPosition();
     QRect getItsHitbox();
+    powerupType getItsType();
     void setItsPosition(Position newPos);
     void setItsHitbox(QRect newHitbox);
 

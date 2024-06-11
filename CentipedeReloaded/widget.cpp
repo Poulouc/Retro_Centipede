@@ -24,6 +24,7 @@ Widget::Widget(QWidget *parent)
     itsCentipedeTimer = new QTimer(this);
     itsBulletTimer = new QTimer(this);
     itsPlayerTimer = new QTimer(this);
+    itsPowerUpMovementTimer = new QTimer(this);
 
     // Loading assets
     itsCentiBody.load("../../../imageDoss/centibody.png");
@@ -52,6 +53,8 @@ Widget::Widget(QWidget *parent)
     connect(itsPlayerTimer, SIGNAL(timeout()), this, SLOT(movePlayer()));
     connect(itsBulletTimer, SIGNAL(timeout()), this, SLOT(moveBullet()));
     connect(itsCentipedeTimer, SIGNAL(timeout()), this, SLOT(moveCentipede()));
+    connect(itsPowerUpMovementTimer, SIGNAL(timeout()), this, SLOT(movePowerUps()));
+    connect(itsRafaleTimer, SIGNAL(timeout()), this, SLOT(rafaleShot()));
 }
 
 Widget::~Widget()
@@ -81,6 +84,7 @@ void Widget::paintEvent(QPaintEvent *event)
         drawPlayer(painter);
         drawBullet(painter);
         drawMushrooms(painter);
+        drawPowerUps(painter);
         drawHeadUpDisplay(painter);
 
         // Check if the game has ended
@@ -294,6 +298,29 @@ void Widget::drawBullet(QPainter & painter)
     }
 }
 
+void Widget::drawPowerUps(QPainter & painter)
+{
+    for(PowerUp* powerup : itsGame->getItsPowerups())
+    {
+        if(SHOW_HITBOXES)
+        {
+            switch(powerup->getItsType())
+            {
+            case rafale:
+                painter.setPen(Qt::black);
+                painter.setBrush(Qt::SolidPattern);
+            case transpercant:
+                painter.setPen(Qt::yellow);
+                painter.setBrush(Qt::SolidPattern);
+            case herbicide:
+                painter.setPen(Qt::green);
+                painter.setBrush(Qt::SolidPattern);
+            }
+            painter.drawRect(powerup->getItsHitbox());
+        }
+    }
+}
+
 void Widget::drawHeadUpDisplay(QPainter & painter)
 {
     // Set the font and color for the text
@@ -330,6 +357,11 @@ void Widget::movePlayer()
     itsGame->movePlayer(itsPlayerDirection);
 }
 
+void Widget::movePowerUps()
+{
+    itsGame->movePowerUps();
+}
+
 void Widget::startGame(int level)
 {
     int boardHeight = height() * 95 / 100;
@@ -352,6 +384,7 @@ void Widget::startGame(int level)
         itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
         itsBulletTimer->start(3000 / boardHeight); // Set the speed of the bullet
         itsPlayerTimer->start(2500 / boardWidth); // Set the speed of the player
+        itsPowerUpMovementTimer->start(baseCentipedeTimer - level/10);
     }
     else
     {
@@ -376,6 +409,7 @@ void Widget::endGame()
     itsBulletTimer->stop();
     itsCentipedeTimer->stop();
     itsPlayerTimer->stop();
+    itsPowerUpMovementTimer->stop();
     isGameStarted = false;
     this->update();
 }
@@ -386,6 +420,7 @@ void Widget::pauseGame()
     itsBulletTimer->stop();
     itsCentipedeTimer->stop();
     itsPlayerTimer->stop();
+    itsPowerUpMovementTimer->stop();
 
     isGamePaused = true;
     ui->stackedWidget->setCurrentIndex(4);
@@ -398,6 +433,7 @@ void Widget::resumeGame()
     itsBulletTimer->start();
     itsCentipedeTimer->start();
     itsPlayerTimer->start();
+    itsPowerUpMovementTimer->start();
 
     isGamePaused = false;
     ui->stackedWidget->setCurrentIndex(3);
@@ -407,7 +443,6 @@ void Widget::backToMenu()
 {
     isGameStarted = false;
     isGamePaused = false;
-    delete itsGame;
     ui->stackedWidget->setCurrentIndex(0);
 }
 
@@ -421,3 +456,7 @@ void Widget::moveCentipede()
     itsGame->moveCentipede();
 }
 
+void Widget::rafaleShot()
+{
+
+}

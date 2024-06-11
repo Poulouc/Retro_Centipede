@@ -14,6 +14,7 @@
 #include "player.h"
 #include "typeDef.h"
 #include "powerup.h"
+#include <random>
 
 /**
  * @class Game
@@ -33,6 +34,7 @@ private:
     QRect itsBoard; /**< Rectangle representing the game board */
     QRect itsPlayerZone; /**< Rectangle representing the player's zone */
     int itsCurrentLevel = 1;
+    bool isRafaleActive = false;
 
 public:
     /**
@@ -123,6 +125,11 @@ public:
      * @param direction Reference to the direction of movement.
      */
     void movePlayer(Direction &direction);
+
+    /**
+     * @brief Moves powerups.
+     */
+    void movePowerUps();
 
     /**
      * @brief Gets the vector of centipedes.
