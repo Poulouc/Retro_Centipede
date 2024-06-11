@@ -99,6 +99,11 @@ protected:
     void drawHeadUpDisplay(QPainter & painter);
 
     /**
+     * @brief Draws the spider display on the widget using QPainter.
+     * @param painter The QPainter object used for drawing.
+     */
+    void drawSpider(QPainter & painter);
+    /**
      * @brief Pauses the game and its timers.
      */
     void pauseGame();
@@ -139,7 +144,14 @@ private slots:
      */
     void backToMenu();
 
+
     void goToHowToPlay();
+
+
+    void moveSpider();
+
+
+    void spiderAppear();
 
 private:
     Ui::Widget *ui; /**< The UI object */
@@ -147,6 +159,8 @@ private:
     QTimer * itsCentipedeTimer = nullptr; /**< Timer for moving the centipede */
     QTimer * itsBulletTimer = nullptr; /**< Timer for moving the bullet */
     QTimer * itsPlayerTimer = nullptr; /**< Timer for moving the player */
+    QTimer * itsSpiderAppearTimer = nullptr;
+    QTimer * itsSpiderTimer = nullptr;
     Game * itsGame = nullptr; /**< Pointer to the game object */
     QImage itsCentiHead; /**< Image of the centipede head */
     QImage itsCentiBody; /**< Image of the centipede body */
@@ -156,6 +170,8 @@ private:
     QRect itsGameBoard; /**< Rectangle representing the game board */
     bool isGameStarted = false; /**< Flag indicating whether the game has started */
     bool isGamePaused = false;
+    int itsElapsedTime;
+    int itsSpiderAppearProbability;
 };
 
 #endif // WIDGET_H

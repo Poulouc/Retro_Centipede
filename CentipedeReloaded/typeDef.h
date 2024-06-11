@@ -51,4 +51,8 @@ const int BOARD_HEIGHT = 31; /**< The height of the game board */
 
 const bool SHOW_HITBOXES = true;
 
+//Variable for the Spider
+const int INCREMENT_INTERVAL = 5;
+const int SPIDER_SPEED = 1;
+
 #endif // TYPEDEF_H
