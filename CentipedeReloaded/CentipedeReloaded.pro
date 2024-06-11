@@ -16,6 +16,7 @@ SOURCES += \
     main.cpp \
     mushroom.cpp \
     player.cpp \
+    powerup.cpp \
     widget.cpp
 
 HEADERS += \
@@ -25,6 +26,7 @@ HEADERS += \
     game.h \
     mushroom.h \
     player.h \
+    powerup.h \
     typeDef.h \
     widget.h
 

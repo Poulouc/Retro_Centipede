@@ -13,6 +13,7 @@
 #include "mushroom.h"
 #include "player.h"
 #include "typeDef.h"
+#include "powerup.h"
 
 /**
  * @class Game
@@ -26,6 +27,7 @@ private:
     int itsScore; /**< The game score */
     std::vector<Centipede*>* itsCentipedes; /**< Pointer to the vector of centipedes */
     std::vector<Mushroom*>* itsMushrooms; /**< Pointer to the vector of mushrooms */
+    std::vector<PowerUp*> itsPowerups;
     Bullet* itsBullet; /**< Pointer to the bullet */
     Player* itsPlayer; /**< Pointer to the player */
     QRect itsBoard; /**< Rectangle representing the game board */
@@ -157,6 +159,12 @@ public:
      * @return The game board rectangle.
      */
     QRect getItsBoard();
+
+    /**
+     * @brief Gets the vector of powerups.
+     * @return The vector containing all powerups.
+     */
+    std::vector<PowerUp*> getItsPowerups();
 
     /**
      * @brief Gets the game current level.
