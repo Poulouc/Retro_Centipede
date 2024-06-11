@@ -29,7 +29,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="page">
       <layout class="QGridLayout" name="gridLayout_3">
@@ -520,9 +520,9 @@
        </property>
        <layout class="QGridLayout" name="gridLayout_10">
         <item row="2" column="0">
-         <widget class="QPushButton" name="backButtonToMenuHowToPlay">
+         <widget class="QPushButton" name="backToMenuButton_2">
           <property name="text">
-           <string>menu</string>
+           <string>Retour au menu</string>
           </property>
          </widget>
         </item>

@@ -32,6 +32,7 @@ private:
     QRect itsBoard; /**< Rectangle representing the game board */
     QRect itsPlayerZone; /**< Rectangle representing the player's zone */
     Spider *itsSpider;
+    int itsCurrentLevel = 1;
 
 public:
     /**
@@ -160,6 +161,12 @@ public:
     QRect getItsBoard();
 
     /**
+     * @brief Gets the game current level.
+     * @return The current level of the game.
+     */
+    int getCurrentLevel();
+
+    /**
      * @brief Sets the game board rectangle.
      * @param board The new game board rectangle.
      */
@@ -183,7 +190,7 @@ public:
      * @brief Checks if the game has been won.
      * @return True if the game has been won, otherwise false.
      */
-    bool isGameWon();
+    bool isLevelWon();
 
     /**
      * @brief Checks if the game has been lost.
