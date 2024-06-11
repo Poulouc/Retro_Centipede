@@ -7,13 +7,17 @@ class Spider
 {
 private:
     QRect itsHitBox;
-    Position itsPosition;
+    Direction itsDirection;
+    int itsHorizontaleDirection;
 public:
-    spider(int x, int y, int size);
+    Spider(int x, int y, int size);
     QRect getItsHitBox();
     void setItsHitBox(QRect hitbox);
-    Position getItsPosition();
-    void setItsPosition(Position position);
+    Direction getItsDirection();
+    void setItsDirection(Direction direction);
+    int getItsHorizontaleDirection();
+    void setItsHorizontaleDirection(int horizontalDirection);
+    void move();
 };
 
 #endif // SPIDER_H

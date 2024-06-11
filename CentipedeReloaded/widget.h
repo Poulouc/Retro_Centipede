@@ -99,6 +99,11 @@ protected:
     void drawHeadUpDisplay(QPainter & painter);
 
     /**
+     * @brief Draws the spider display on the widget using QPainter.
+     * @param painter The QPainter object used for drawing.
+     */
+    void drawSpider(QPainter & painter);
+    /**
      * @brief Pauses the game and its timers.
      */
     void pauseGame();
@@ -165,6 +170,8 @@ private:
     QRect itsGameBoard; /**< Rectangle representing the game board */
     bool isGameStarted = false; /**< Flag indicating whether the game has started */
     bool isGamePaused = false;
+    int itsElapsedTime;
+    int itsSpiderAppearProbability;
 };
 
 #endif // WIDGET_H

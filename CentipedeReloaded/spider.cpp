@@ -1,7 +1,7 @@
 #include "spider.h"
 
-Spider::spider(int x, int y, int size):
-    itsHitBox({x, y, size, size}), itsPosition({x, y})
+Spider::Spider(int x, int y, int size):
+    itsHitBox({x, y, size, size}), itsDirection({0, 0})
 {}
 
 QRect Spider::getItsHitBox()
@@ -14,13 +14,27 @@ void Spider::setItsHitBox(QRect hitbox)
     itsHitBox = hitbox;
 }
 
-Position Spider::getItsPosition()
+Direction Spider::getItsDirection()
 {
-    return itsPosition;
+    return itsDirection;
 }
 
-void Spider::setItsPosition(Position position)
+void Spider::setItsDirection(Direction direction)
 {
-    itsPosition = position;
+    itsDirection = direction;
 }
 
+int Spider::getItsHorizontaleDirection()
+{
+    return itsHorizontaleDirection;
+}
+
+void Spider::setItsHorizontaleDirection(int horizontalDirection)
+{
+    itsHorizontaleDirection = horizontalDirection;
+}
+
+void Spider::move()
+{
+    itsHitBox = QRect(itsHitBox.x() + itsDirection.dirX * SPIDER_SPEED, itsHitBox.y() + itsDirection.dirY * SPIDER_SPEED, itsHitBox.width(), itsHitBox.height());
+}

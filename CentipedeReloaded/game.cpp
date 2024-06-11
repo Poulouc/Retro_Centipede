@@ -8,6 +8,7 @@ Game::Game(QRect board)
     :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsBullet(nullptr),
     itsPlayer(new Player({board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2, board.y() + board.height() - (board.width() / BOARD_WIDTH) - 1}, board.width() / BOARD_WIDTH)), itsBoard(board),
     itsPlayerZone(board.x(), board.y() + (4 * board.height()) / 5, board.width(), board.height() / 5)
+    ,itsSpider(nullptr)
 {
     spawnCentipede();
     createMushrooms();
@@ -32,6 +33,10 @@ Game::~Game()
     // Deletion of the bullet and the player
     delete itsBullet;
     delete itsPlayer;
+    if(itsSpider != nullptr)
+    {
+        delete itsSpider;
+    }
 }
 
 void Game::spawnCentipede()
@@ -184,6 +189,13 @@ void Game::checkCollisions()
         }
     }
 
+    if (itsBullet != nullptr and itsSpider != nullptr and isColliding(itsSpider->getItsHitBox(), itsBullet->getItsHitBox()))
+    {
+            delete itsSpider;
+            itsSpider = nullptr;
+            itsScore += 300;
+    }
+
     for (vector<Centipede*>::iterator it = itsCentipedes->begin(); it != itsCentipedes->end(); ++it)
     {
         Centipede * centipede = *it;
@@ -264,12 +276,12 @@ void Game::sliceCentipede(BodyPart* hittedPart, Centipede * centipede)
         int gridX = (posX - itsBoard.x()) / (itsBoard.width() / BOARD_WIDTH);
         int gridY = (posY - itsBoard.y()) / (itsBoard.height() / BOARD_HEIGHT);
 
-        cout << " ---- CENTIPEDE  SLICED ----" << endl
-             << "Hitted part pos: (" << hittedPart->getItsPosition().posX << ", " << hittedPart->getItsPosition().posY << ")" << endl
-             << "Mushroom pos: (" << posX << ", " << posY << ")" << endl
-             << "Mushroom grid pos: (" << gridX << ", " << gridY << ")" << endl
-             << "Board pos: (" << itsBoard.x() << ", " << itsBoard.y() << ")" << endl
-             << " ---------------------------" << endl;
+        //cout << " ---- CENTIPEDE  SLICED ----" << endl
+             //<< "Hitted part pos: (" << hittedPart->getItsPosition().posX << ", " << hittedPart->getItsPosition().posY << ")" << endl
+             //<< "Mushroom pos: (" << posX << ", " << posY << ")" << endl
+             //<< "Mushroom grid pos: (" << gridX << ", " << gridY << ")" << endl
+             //<< "Board pos: (" << itsBoard.x() << ", " << itsBoard.y() << ")" << endl
+             //<< " ---------------------------" << endl;
 
         itsMushrooms->push_back(new Mushroom(posX, posY, itsBoard.width() / BOARD_WIDTH, { gridX, gridY }));
 
@@ -364,7 +376,7 @@ void Game::setBoard(QRect board)
     //set the position of the player
     itsPlayer->setItsPosition({itsPlayerZone.x() + itsPlayerZone.width()/2 - CellWidth/2,
                                itsPlayerZone.y() + itsPlayerZone.height() - CellHeight - itsPlayerZone.height()/20});
-
+    /**
     // Update centipede segments for proportional resizing
     for (vector<Centipede *>::iterator it = itsCentipedes->begin(); it != itsCentipedes->end(); ++it)
     {
@@ -382,6 +394,15 @@ void Game::setBoard(QRect board)
             // Move to the next segment
             currentPart = currentPart->getItsChild();
         }
+    }
+    **/
+    //set the size of the spider
+    if(itsSpider != nullptr)
+    {
+        // Calculate new proportional coordinates
+        int newX = board.x() + ((itsSpider->getItsHitBox().x() - itsBoard.x() + 0.5) * board.width()) / itsBoard.width();
+        int newY = board.y() + ((itsSpider->getItsHitBox().y() - itsBoard.y() + 0.5) * board.height()) / itsBoard.height();
+        itsSpider->setItsHitBox({newX, newY, CellWidth, CellWidth});
     }
 
     //set the board
@@ -440,10 +461,12 @@ void Game::moveCentipede()
         BodyPart* centiHead = centipede->getItsHead();
         centiHead->updatePos();
         Position headPos = centiHead->getItsPosition();
+        /**
         cout << "new head pos : (" << headPos.posX << ", " << headPos.posY <<
                 ") [ break in (" << (headPos.posX - itsBoard.x()) % (itsBoard.width() / BOARD_WIDTH) << ", " <<
                 (headPos.posY - itsBoard.y()) % (itsBoard.height() / BOARD_HEIGHT) << ") ] L: " << centipede->getWasMovingLeft() <<
                 " - R: " << centipede->getWasMovingRight() << " - V: " << centipede->isVerticalDirection() << endl;
+        **/
         if (((headPos.posX - itsBoard.x()) % (itsBoard.width() / BOARD_WIDTH) == 0) && ((headPos.posY - itsBoard.y()) % (itsBoard.height() / BOARD_HEIGHT) == 0))
         {
             if (centipede->isVerticalDirection())
@@ -467,7 +490,7 @@ void Game::moveCentipede()
             centipedeBoardCollision(centipede, zone);
             if (centipedeMushroomCollision(centipede)) centipedeMushroomCollision(centipede);
 
-            cout << "< " << centipede->getItsDirection().dirX << " | " << centipede->getItsDirection().dirY << " >" << endl;
+            //cout << "< " << centipede->getItsDirection().dirX << " | " << centipede->getItsDirection().dirY << " >" << endl;
             centiHead->setItsTargetPos({ headPos.posX + centipede->getItsDirection().dirX * CENTIPEDE_BODYPART_SIZE,
                                          headPos.posY + centipede->getItsDirection().dirY * CENTIPEDE_BODYPART_SIZE});
         }
@@ -580,5 +603,80 @@ bool Game::centipedeMushroomCollision(Centipede * centipede)
 
 void Game::createSpider()
 {
-    itsSpider = new Spider(itsBoard.x() + (itsBoard.width()/BOARD_WIDTH),itsPlayer->getItsHitBox().y(), itsBoard.width()/BOARD_WIDTH);
+    itsSpider = new Spider(itsBoard.x() + 10,itsPlayer->getItsHitBox().y(), itsBoard.width()/BOARD_WIDTH);
+    itsSpider->setItsDirection({1, 1});
+}
+
+Spider * Game::getItsSpider()
+{
+    return itsSpider;
+}
+
+void Game::moveSpider()
+{
+    //the next position of the spider
+    QRect nextPos = {itsSpider->getItsHitBox().x() + itsSpider->getItsDirection().dirX * SPIDER_SPEED,
+                     itsSpider->getItsHitBox().y() + itsSpider->getItsDirection().dirY * SPIDER_SPEED,
+                     itsSpider->getItsHitBox().width(),
+                     itsSpider->getItsHitBox().height()};
+
+    // Collision with the sides of the PlayerZone
+    if (nextPos.left() <= itsPlayerZone.left() || nextPos.right() >= itsPlayerZone.right())
+    {
+        if (rand() % 100 < 40)//The spider have 40% of chance to disappear of the PlayerZone when she touche the side of it
+        {
+            delete itsSpider;
+            itsSpider = nullptr;
+            return;
+        }
+        itsSpider->setItsHorizontaleDirection(-(itsSpider->getItsHorizontaleDirection()));
+        itsSpider->setItsDirection({-itsSpider->getItsDirection().dirX, itsSpider->getItsDirection().dirY});
+    }
+    //Collision with the top of PlayerZone
+    else if (nextPos.top() <= itsPlayerZone.top())
+    {
+        itsSpider->setItsDirection({itsSpider->getItsHorizontaleDirection(), -itsSpider->getItsDirection().dirY});
+    }
+    //Collision with the bottom of PlayerZone
+    else if(nextPos.bottom() >= itsPlayerZone.bottom())
+    {
+        itsSpider->setItsHorizontaleDirection(itsSpider->getItsDirection().dirX);
+        itsSpider->setItsDirection({0, -itsSpider->getItsDirection().dirY});
+    }
+
+    // Interaction with the mushroomms
+    for (vector<Mushroom*>::iterator it = getItsMushrooms()->begin(); it != itsMushrooms->end(); ++it) {
+        if (nextPos.intersects((*it)->getItsHitBox())) {
+            if((rand() % 100) < 50){
+                Mushroom* toDelete = *it;
+                itsMushrooms->erase(it);
+                delete toDelete;
+            }
+            break;
+        }
+    }
+
+    //check the collision between the player and the spider
+    if(itsSpider->getItsHitBox().intersects(itsPlayer->getItsHitBox())){
+        //remove one life
+        itsPlayer->hit();
+        //delete the centipede
+        for (vector<Centipede*>::iterator itDel = itsCentipedes->begin(); itDel != itsCentipedes->end(); ++itDel)
+        {
+            delete *itDel;
+        }
+        itsCentipedes->clear();
+        //set the position of the player
+        itsPlayer->setItsPosition({itsPlayerZone.x() + itsPlayerZone.width()/2 - (itsBoard.width() / BOARD_WIDTH)/2,
+                                   itsPlayerZone.y() + itsPlayerZone.height() - (itsBoard.height() / BOARD_HEIGHT) - itsPlayerZone.height()/20});
+        itsPlayer->updatePos({0,0});
+        //delete the spider
+        delete itsSpider;
+        itsSpider = nullptr;
+        spawnCentipede();
+        return;
+    }
+
+    // make the spider moving
+    itsSpider->move();
 }
