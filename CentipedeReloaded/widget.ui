@@ -300,7 +300,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Retour au menu</string>
+            <string>back to menu</string>
            </property>
           </widget>
          </item>
@@ -347,7 +347,7 @@
          <item row="1" column="1">
           <widget class="QPushButton" name="back_button">
            <property name="text">
-            <string>Retour au menu</string>
+            <string>back to menu</string>
            </property>
           </widget>
          </item>
@@ -398,7 +398,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Retour au menu</string>
+            <string>back to menu</string>
            </property>
           </widget>
          </item>
@@ -484,7 +484,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Retour au jeu</string>
+            <string>back to the game</string>
            </property>
           </widget>
          </item>
@@ -522,7 +522,7 @@
         <item row="2" column="0">
          <widget class="QPushButton" name="backToMenuButton_2">
           <property name="text">
-           <string>Retour au menu</string>
+           <string>back to menu</string>
           </property>
          </widget>
         </item>
