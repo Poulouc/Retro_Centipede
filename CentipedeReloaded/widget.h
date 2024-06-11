@@ -139,7 +139,14 @@ private slots:
      */
     void backToMenu();
 
+
     void goToHowToPlay();
+
+
+    void moveSpider();
+
+
+    void spiderAppear();
 
 private:
     Ui::Widget *ui; /**< The UI object */
@@ -147,6 +154,8 @@ private:
     QTimer * itsCentipedeTimer = nullptr; /**< Timer for moving the centipede */
     QTimer * itsBulletTimer = nullptr; /**< Timer for moving the bullet */
     QTimer * itsPlayerTimer = nullptr; /**< Timer for moving the player */
+    QTimer * itsSpiderAppearTimer = nullptr;
+    QTimer * itsSpiderTimer = nullptr;
     Game * itsGame = nullptr; /**< Pointer to the game object */
     QImage itsCentiHead; /**< Image of the centipede head */
     QImage itsCentiBody; /**< Image of the centipede body */

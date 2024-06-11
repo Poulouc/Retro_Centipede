@@ -13,6 +13,7 @@
 #include "mushroom.h"
 #include "player.h"
 #include "typeDef.h"
+#include "spider.h"
 
 /**
  * @class Game
@@ -30,6 +31,7 @@ private:
     Player* itsPlayer; /**< Pointer to the player */
     QRect itsBoard; /**< Rectangle representing the game board */
     QRect itsPlayerZone; /**< Rectangle representing the player's zone */
+    Spider *itsSpider;
 
 public:
     /**
@@ -201,6 +203,11 @@ public:
      * @return True if a collision is detected, otherwise false.
      */
     bool centipedeBoardCollision(Centipede * centipede, QRect board);
+
+    /**
+     * @brief createSpider make appear the spider
+     */
+    void createSpider();
 };
 
 #endif // GAME_H

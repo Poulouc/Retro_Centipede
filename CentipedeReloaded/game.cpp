@@ -576,3 +576,9 @@ bool Game::centipedeMushroomCollision(Centipede * centipede)
     }
     return false;
 }
+
+
+void Game::createSpider()
+{
+    itsSpider = new Spider(itsBoard.x() + (itsBoard.width()/BOARD_WIDTH),itsPlayer->getItsHitBox().y(), itsBoard.width()/BOARD_WIDTH);
+}
