@@ -197,7 +197,6 @@ public:
      * @return True if the game has been lost, otherwise false.
      */
     bool isGameLosed();
-
     /**
      * @brief Moves the centipede.
      */

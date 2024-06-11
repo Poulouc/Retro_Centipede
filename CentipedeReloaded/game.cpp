@@ -10,7 +10,6 @@ Game::Game(QRect board)
     itsPlayerZone(board.x(), board.y() + (4 * board.height()) / 5, board.width(), board.height() / 5)
     ,itsSpider(nullptr)
 {
-    itsCurrentLevel = 2;
     spawnCentipede();
     createMushrooms();
 }

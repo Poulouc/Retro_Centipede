@@ -315,8 +315,8 @@ void Widget::drawHeadUpDisplay(QPainter & painter)
     (this->height()*0.04), QString("Score: %1").arg(itsGame->getItsScore()));
 
     // Draw the game name
-    painter.drawText((this->width()*0.5 - (QFontMetrics(font).boundingRect(QString("Centipede Reloaded")).width()/2))
-    , (this->height()*0.04), QString("Centipede Reloaded"));
+    painter.drawText((this->width()*0.5 - (QFontMetrics(font).boundingRect(QString("Niveau: %1").arg(itsGame->getCurrentLevel())).width()/2))
+    , (this->height()*0.04), QString("Niveau: %1").arg(itsGame->getCurrentLevel()));
 
     // Draw the life count
     painter.drawText((this->width()*0.9 - (QFontMetrics(font).boundingRect(QString("Life: %1").arg(itsGame->getItsPlayer()->getItsHp())).width()/2))
