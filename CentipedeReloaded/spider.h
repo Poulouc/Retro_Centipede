@@ -3,8 +3,8 @@
  * @brief Header file for the Spider class.
  */
 
-#include <QRect>
-#include "typeDef.h"
+#include <QRect>      // Include header file for QRect class
+#include "typeDef.h" // Include type definitions file
 
 #ifndef SPIDER_H
 #define SPIDER_H
@@ -12,13 +12,15 @@
 /**
  * @class Spider
  * @brief Represents a spider in the game with a hitbox and movement capabilities.
+ *
+ * This class manages the spider's position, hitbox, and movement behavior within the game.
  */
 class Spider
 {
 private:
-    QRect itsHitBox; ///< The hitbox of the spider.
-    Direction itsDirection; ///< The current direction of the spider.
-    int itsHorizontaleDirection; ///< The current horizontal direction value of the spider.
+    QRect itsHitBox;            /**< The hitbox of the spider. */
+    Direction itsDirection;     /**< The current direction of the spider. */
+    int itsHorizontaleDirection;/**< The current horizontal direction value of the spider. */
 
 public:
     /**
@@ -67,6 +69,9 @@ public:
 
     /**
      * @brief Moves the spider based on its current direction and speed.
+     *
+     * This method updates the spider's position according to its current direction
+     * and adjusts its movement speed.
      */
     void move();
 };

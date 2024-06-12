@@ -33,13 +33,13 @@ private:
     Player* itsPlayer; /**< Pointer to the player */
     QRect itsBoard; /**< Rectangle representing the game board */
     QRect itsPlayerZone; /**< Rectangle representing the player's zone */
-    QRect itsCentipedeZone;
-    std::vector<Centipede*>* treatedCentipedes;
+    QRect itsCentipedeZone; /**< Rectangle representing the centipede's zone */
+    std::vector<Centipede*>* treatedCentipedes; /**< Pointer to the vector of treated centipedes */
     int itsCurrentLevel = 1; /**< The current level */
-    bool isRafaleActive = false; /** Flag indicating wether the 'rafale' powerup is active */
-    bool isPiercingActive = false; /** Flag indicating wether the 'transperçant' powerup is active */
-    Spider* itsSpider;
-    std::vector<Mushroom*> itsMarkedMushroom;
+    bool isRafaleActive = false; /**< Flag indicating whether the 'rafale' powerup is active */
+    bool isPiercingActive = false; /**< Flag indicating whether the 'transpercant' powerup is active */
+    Spider* itsSpider; /**< Pointer to the spider */
+    std::vector<Mushroom*> itsMarkedMushroom; /**< Vector containing marked mushrooms */
 
 public:
     /**
@@ -121,7 +121,7 @@ public:
     /**
      * @brief Slices a centipede when hit.
      * @param hittedPart Pointer to the hit body part of the centipede.
-     * @param centipede Pointer to the centiped hit.
+     * @param centipede Pointer to the centipede hit.
      */
     void sliceCentipede(BodyPart* hittedPart, Centipede* centipede);
 
@@ -179,7 +179,7 @@ public:
     std::vector<PowerUp*> getItsPowerups();
 
     /**
-     * @brief Gets the game current level.
+     * @brief Gets the current game level.
      * @return The current level of the game.
      */
     int getCurrentLevel();
@@ -195,14 +195,14 @@ public:
      * @param centipede Pointer to the centipede.
      * @return True if a collision is detected, otherwise false.
      */
-    bool centipedeMushroomCollision(Centipede * centipede);
+    bool centipedeMushroomCollision(Centipede* centipede);
 
     /**
-     * @brief Manages collision between two centipedes
+     * @brief Manages collision between two centipedes.
      * @param centipede Pointer to the centipede.
      * @return True if there is a collision, otherwise false.
      */
-    bool centipedeToCentipedeCollision(Centipede * centipede);
+    bool centipedeToCentipedeCollision(Centipede* centipede);
 
     /**
      * @brief Checks if the game has been won.
@@ -215,27 +215,28 @@ public:
      * @return True if the game has been lost, otherwise false.
      */
     bool isGameLosed();
+
     /**
-     * @brief Checks if the rafale powerup is active.
-     * @return True if the rafale powerup is active, otherwise false.
+     * @brief Checks if the 'rafale' powerup is active.
+     * @return True if the 'rafale' powerup is active, otherwise false.
      */
     bool getIsRafaleActive();
 
     /**
-     * @brief Checks if the piercing powerup is active.
-     * @return True if the piercing powerup is active, otherwise false.
+     * @brief Checks if the 'transpercant' powerup is active.
+     * @return True if the 'transpercant' powerup is active, otherwise false.
      */
     bool getIsPiercingActive();
 
     /**
-     * @brief Sets isRafaleActive to the given state.
-     * @param isActive The state to set isRafaleActive to.
+     * @brief Sets the state of the 'rafale' powerup.
+     * @param isActive The state to set for the 'rafale' powerup.
      */
     void setIsRafaleActive(bool isActive);
 
     /**
-     * @brief Sets isPiercingActive to the given state.
-     * @param isActive The state to set isPiercingActive to.
+     * @brief Sets the state of the 'transpercant' powerup.
+     * @param isActive The state to set for the 'transpercant' powerup.
      */
     void setIsPiercingActive(bool isActive);
 
@@ -250,21 +251,21 @@ public:
      * @param board The game board rectangle.
      * @return True if a collision is detected, otherwise false.
      */
-    bool centipedeBoardCollision(Centipede * centipede, QRect board);
+    bool centipedeBoardCollision(Centipede* centipede, QRect board);
 
     /**
-     * @brief createSpider make appear the spider
+     * @brief Creates a spider in the game.
      */
     void createSpider();
 
     /**
-     * @brief Gets the spider.
+     * @brief Gets the spider in the game.
      * @return Pointer to the spider.
      */
-    Spider * getItsSpider();
+    Spider* getItsSpider();
 
     /**
-     * @brief Moves the spider.
+     * @brief Moves the spider in the game.
      */
     void moveSpider();
 };

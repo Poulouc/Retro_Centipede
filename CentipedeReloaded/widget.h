@@ -26,6 +26,9 @@ QT_END_NAMESPACE
 /**
  * @class Widget
  * @brief Class representing the main game widget.
+ *
+ * This class manages the game mechanics and drawing on the widget. It handles
+ * player movement, centipede movement, bullet firing, powerups, and display updates.
  */
 class Widget : public QWidget
 {
@@ -109,81 +112,122 @@ protected:
      * @param painter The QPainter object used for drawing.
      */
     void drawSpider(QPainter & painter);
+
     /**
      * @brief Pauses the game and its timers.
+     *
+     * This method pauses all active timers and stops the game from updating.
      */
     void pauseGame();
 
 private slots:
     /**
      * @brief Moves the player.
+     *
+     * This slot is connected to a timer that moves the player character.
      */
     void movePlayer();
 
     /**
      * @brief Moves the centipede.
+     *
+     * This slot is connected to a timer that moves the centipede enemies.
      */
     void moveCentipede();
 
     /**
      * @brief Moves the bullet.
+     *
+     * This slot is connected to a timer that moves the player's bullets.
      */
     void moveBullet();
 
     /**
      * @brief Moves powerups.
+     *
+     * This slot is connected to a timer that moves active powerups on the screen.
      */
     void movePowerUps();
 
     /**
      * @brief Starts the game.
+     *
+     * @param level The starting level of the game.
+     *
+     * This slot initializes the game state, including timers and game objects,
+     * and starts the game loop.
      */
     void startGame(int level = 1);
 
     /**
      * @brief Resumes the game.
+     *
+     * This slot resumes the game after it has been paused.
      */
     void resumeGame();
 
     /**
      * @brief Ends the game and performs cleanup.
+     *
+     * This slot ends the current game session, stopping all timers and cleaning up
+     * game objects.
      */
     void endGame();
 
     /**
      * @brief Returns to the main menu.
+     *
+     * This slot returns the player to the main menu.
      */
     void backToMenu();
 
     /**
      * @brief Displays the leaderboard.
+     *
+     * This slot shows the leaderboard screen.
      */
     void displayLeaderboard();
 
     /**
      * @brief Processes the new score and updates the leaderboard if needed.
+     *
+     * This slot updates the leaderboard with the player's new score.
      */
     void processNewScore();
 
     /**
      * @brief Displays the 'How to play' page.
+     *
+     * This slot displays instructions on how to play the game.
      */
     void goToHowToPlay();
 
     /**
      * @brief Used to shoot during the 'rafale' powerup.
+     *
+     * This slot allows rapid shooting when the 'rafale' powerup is active.
      */
     void rafaleShot();
 
     /**
      * @brief Called when the 'piercing' powerup ends.
+     *
+     * This slot handles the end of the 'piercing' powerup effect.
      */
     void piercingEnd();
 
-
+    /**
+     * @brief Moves the spider.
+     *
+     * This slot moves the spider enemy.
+     */
     void moveSpider();
 
-
+    /**
+     * @brief Makes the spider appear.
+     *
+     * This slot triggers the appearance of the spider enemy.
+     */
     void spiderAppear();
 
 private:
@@ -195,32 +239,31 @@ private:
     QTimer * itsPowerUpMovementTimer = nullptr; /**< Timer for moving powerups */
     QTimer * itsRafaleTimer = nullptr; /**< Timer for the powerup 'Rafale' */
     QTimer * itsPiercingTimer = nullptr; /**< Timer for the powerup 'Piercing' */
-    QTimer * itsSpiderAppearTimer = nullptr;
-    QTimer * itsSpiderTimer = nullptr;
+    QTimer * itsSpiderAppearTimer = nullptr; /**< Timer for spider appearance */
+    QTimer * itsSpiderTimer = nullptr; /**< Timer for moving the spider */
     Game * itsGame = nullptr; /**< Pointer to the game object */
-    Leaderboard * itsLeaderboard = nullptr;
+    Leaderboard * itsLeaderboard = nullptr; /**< Pointer to the leaderboard */
     QImage itsCentiHeadImg; /**< Image of the centipede head */
     QImage itsCentiBodyImg; /**< Image of the centipede body */
-    QImage itsCentiTailImg;
-    QImage itsPlayerImg; /**< Image of the player */
-    QImage itsMushState1Img; /**< Image of the mushrooms */
-    QImage itsMushState2Img;
-    QImage itsMushState3Img;
-    QImage itsMushState4Img;
-    QImage itsSpiderImg;
-    QImage itsBulletImg;
-    QImage itsRafalePuImg;
-    QImage itsTranspercantPuImg;
-    QImage itsHerbicidePuImg;
-    QImage itsGrassTexture;
-    QImage itsDarkGrassTexture;
+    QImage itsCentiTailImg; /**< Image of the centipede tail */
+    QImage itsPlayerImg; /**< Image of the player character */
+    QImage itsMushState1Img; /**< Image of the mushrooms (state 1) */
+    QImage itsMushState2Img; /**< Image of the mushrooms (state 2) */
+    QImage itsMushState3Img; /**< Image of the mushrooms (state 3) */
+    QImage itsMushState4Img; /**< Image of the mushrooms (state 4) */
+    QImage itsSpiderImg; /**< Image of the spider enemy */
+    QImage itsBulletImg; /**< Image of the bullet */
+    QImage itsRafalePuImg; /**< Image of the 'Rafale' powerup */
+    QImage itsTranspercantPuImg; /**< Image of the 'Transpercant' powerup */
+    QImage itsHerbicidePuImg; /**< Image of the 'Herbicide' powerup */
+    QImage itsGrassTexture; /**< Texture image for grass */
+    QImage itsDarkGrassTexture; /**< Texture image for dark grass */
     Direction itsPlayerDirection; /**< Direction of the player */
-    QRect itsGameBoard; /**< Rectangle representing the game board */
     bool isGameStarted = false; /**< Flag indicating whether the game has started */
-    bool isGamePaused = false; /**< Flag indicating wether the game is paused */
-    int remainingRafaleShots; /**< Number of shots remaining for the rafale powerup */
-    int itsElapsedTime;
-    int itsSpiderAppearProbability;
+    bool isGamePaused = false; /**< Flag indicating whether the game is paused */
+    int remainingRafaleShots; /**< Number of remaining shots for 'Rafale' powerup */
+    int itsElapsedTime; /**< Elapsed time of the current game session */
+    int itsSpiderAppearProbability; /**< Probability of spider appearing */
 };
 
 #endif // WIDGET_H
