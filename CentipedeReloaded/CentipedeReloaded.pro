@@ -13,6 +13,7 @@ SOURCES += \
     bullet.cpp \
     centipede.cpp \
     game.cpp \
+    leaderboard.cpp \
     main.cpp \
     mushroom.cpp \
     player.cpp \
@@ -25,6 +26,7 @@ HEADERS += \
     bullet.h \
     centipede.h \
     game.h \
+    leaderboard.h \
     mushroom.h \
     player.h \
     powerup.h \
