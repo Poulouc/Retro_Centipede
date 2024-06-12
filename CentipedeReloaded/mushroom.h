@@ -16,9 +16,9 @@
 class Mushroom
 {
 private:
-    int itsState; /**< The state of the mushroom */
-    QRect itsHitBox; /**< The hit box of the mushroom */
-    Position itsGridPosition; /**< The grid position of the mushroom */
+    int itsState;                /**< The state of the mushroom */
+    QRect itsHitBox;             /**< The hit box of the mushroom */
+    Position itsGridPosition;    /**< The grid position of the mushroom */
 
 public:
     /**

@@ -493,8 +493,6 @@ void Widget::startGame(int level)
         // Calculate game board
         int boardX = width() / 2 - boardWidth / 2;
         int boardY = height() * 5 / 100;
-        itsGameBoard = { boardX, boardY, boardWidth, boardHeight };
-
         itsGame = new Game({ boardX, boardY, boardWidth, boardHeight });
         isGameStarted = true;
         itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps

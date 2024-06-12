@@ -9,7 +9,11 @@
 #include "bodypart.h"
 
 /**
- * @brief The Centipede class represents a centipede entity in a game.
+ * @class Centipede
+ * @brief Represents a centipede entity in a game.
+ *
+ * This class manages the movement and characteristics of a centipede, including its head, tail,
+ * movement direction, and state flags.
  */
 class Centipede
 {
@@ -19,8 +23,8 @@ private:
     Direction itsDirection; /**< Direction of movement for the centipede. */
     bool isGoingDown = false; /**< Flag indicating whether the centipede is moving down. */
     bool reachedBottom = false; /**< Flag indicating whether the centipede has reached the bottom of the screen. */
-    bool wasMovingRight = false;
-    bool wasMovingLeft = false;
+    bool wasMovingRight = false; /**< Flag indicating whether the centipede was previously moving right. */
+    bool wasMovingLeft = false; /**< Flag indicating whether the centipede was previously moving left. */
 
 public:
     /**
@@ -78,7 +82,7 @@ public:
     bool hasReachedBottom();
 
     /**
-     * @brief Gets the vertical direction of movement for the centipede.
+     * @brief Checks if the centipede is moving in a vertical direction (up or down).
      * @return True if the centipede is moving down, otherwise false.
      */
     bool isVerticalDirection();
@@ -95,9 +99,28 @@ public:
      */
     void setHasReachedBottom(bool hasReachedBottom);
 
+    /**
+     * @brief Sets the flag indicating whether the centipede was moving right.
+     * @param value True if the centipede was moving right, otherwise false.
+     */
     void setWasMovingRight(bool value);
+
+    /**
+     * @brief Sets the flag indicating whether the centipede was moving left.
+     * @param value True if the centipede was moving left, otherwise false.
+     */
     void setWasMovingLeft(bool value);
+
+    /**
+     * @brief Gets the flag indicating whether the centipede was moving right.
+     * @return True if the centipede was moving right, otherwise false.
+     */
     bool getWasMovingRight();
+
+    /**
+     * @brief Gets the flag indicating whether the centipede was moving left.
+     * @return True if the centipede was moving left, otherwise false.
+     */
     bool getWasMovingLeft();
 };
 

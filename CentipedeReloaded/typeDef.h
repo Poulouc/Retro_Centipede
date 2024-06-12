@@ -10,7 +10,7 @@
 
 /**
  * @struct Position
- * @brief Struct representing a position with x and y coordinates.
+ * @brief Structure representing a position with x and y coordinates.
  */
 struct Position
 {
@@ -19,8 +19,8 @@ struct Position
 };
 
 /**
- * @struct Directionq
- * @brief Struct representing a direction with x and y components.
+ * @struct Direction
+ * @brief Structure representing a direction with x and y components.
  */
 struct Direction
 {
@@ -29,11 +29,10 @@ struct Direction
 };
 
 // Variables for centipede
-//const int CENTIPEDE_SPEED = 1;
-const int CENTIPEDE_LENGTH = 8;
-const int CENTIPEDE_BODYPART_SIZE = 13;
-const int CENTIPEDE_SPAWN_XPOS = 15;
-const int CENTIPEDE_SPAWN_YPOS = 0;
+const int CENTIPEDE_LENGTH = 8; /**< The length of the centipede */
+const int CENTIPEDE_BODYPART_SIZE = 13; /**< The size of each body part of the centipede */
+const int CENTIPEDE_SPAWN_XPOS = 15; /**< The initial x-coordinate of the centipede */
+const int CENTIPEDE_SPAWN_YPOS = 0; /**< The initial y-coordinate of the centipede */
 
 // Variables for player
 const int PLAYER_SPEED = 1; /**< The speed of the player */
@@ -56,12 +55,12 @@ const int POWERUP_RAFALE_DURATION = 4; /**< The duration in seconds of the 'rafa
 const int POWERUP_RAFALE_FIRERATE = 4; /**< The number of shots per second of the 'rafale' powerup */
 const int POWERUP_PIERCING_DURATION = 5; /**< The duration in second of the 'piercing' powerup */
 
-const bool SHOW_HITBOXES = false;
+const bool SHOW_HITBOXES = false; /**< Flag indicating whether to show hitboxes */
 
-//Variable for the Spider
-const int INCREMENT_INTERVAL = 5;
-const int SPIDER_SPEED = 1;
+// Variables for the Spider
+const int INCREMENT_INTERVAL = 5; /**< The interval for incrementing the spider's movement */
+const int SPIDER_SPEED = 1; /**< The speed of the spider */
 
-const std::string SAVEFILE_NAME = "leaderboard.txt";
+const std::string SAVEFILE_NAME = "leaderboard.txt"; /**< The name of the file to save leaderboard data */
 
 #endif // TYPEDEF_H
