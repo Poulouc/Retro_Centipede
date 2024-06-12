@@ -12,6 +12,11 @@ void Leaderboard::extract()
 
     if(!iFile.is_open()) throw string("Error while trying to open " + itsFileName);
 
+    string username;
+    int score;
+    if(!(iFile >> username >> score)) return;
+    else itsBestScores.insert({username, score});
+
     while(!iFile.eof())
     {
         string username;
@@ -29,9 +34,13 @@ void Leaderboard::save()
 
     if(!oFile.is_open()) throw string("Error while trying to open " + itsFileName);
 
-    for(pair<string,int> score : itsBestScores)
+    for(map<string,int>::iterator it = itsBestScores.begin(); it != itsBestScores.end(); ++it)
     {
-        if(!(oFile << score.first << score.second)) throw string("Error while trying to save data in " + itsFileName);
+        if(!(oFile << it->first << " " << it->second)) throw string("Error while trying to save data in " + itsFileName);
+        if(it != --itsBestScores.end())
+        {
+            if(!(oFile << endl)) throw string("Error while trying to save data in " + itsFileName);
+        }
     }
 }
 

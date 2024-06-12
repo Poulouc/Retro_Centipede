@@ -6,6 +6,9 @@
 #ifndef TYPEDEF_H
 #define TYPEDEF_H
 
+#include <iostream>
+using namespace std;
+
 /**
  * @struct Position
  * @brief Struct representing a position with x and y coordinates.
@@ -60,5 +63,7 @@ const bool SHOW_HITBOXES = true;
 //Variable for the Spider
 const int INCREMENT_INTERVAL = 5;
 const int SPIDER_SPEED = 1;
+
+const string SAVEFILE_NAME = "leaderboard.txt";
 
 #endif // TYPEDEF_H

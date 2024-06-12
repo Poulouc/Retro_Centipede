@@ -608,7 +608,7 @@ Destroy mushrooms to get points.</string>
             </font>
            </property>
            <property name="text">
-            <string>Julien - 7500</string>
+            <string>Empty</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -645,7 +645,7 @@ Destroy mushrooms to get points.</string>
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>Quentin - 15000</string>
+            <string>Empty</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -666,7 +666,7 @@ Destroy mushrooms to get points.</string>
             </font>
            </property>
            <property name="text">
-            <string>TextLabel</string>
+            <string>Empty</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -694,7 +694,7 @@ Destroy mushrooms to get points.</string>
             </font>
            </property>
            <property name="text">
-            <string>TextLabel</string>
+            <string>Empty</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -715,7 +715,7 @@ Destroy mushrooms to get points.</string>
             </font>
            </property>
            <property name="text">
-            <string>TextLabel</string>
+            <string>Empty</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -736,7 +736,7 @@ Destroy mushrooms to get points.</string>
             </font>
            </property>
            <property name="text">
-            <string>TextLabel</string>
+            <string>Empty</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -757,7 +757,7 @@ Destroy mushrooms to get points.</string>
             </font>
            </property>
            <property name="text">
-            <string>TextLabel</string>
+            <string>Empty</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -778,7 +778,7 @@ Destroy mushrooms to get points.</string>
             </font>
            </property>
            <property name="text">
-            <string>TextLabel</string>
+            <string>Empty</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -799,7 +799,7 @@ Destroy mushrooms to get points.</string>
             </font>
            </property>
            <property name="text">
-            <string>TextLabel</string>
+            <string>Empty</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -820,7 +820,7 @@ Destroy mushrooms to get points.</string>
             </font>
            </property>
            <property name="text">
-            <string>Romain - 10000</string>
+            <string>Empty</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -836,6 +836,104 @@ Destroy mushrooms to get points.</string>
             <size>
              <width>300</width>
              <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_userInput">
+      <layout class="QGridLayout" name="gridLayout_14">
+       <item row="0" column="0">
+        <layout class="QGridLayout" name="gridLayout_13">
+         <item row="0" column="2" rowspan="5">
+          <spacer name="horizontalSpacer_14">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="1">
+          <spacer name="verticalSpacer_8">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>200</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="0" rowspan="5">
+          <spacer name="horizontalSpacer_13">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="label_8">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Enter your username :</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <spacer name="verticalSpacer_7">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>200</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="usernameLineEdit">
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <spacer name="verticalSpacer_9">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>1</width>
+             <height>40</height>
             </size>
            </property>
           </spacer>

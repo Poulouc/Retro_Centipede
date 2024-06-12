@@ -16,6 +16,7 @@
 #include <QResizeEvent>
 #include "game.h"
 #include "typeDef.h"
+#include "leaderboard.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -156,6 +157,16 @@ private slots:
     void backToMenu();
 
     /**
+     * @brief Displays the leaderboard.
+     */
+    void displayLeaderboard();
+
+    /**
+     * @brief Processes the new score and updates the leaderboard if needed.
+     */
+    void processNewScore();
+
+    /**
      * @brief Displays the 'How to play' page.
      */
     void goToHowToPlay();
@@ -188,6 +199,7 @@ private:
     QTimer * itsSpiderAppearTimer = nullptr;
     QTimer * itsSpiderTimer = nullptr;
     Game * itsGame = nullptr; /**< Pointer to the game object */
+    Leaderboard * itsLeaderboard = nullptr;
     QImage itsCentiHead; /**< Image of the centipede head */
     QImage itsCentiBody; /**< Image of the centipede body */
     QImage itsAvatar; /**< Image of the player */

@@ -48,6 +48,8 @@ Widget::Widget(QWidget *parent)
     connect(ui->backToMenuButton_2, SIGNAL(clicked()), this, SLOT(backToMenu()));
     connect(ui->resumeGameButton, SIGNAL(clicked()), this, SLOT(resumeGame()));
     connect(ui->backToMenuButton, SIGNAL(clicked()), this, SLOT(backToMenu()));
+    connect(ui->leaderboardButton, SIGNAL(clicked()), this, SLOT(displayLeaderboard()));
+    connect(ui->backToMenu, SIGNAL(clicked()), this, SLOT(backToMenu()));
 
     //Set style sheets for the ui
     //ui->HowToPlay->setStyleSheet("../../../styleSheets/styleSheetHowtoPlay");
@@ -62,6 +64,8 @@ Widget::Widget(QWidget *parent)
     connect(itsPiercingTimer, SIGNAL(timeout()), this, SLOT(piercingEnd()));
     connect(itsSpiderAppearTimer, SIGNAL(timeout()), this, SLOT(spiderAppear()));
     connect(itsSpiderTimer, SIGNAL(timeout()), this, SLOT(moveSpider()));
+
+    itsLeaderboard = new Leaderboard("../../../CentipedeReloaded/leaderboard.txt");
 }
 
 Widget::~Widget()
@@ -76,6 +80,7 @@ Widget::~Widget()
     delete itsRafaleTimer;
     delete itsPiercingTimer;
     delete itsGame;
+    delete itsLeaderboard;
 }
 
 void Widget::paintEvent(QPaintEvent *event)
@@ -136,6 +141,11 @@ void Widget::resizeEvent(QResizeEvent *event)
 
 void Widget::keyPressEvent(QKeyEvent * event)
 {
+    if((event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) && ui->stackedWidget->currentIndex() == 7)
+    {
+        processNewScore();
+    }
+
     if(!isGameStarted) return;
     // Handle key press events for Z, Q, S, D and Space keys
     if (event->key() == Qt::Key_Z)
@@ -411,8 +421,8 @@ void Widget::startGame(int level)
         itsBulletTimer->start(3000 / boardHeight); // Set the speed of the bullet
         itsPlayerTimer->start(2500 / boardWidth); // Set the speed of the player
         itsPowerUpMovementTimer->start(baseCentipedeTimer - level/10);
-        itsSpiderAppearTimer->start(1000);//à mettre là ou le niveau 2 demarre
-        itsSpiderAppearProbability = INCREMENT_INTERVAL;//Set the minimum probability for the spider to appear
+        itsSpiderAppearTimer->start(1000); //à mettre là ou le niveau 2 demarre
+        itsSpiderAppearProbability = INCREMENT_INTERVAL; //Set the minimum probability for the spider to appear
     }
     else
     {
@@ -430,7 +440,7 @@ void Widget::endGame()
     }
     else if (itsGame->isGameLosed())
     {
-        ui->stackedWidget->setCurrentIndex(2);
+        ui->stackedWidget->setCurrentIndex(7);
     }
     else return;
 
@@ -479,6 +489,34 @@ void Widget::backToMenu()
     isGameStarted = false;
     isGamePaused = false;
     ui->stackedWidget->setCurrentIndex(0);
+}
+
+void Widget::displayLeaderboard()
+{
+    try
+    {
+        itsLeaderboard->extract();
+        map<string,int> unsortedBestScores = itsLeaderboard->getItsBestScores();
+        map<int,string> bestScores = {};
+        for(pair<string,int> score : unsortedBestScores)
+        {
+            bestScores.insert({-score.second, score.first});
+        }
+        QLabel* labelList[10] = {ui->position_1, ui->position_2, ui->position_3, ui->position_4, ui->position_5, ui->position_6, ui->position_7, ui->position_8, ui->position_9, ui->position_10};
+        map<int,string>::iterator it = bestScores.begin();
+        for(QLabel* label : labelList)
+        {
+            if(it == bestScores.end()) break;
+            string newText = it->second + " - " + to_string(-it->first);
+            label->setText(QString::fromStdString(newText));
+            ++it;
+        }
+    }
+    catch(string & e)
+    {
+        qDebug() << e;
+    }
+    ui->stackedWidget->setCurrentIndex(6);
 }
 
 void Widget::goToHowToPlay()
@@ -566,4 +604,23 @@ void Widget::moveSpider()
         itsSpiderTimer->stop();
         itsSpiderAppearTimer->start(1000);
     }
+}
+
+void Widget::processNewScore()
+{
+    qDebug() << "e";
+    string username = ui->usernameLineEdit->text().toStdString();
+    int score = itsGame->getItsScore();
+    delete itsGame;
+
+    try
+    {
+        if(username != "") itsLeaderboard->addScore(score, username);
+    }
+    catch(string & e)
+    {
+        qDebug() << e;
+    }
+
+    displayLeaderboard();
 }
