@@ -27,7 +27,7 @@ public:
      * @brief Constructs a new Centipede object.
      * @param head Pointer to the head BodyPart of the centipede.
      */
-    Centipede(BodyPart* head = new BodyPart());
+    Centipede(BodyPart* head);
 
     /**
      * @brief Destroys the Centipede object.

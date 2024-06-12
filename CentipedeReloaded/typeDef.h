@@ -27,7 +27,7 @@ struct Direction
 };
 
 // Variables for centipede
-const int CENTIPEDE_SPEED = 1;
+//const int CENTIPEDE_SPEED = 1;
 const int CENTIPEDE_LENGTH = 8;
 const int CENTIPEDE_BODYPART_SIZE = 13;
 const int CENTIPEDE_SPAWN_XPOS = 15;

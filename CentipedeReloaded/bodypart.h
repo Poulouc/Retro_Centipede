@@ -15,7 +15,7 @@ class BodyPart
 private:
     BodyPart* itsParent = nullptr; /**< Pointer to the parent body part */
     BodyPart* itsChild = nullptr; /**< Pointer to the child body part */
-    QRect itsHitBox = QRect(0, 0, CENTIPEDE_BODYPART_SIZE, CENTIPEDE_BODYPART_SIZE); /**< Rectangle representing the hitbox */
+    QRect itsHitBox/* = QRect(0, 0, CENTIPEDE_BODYPART_SIZE, CENTIPEDE_BODYPART_SIZE)*/; /**< Rectangle representing the hitbox */
     Position itsPosition = {}; /**< Position of the body part */
     Position itsTargetPos = {};
     Position itsPreviousPosition = {}; /**< Previous position of the body part */
@@ -24,7 +24,7 @@ public:
     /**
      * @brief Constructor for the BodyPart class.
      */
-    BodyPart();
+    BodyPart(int size);
 
     /**
      * @brief Destructor for the BodyPart class.

@@ -32,6 +32,7 @@ private:
     QRect itsPlayerZone; /**< Rectangle representing the player's zone */
     QRect itsCentipedeZone;
     std::vector<Centipede*>* treatedCentipedes;
+    bool updatingCenti = false;
 
 public:
     /**

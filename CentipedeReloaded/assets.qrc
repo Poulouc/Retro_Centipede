@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/">
+        <file>assets/balle_transpercante.png</file>
+        <file>assets/bullet.png</file>
+        <file>assets/centipede_body1.png</file>
+        <file>assets/centipede_body2.png</file>
+        <file>assets/centipede_head1.png</file>
+        <file>assets/centipede_head2.png</file>
+        <file>assets/centipede_tail1.png</file>
+        <file>assets/centipede_tail2.png</file>
+        <file>assets/grass.png</file>
+        <file>assets/grass_dark.png</file>
+        <file>assets/herbicide.png</file>
+        <file>assets/mushroom_state1.png</file>
+        <file>assets/mushroom_state2.png</file>
+        <file>assets/mushroom_state3.png</file>
+        <file>assets/mushroom_state4.png</file>
+        <file>assets/player.png</file>
+        <file>assets/rafale.png</file>
+        <file>assets/spider.png</file>
+    </qresource>
+</RCC>

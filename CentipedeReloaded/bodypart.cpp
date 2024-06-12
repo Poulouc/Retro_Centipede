@@ -4,7 +4,9 @@
 
 using namespace std;
 
-BodyPart::BodyPart() {}
+BodyPart::BodyPart(int size)
+    :itsHitBox(QRect(0, 0, size, size))
+{}
 
 BodyPart::~BodyPart() {}
 
@@ -73,12 +75,12 @@ void BodyPart::updatePos()
         // Moving from left to right (->)
         if (itsPosition.posX < itsTargetPos.posX)
         {
-            itsPosition.posX += (itsTargetPos.posX - itsPosition.posX < CENTIPEDE_SPEED)?(itsTargetPos.posX - itsPosition.posX):CENTIPEDE_SPEED;
+            itsPosition.posX += 1;//(itsTargetPos.posX - itsPosition.posX < CENTIPEDE_SPEED)?(itsTargetPos.posX - itsPosition.posX):CENTIPEDE_SPEED;
         }
         // Moving from right to left (<-)
         else if (itsPosition.posX > itsTargetPos.posX)
         {
-            itsPosition.posX -= (itsPosition.posX - itsTargetPos.posX < CENTIPEDE_SPEED)?(itsPosition.posX - itsTargetPos.posX):CENTIPEDE_SPEED;
+            itsPosition.posX -= 1;//(itsPosition.posX - itsTargetPos.posX < CENTIPEDE_SPEED)?(itsPosition.posX - itsTargetPos.posX):CENTIPEDE_SPEED;
         }
     }
     else if (itsPosition.posY != itsTargetPos.posY)
@@ -86,22 +88,22 @@ void BodyPart::updatePos()
         // Moving from top to bottom (v)
         if (itsPosition.posY < itsTargetPos.posY)
         {
-            itsPosition.posY += (itsTargetPos.posY - itsPosition.posY < CENTIPEDE_SPEED)?(itsTargetPos.posY - itsPosition.posY):CENTIPEDE_SPEED;
+            itsPosition.posY += 1;//(itsTargetPos.posY - itsPosition.posY < CENTIPEDE_SPEED)?(itsTargetPos.posY - itsPosition.posY):CENTIPEDE_SPEED;
         }
         // Moving from bottom to top (^)
         else if (itsPosition.posY > itsTargetPos.posY)
         {
-            itsPosition.posY -= (itsPosition.posY - itsTargetPos.posY < CENTIPEDE_SPEED)?(itsPosition.posY - itsTargetPos.posY):CENTIPEDE_SPEED;
+            itsPosition.posY -= 1;//(itsPosition.posY - itsTargetPos.posY < CENTIPEDE_SPEED)?(itsPosition.posY - itsTargetPos.posY):CENTIPEDE_SPEED;
         }
     }
     else
     {
         cout << "(" << itsPosition.posX << ", " << itsPosition.posY << ") -> (" <<
                 itsTargetPos.posX << ", " << itsTargetPos.posY << ")" << endl;
-        throw string("L'un des BodyPart ne se déplace plus");
+        //throw string("L'un des BodyPart ne se déplace plus");
     }
 
-    itsHitBox = { itsPosition.posX, itsPosition.posY, CENTIPEDE_BODYPART_SIZE, CENTIPEDE_BODYPART_SIZE };
+    itsHitBox = { itsPosition.posX, itsPosition.posY, itsHitBox.width(), itsHitBox.height() };
 }
 
 Position BodyPart::getNextTarget(Direction centipedeDir, int caseLength)

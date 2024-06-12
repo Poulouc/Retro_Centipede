@@ -105,6 +105,7 @@ void Widget::resizeEvent(QResizeEvent *event)
         int boardY = height() * 5 / 100;
 
 
+        itsCentipedeTimer->stop();
         itsGame->setBoard(QRect(boardX, boardY, boardWidth, boardHeight));
 
         // Adjust timers or other parameters based on the new window size
