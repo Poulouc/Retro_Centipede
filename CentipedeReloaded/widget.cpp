@@ -508,12 +508,13 @@ void Widget::displayLeaderboard()
             bestScores.insert({-score.second, score.first});
         }
         QLabel* labelList[10] = {ui->position_1, ui->position_2, ui->position_3, ui->position_4, ui->position_5, ui->position_6, ui->position_7, ui->position_8, ui->position_9, ui->position_10};
+        QLabel* labelList2[10] = {ui->name_1, ui->name_2, ui->name_3, ui->name_4, ui->name_5, ui->name_6, ui->name_7, ui->name_8, ui->name_9, ui->name_10};
         map<int,string>::iterator it = bestScores.begin();
-        for(QLabel* label : labelList)
+        for(int i = 0; i <= 10; i++)
         {
             if(it == bestScores.end()) break;
-            string newText = it->second + " - " + to_string(-it->first);
-            label->setText(QString::fromStdString(newText));
+            labelList[i]->setText(QString::fromStdString(to_string(-it->first)));
+            labelList2[i]->setText(QString::fromStdString(it->second));
             ++it;
         }
     }
