@@ -50,7 +50,7 @@ const int BOARD_WIDTH = 30; /**< The width of the game board */
 const int BOARD_HEIGHT = 31; /**< The height of the game board */
 
 // Variables for powerups
-const int POWERUP_DROPRATE = 100; /**< The chance in percent for a powerup to appear when a mushroom is broken by a bullet */
+const int POWERUP_DROPRATE = 30; /**< The chance in percent for a powerup to appear when a mushroom is broken by a bullet */
 const int POWERUP_RAFALE_DURATION = 4; /**< The duration in seconds of the 'rafale' powerup */
 const int POWERUP_RAFALE_FIRERATE = 4; /**< The number of shots per second of the 'rafale' powerup */
 const int POWERUP_PIERCING_DURATION = 5; /**< The duration in second of the 'piercing' powerup */

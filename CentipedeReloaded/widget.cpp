@@ -334,8 +334,36 @@ void Widget::drawCentipede(QPainter & painter)
         }
         else
         {
+            double resetRota = 0.0;
+            int actY = (*it)->getItsTail()->getItsPosition().posY;
+            int prvY = (*it)->getItsTail()->getItsParent()->getItsPosition().posY;
+
+            if (actY == prvY)
+            {
+                int actX = (*it)->getItsTail()->getItsPosition().posX;
+                int prvX = (*it)->getItsTail()->getItsParent()->getItsPosition().posX;
+
+                if (actX < prvX)
+                {
+                    itsCentiTailImg = itsCentiTailImg.transformed(QTransform().rotate(-90.0));
+                    resetRota = 90.0;
+                }
+                else
+                {
+                    itsCentiTailImg = itsCentiTailImg.transformed(QTransform().rotate(90.0));
+                    resetRota = -90.0;
+                }
+            }
+            else if (actY > prvY)
+            {
+                itsCentiTailImg = itsCentiTailImg.transformed(QTransform().rotate(180.0));
+                resetRota = -180.0;
+            }
+
             // Display the image of the tail of a centipede
             painter.drawImage((*it)->getItsTail()->getItsHitBox(), itsCentiTailImg);
+
+            itsCentiTailImg = itsCentiTailImg.transformed(QTransform().rotate(resetRota));
         }
 
         // Iterates on body parts of the centipede (head and tail excluded) in descending order
@@ -350,8 +378,36 @@ void Widget::drawCentipede(QPainter & painter)
             }
             else
             {
+                double resetRota = 0.0;
+                int actY = currentPart->getItsPosition().posY;
+                int prvY = currentPart->getItsParent()->getItsPosition().posY;
+
+                if (actY == prvY)
+                {
+                    int actX = currentPart->getItsPosition().posX;
+                    int prvX = currentPart->getItsParent()->getItsPosition().posX;
+
+                    if (actX < prvX)
+                    {
+                        itsCentiBodyImg = itsCentiBodyImg.transformed(QTransform().rotate(-90.0));
+                        resetRota = 90.0;
+                    }
+                    else
+                    {
+                        itsCentiBodyImg = itsCentiBodyImg.transformed(QTransform().rotate(90.0));
+                        resetRota = -90.0;
+                    }
+                }
+                else if (actY > prvY)
+                {
+                    itsCentiBodyImg = itsCentiBodyImg.transformed(QTransform().rotate(180.0));
+                    resetRota = -180.0;
+                }
+
                 // Display the image of the body of a centipede
                 painter.drawImage(currentPart->getItsHitBox(), itsCentiBodyImg);
+
+                itsCentiBodyImg = itsCentiBodyImg.transformed(QTransform().rotate(resetRota));
             }
         }
 
@@ -364,8 +420,31 @@ void Widget::drawCentipede(QPainter & painter)
         }
         else
         {
+            double resetRota = 0.0;
+
+            if ((*it)->getItsDirection().dirY == 0)
+            {
+                if ((*it)->getItsDirection().dirX == 1)
+                {
+                    itsCentiHeadImg = itsCentiHeadImg.transformed(QTransform().rotate(-90.0));
+                    resetRota = 90.0;
+                }
+                else
+                {
+                    itsCentiHeadImg = itsCentiHeadImg.transformed(QTransform().rotate(90.0));
+                    resetRota = -90.0;
+                }
+            }
+            else if ((*it)->getItsDirection().dirY == -1)
+            {
+                itsCentiHeadImg = itsCentiHeadImg.transformed(QTransform().rotate(180.0));
+                resetRota = -180.0;
+            }
+
             // Display the image of the head of a centipede
             painter.drawImage((*it)->getItsHead()->getItsHitBox(), itsCentiHeadImg);
+
+            itsCentiHeadImg = itsCentiHeadImg.transformed(QTransform().rotate(resetRota));
         }
     }
 }
@@ -778,7 +857,6 @@ void Widget::moveSpider()
 
 void Widget::processNewScore()
 {
-    qDebug() << "e";
     string username = ui->usernameLineEdit->text().toStdString();
     int score = itsGame->getItsScore();
     delete itsGame;
