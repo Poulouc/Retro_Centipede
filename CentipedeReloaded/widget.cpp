@@ -11,7 +11,8 @@ Widget::Widget(QWidget *parent)
     ui->setupUi(this);
 
     // Change title of the window and set minimum size of the window
-    setWindowTitle("Centipede Reloaded - v1.0");
+    setWindowTitle("Centipede Reloaded");
+    setWindowIcon(QIcon(":/assets/icon.png"));
     setMinimumSize(400, 300);
 
     // Change background color of the widget
@@ -495,7 +496,7 @@ void Widget::startGame(int level)
         int boardY = height() * 5 / 100;
         itsGameBoard = { boardX, boardY, boardWidth, boardHeight };
 
-        itsGame = new Game({ boardX, boardY, boardWidth, boardHeight });
+        itsGame = new Game(itsGameBoard);
         isGameStarted = true;
         itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
         itsBulletTimer->start(3000 / boardHeight); // Set the speed of the bullet

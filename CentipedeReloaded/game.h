@@ -56,7 +56,7 @@ public:
     /**
      * @brief Spawns a centipede.
      */
-    void spawnCentipede(int centiLength, Direction centiDir, BodyPart* oldHead);
+    void spawnCentipede(int centiLength = CENTIPEDE_LENGTH, Direction centiDir = { -1, 0 }, BodyPart* oldHead = nullptr, QRect newBoard = {});
 
     /**
      * @brief Creates mushrooms on the game board.

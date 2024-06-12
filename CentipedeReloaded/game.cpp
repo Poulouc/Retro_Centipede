@@ -73,35 +73,107 @@ Game::~Game()
     }
 }
 
-void Game::spawnCentipede(int centiLength = CENTIPEDE_LENGTH, Direction centiDir = { -1, 0 }, BodyPart* oldHead = nullptr)
+void Game::spawnCentipede(int centiLength, Direction centiDir, BodyPart* oldHead, QRect newBoard)
 {
-    Centipede* newCentipede = new Centipede(new BodyPart(itsBoard.width() / BOARD_WIDTH));
+    Centipede* newCentipede = new Centipede((oldHead == nullptr)?new BodyPart(itsBoard.width() / BOARD_WIDTH):oldHead);
     BodyPart* currentPart = newCentipede->getItsHead();
     Position newPos;
     Position oldPos;
 
-    newPos.posX = itsBoard.x() + CENTIPEDE_SPAWN_XPOS * (itsBoard.width() / BOARD_WIDTH);
-    newPos.posY = itsBoard.y() + CENTIPEDE_SPAWN_YPOS * (itsBoard.height() / BOARD_HEIGHT);
+    Direction iterationDir = { -centiDir.dirX, -centiDir.dirY };
+
+    if (oldHead == nullptr)
+    {
+        newPos.posX = itsBoard.x() + CENTIPEDE_SPAWN_XPOS * (itsBoard.width() / BOARD_WIDTH);
+        newPos.posY = itsBoard.y() + CENTIPEDE_SPAWN_YPOS * (itsBoard.height() / BOARD_HEIGHT);
+    }
+    else
+    {
+        if (centiDir.dirX != 0)
+        {
+            int offset = (oldHead->getItsPosition().posX - itsBoard.x()) % BOARD_WIDTH - (itsBoard.width() / BOARD_WIDTH) / 2;
+
+            newPos.posY = newBoard.y() + ((oldHead->getItsPosition().posY - itsBoard.y()) * newBoard.height()) / itsBoard.height();
+            if ((centiDir.dirX == -1 && offset >= 0) || (centiDir.dirX == 1 && offset < 0))
+            {
+                newPos.posX = newBoard.x() + ((oldHead->getItsPosition().posX - itsBoard.x() - (itsBoard.width() / BOARD_WIDTH) + offset) * newBoard.width()) / itsBoard.width();
+            }
+            else if ((centiDir.dirX == -1 && offset < 0) || (centiDir.dirX == 1 && offset >= 0))
+            {
+                newPos.posX = newBoard.x() + ((oldHead->getItsPosition().posX - itsBoard.x() + (itsBoard.width() / BOARD_WIDTH) - offset) * newBoard.width()) / itsBoard.width();
+            }
+        }
+        else
+        {
+            int offset = (oldHead->getItsPosition().posY - itsBoard.y()) % BOARD_HEIGHT - (itsBoard.height() / BOARD_HEIGHT) / 2;
+
+            newPos.posX = newBoard.x() + ((oldHead->getItsPosition().posX - itsBoard.x()) * newBoard.width()) / itsBoard.width();
+            if ((centiDir.dirY == -1 && offset >= 0) || (centiDir.dirY == 1 && offset < 0))
+            {
+                newPos.posY = newBoard.y() + ((oldHead->getItsPosition().posY - itsBoard.y() - (itsBoard.height() / BOARD_HEIGHT) + offset) * newBoard.height()) / itsBoard.height();
+            }
+            else if ((centiDir.dirY == -1 && offset < 0) || (centiDir.dirY == 1 && offset >= 0))
+            {
+                newPos.posY = newBoard.y() + ((oldHead->getItsPosition().posY - itsBoard.y() + (itsBoard.height() / BOARD_HEIGHT) - offset) * newBoard.height()) / itsBoard.height();
+            }
+        }
+        currentPart->setItsHitBox({ newPos.posX, newPos.posY, (itsBoard.width() / BOARD_WIDTH), (itsBoard.width() / BOARD_WIDTH) });
+    }
     currentPart->setItsPosition(newPos);
 
-    oldPos.posX = newPos.posX - (itsBoard.width() / BOARD_WIDTH);
+    if (oldHead == nullptr)
+    {
+        oldPos.posX = newPos.posX - (itsBoard.width() / BOARD_WIDTH);
+    }
+    else
+    {
+        oldPos.posX = newPos.posX + centiDir.dirX * (newBoard.width() / BOARD_WIDTH);
+    }
     oldPos.posY = newPos.posY;
     currentPart->setItsTargetPos(oldPos);
 
     newCentipede->setItsDirection(centiDir);
     for(int i = 0; i < centiLength - 1; i++)
     {
-        BodyPart * newPart = new BodyPart(itsBoard.width() / BOARD_WIDTH);
-        oldPos.posX = newPos.posX;
-        newPos.posX = newPos.posX + (itsBoard.width() / BOARD_WIDTH);
-        newPart->setItsPosition(newPos);
-        newPart->setItsTargetPos(oldPos);
+        if (oldHead == nullptr)
+        {
+            BodyPart * newPart = new BodyPart(itsBoard.width() / BOARD_WIDTH);
+            oldPos.posX = newPos.posX;
+            newPos.posX = newPos.posX + (itsBoard.width() / BOARD_WIDTH);
+            newPart->setItsPosition(newPos);
+            newPart->setItsTargetPos(oldPos);
 
-        currentPart->setItsChild(newPart);
-        newPart->setItsParent(currentPart);
-        currentPart = newPart;
+            currentPart->setItsChild(newPart);
+            newPart->setItsParent(currentPart);
+            currentPart = newPart;
 
-        newCentipede->setItsTail(currentPart);
+            newCentipede->setItsTail(currentPart);
+        }
+        else
+        {
+            oldHead = oldHead->getItsChild();
+            oldPos = newPos;
+
+            newPos.posY = newBoard.y() + ((oldHead->getItsPosition().posY - itsBoard.y()) * newBoard.height()) / itsBoard.height();
+
+            // X axis
+            if (oldPos.posY == newPos.posY)
+            {
+                newPos.posX = oldPos.posX + iterationDir.dirX * (newBoard.width() / BOARD_WIDTH);
+            }
+            else if (oldPos.posY < newPos.posY)
+            {
+                newPos.posY = oldPos.posY + (newBoard.height() / BOARD_HEIGHT);
+                iterationDir.dirX = -iterationDir.dirX;
+            }
+            else if (oldPos.posY > newPos.posY)
+            {
+                newPos.posY = oldPos.posY - (newBoard.height() / BOARD_HEIGHT);
+                iterationDir.dirX = -iterationDir.dirX;
+            }
+
+            oldHead->setItsTargetPos(oldPos);
+        }
     }
     itsCentipedes->push_back(newCentipede);
 }
@@ -321,6 +393,9 @@ void Game::checkCollisions()
             delete itsSpider;
             itsSpider = nullptr;
             itsScore += 300;
+            Bullet* toDelete = *it;
+            itsBullets.erase(it);
+            delete toDelete;
         }
     }
 
@@ -558,19 +633,26 @@ void Game::setBoard(QRect board)
     // Update centipede segments for proportional resizing
     for (std::vector<Centipede*>::iterator it = itsCentipedes->begin(); it != itsCentipedes->end(); ++it)
     {
+        int partCounter = 0;
+        for (BodyPart* part = (*it)->getItsHead(); part != nullptr; part = part->getItsChild()) partCounter++;
+        spawnCentipede(partCounter, (*it)->getItsDirection(), (*it)->getItsHead(), board);
+
+        cout << "ready" << endl;
+        Centipede* toDelete = *it;
+        itsCentipedes->erase(it);
+        delete toDelete;
+        cout << "del" << endl;
+        /**
         for (BodyPart* part = (*it)->getItsHead(); part != nullptr; part = part->getItsChild())
         {
-            cout << "cv planter" << endl;
             // Calculate new proportional coordinates
             int newX = board.x() + ((part->getItsPosition().posX - itsBoard.x()) * cellWidth) / (itsBoard.width() / BOARD_WIDTH);
             int newY = board.y() + (part->getItsPosition().posY * cellHeight) / (itsBoard.height() / BOARD_HEIGHT);
-            cout << "ici" << endl;
             // Update the hitbox, position, and target position of the segment
             part->setItsHitBox(QRect(newX, newY, cellWidth, cellWidth));
-            cout << "la" << endl;
             //part->setItsTargetPos({part->getItsParent()->getItsHitBox().x(), part->getItsParent()->getItsHitBox().y()});
-            cout << "peut etre ici" << endl;
         }
+        **/
     }
 
     //set the size of the spider

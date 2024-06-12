@@ -15,7 +15,13 @@ Centipede::Centipede(BodyPart * head)
 // Destructor for the Centipede class.
 Centipede::~Centipede()
 {
-
+    /**
+    for (BodyPart* actualPart = itsHead->getItsChild(); actualPart != nullptr; actualPart = actualPart->getItsChild())
+    {
+        delete actualPart->getItsParent();
+    }
+    delete itsTail;
+    **/
 }
 
 // Returns the head of the centipede.

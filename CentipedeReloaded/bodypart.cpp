@@ -1,6 +1,6 @@
 #include "bodypart.h"
 
-#include <iostream>
+#include <QDebug>
 
 using namespace std;
 
@@ -99,8 +99,8 @@ void BodyPart::updatePos()
     }
     else
     {
-        cout << "(" << itsPosition.posX << ", " << itsPosition.posY << ") -> (" <<
-                itsTargetPos.posX << ", " << itsTargetPos.posY << ")" << endl;
+        qDebug() << "(" << itsPosition.posX << ", " << itsPosition.posY << ") -> (" <<
+                itsTargetPos.posX << ", " << itsTargetPos.posY << ")";
         //throw string("L'un des BodyPart ne se déplace plus");
     }
 
