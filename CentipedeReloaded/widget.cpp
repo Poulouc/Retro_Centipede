@@ -387,13 +387,17 @@ void Widget::movePlayer()
 void Widget::movePowerUps()
 {
     itsGame->movePowerUps();
-    if(itsGame->getIsRafaleActive() && !itsRafaleTimer->isActive())
+    if(itsGame->getRafalePickedUpFlag())
     {
+        itsGame->setRafalePickedUpFlag(false);
+        itsGame->setIsRafaleActive(true);
         remainingRafaleShots = POWERUP_RAFALE_FIRERATE * POWERUP_RAFALE_DURATION;
         itsRafaleTimer->start(1000/POWERUP_RAFALE_FIRERATE);
     }
-    if(itsGame->getIsPiercingActive() && !itsPiercingTimer->isActive())
+    if(itsGame->getPiercingPickedUpFlag())
     {
+        itsGame->setPiercingPickedUpFlag(false);
+        itsGame->setIsPiercingActive(true);
         itsPiercingTimer->start(1000*POWERUP_PIERCING_DURATION);
     }
 }

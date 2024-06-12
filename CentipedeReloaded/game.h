@@ -36,7 +36,9 @@ private:
     QRect itsPlayerZone; /**< Rectangle representing the player's zone */
     int itsCurrentLevel = 1; /**< The current level */
     bool isRafaleActive = false; /** Flag indicating wether the 'rafale' powerup is active */
-    bool isPiercingActive = false; /** Flag indicating wether the 'transperçant' powerup is active */
+    bool isPiercingActive = false; /** Flag indicating wether the 'piercing' powerup is active */
+    bool rafalePickedUpFlag = false; /** Flag indicating wether the 'rafale' powerup has been picked up */
+    bool piercingPickedUpFlag = false; /** Flag indicating wether the 'piercing' powerup has been picked up */
     Spider* itsSpider;
 
 public:
@@ -225,11 +227,37 @@ public:
      */
     bool getIsPiercingActive();
 
+
+
     /**
      * @brief Sets isRafaleActive to the given state.
      * @param isActive The state to set isRafaleActive to.
      */
     void setIsRafaleActive(bool isActive);
+
+    /**
+     * @brief Checks if the rafale powerup was picked up.
+     * @return True if the rafale powerup was picked up, otherwise false.
+     */
+    bool getRafalePickedUpFlag();
+
+    /**
+     * @brief Checks if the piercing powerup was picked up.
+     * @return True if the piercing powerup was picked up, otherwise false.
+     */
+    bool getPiercingPickedUpFlag();
+
+    /**
+     * @brief Sets the state of the rafalePickedUp flag.
+     * @param state The new state of the flag.
+     */
+    void setRafalePickedUpFlag(bool state);
+
+    /**
+     * @brief Sets the state of the piercingPickedUp flag.
+     * @param state The new state of the flag.
+     */
+    void setPiercingPickedUpFlag(bool state);
 
     /**
      * @brief Sets isPiercingActive to the given state.

@@ -276,10 +276,10 @@ void Game::checkCollisions()
             switch(powerup->getItsType())
             {
             case rafale:
-                isRafaleActive = true;
+                rafalePickedUpFlag = true;
                 break;
             case transpercant:
-                isPiercingActive = true;
+                piercingPickedUpFlag = true;
                 break;
             case herbicide:
                 break;
@@ -471,6 +471,16 @@ bool Game::getIsRafaleActive()
     return isRafaleActive;
 }
 
+bool Game::getRafalePickedUpFlag()
+{
+    return rafalePickedUpFlag;
+}
+
+bool Game::getPiercingPickedUpFlag()
+{
+    return piercingPickedUpFlag;
+}
+
 bool Game::getIsPiercingActive()
 {
     return isPiercingActive;
@@ -484,6 +494,16 @@ void Game::setIsRafaleActive(bool isActive)
 void Game::setIsPiercingActive(bool isActive)
 {
     isPiercingActive = isActive;
+}
+
+void Game::setRafalePickedUpFlag(bool state)
+{
+    rafalePickedUpFlag = state;
+}
+
+void Game::setPiercingPickedUpFlag(bool state)
+{
+    piercingPickedUpFlag = state;
 }
 
 void Game::setBoard(QRect board)
