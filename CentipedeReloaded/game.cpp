@@ -7,7 +7,7 @@ using namespace std;
 Game::Game(QRect board)
     :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsPowerups({}), itsBullets({}),
     itsPlayer(new Player({board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2, board.y() + board.height() - (board.width() / BOARD_WIDTH) - 1}, board.width() / BOARD_WIDTH)), itsBoard(board),
-    itsPlayerZone(board.x(), board.y() + (4 * board.height()) / 5, board.width(), board.height() / 5)
+    itsPlayerZone(board.x()-1, board.y() + (4 * board.height()) / 5, board.width() + 1, board.height() / 5)
     ,itsSpider(nullptr)
 {
     spawnCentipede();
@@ -89,7 +89,7 @@ void Game::createMushrooms()
     default_random_engine eng(rd());
 
     uniform_int_distribution<int> randX(0, 30 - 1);
-    uniform_int_distribution<int> randY(0, 31 - 1);
+    uniform_int_distribution<int> randY(0, 30 - 1);
 
     int mushroomSize = (itsBoard.width() / BOARD_WIDTH);
 
@@ -540,9 +540,9 @@ void Game::setBoard(QRect board)
                                   CellWidth));
     }
     //set the playerZone
-    itsPlayerZone = QRect(board.x(),
+    itsPlayerZone = QRect(board.x() - 1,
                           board.y() + (4 * board.height()) / 5,
-                          board.width(),
+                          board.width() + 1,
                           board.height() / 5);
 
     //set the size of the player and the new placement on the board
@@ -553,7 +553,6 @@ void Game::setBoard(QRect board)
     //set the position of the player
     itsPlayer->setItsPosition({itsPlayerZone.x() + itsPlayerZone.width()/2 - CellWidth/2,
                                itsPlayerZone.y() + itsPlayerZone.height() - CellHeight - itsPlayerZone.height()/20});
-    /**
     // Update centipede segments for proportional resizing
     for (vector<Centipede *>::iterator it = itsCentipedes->begin(); it != itsCentipedes->end(); ++it)
     {
@@ -572,7 +571,6 @@ void Game::setBoard(QRect board)
             currentPart = currentPart->getItsChild();
         }
     }
-    **/
     //set the size of the spider
     if(itsSpider != nullptr)
     {
@@ -608,9 +606,10 @@ void Game::movePlayer(Direction & direction)
         itsPlayer->updatePos({direction.dirX, 0});
     }
     // Check if the player can move vertically within the player zone
-    if(!willItTouch && itsPlayerZone.y() < itsPlayer->getItsHitBox().y() + direction.dirY * PLAYER_SPEED &&
-        itsPlayerZone.y() + itsPlayerZone.height() > itsPlayer->getItsHitBox().y() + itsPlayer->getItsHitBox().height() + direction.dirY * PLAYER_SPEED
-        && (direction.dirY == -PLAYER_SPEED or direction.dirY == PLAYER_SPEED))
+    if(!willItTouch
+        && itsPlayerZone.y() < itsPlayer->getItsHitBox().y() + direction.dirY * PLAYER_SPEED
+        && itsPlayerZone.y() + itsPlayerZone.height() + 1 > itsPlayer->getItsHitBox().y() + itsPlayer->getItsHitBox().height() + direction.dirY * PLAYER_SPEED
+        && (direction.dirY == -PLAYER_SPEED || direction.dirY == PLAYER_SPEED))
     {
         // Update the player's position in the vertical direction
         itsPlayer->updatePos({0, direction.dirY});

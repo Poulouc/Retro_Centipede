@@ -115,13 +115,12 @@ void Widget::resizeEvent(QResizeEvent *event)
     if (itsGame != nullptr)
     {
         // Calculate the size of itsBoard based on the smallest dimension of the window
-        int maxHeight = height() * 95 / 100; // 95% of the window height
-        int maxBoardHeight = maxHeight;
+        int maxHeight = height() * 0.95; // 95% of the window height
 
         // Find the largest multiple of BOARD_HEIGHT that fits within the available height
-        int boardHeight = (maxBoardHeight / BOARD_HEIGHT) * BOARD_HEIGHT;
-        int boardWidth = boardHeight * BOARD_WIDTH / BOARD_HEIGHT;
-        int boardX = width() / 2 - boardWidth / 2;
+        int boardHeight = (int)(maxHeight / BOARD_HEIGHT) * BOARD_HEIGHT + 1;
+        int boardWidth = boardHeight*BOARD_WIDTH / BOARD_HEIGHT + 1;
+        int boardX = width()/2 - boardWidth/2 - 1;
         int boardY = height() * 5 / 100;
 
 
@@ -375,7 +374,7 @@ void Widget::drawHeadUpDisplay(QPainter & painter)
 
 
         qDebug() << progress;
-        int displayWidth = itsGame->getItsBoard().width()/75;
+        int displayWidth = itsGame->getItsBoard().width()/60;
         int displayHeight = this->height()/3;
 
         int displayX = itsGame->getItsBoard().x() + itsGameBoard.width() + displayWidth;
@@ -392,7 +391,7 @@ void Widget::drawHeadUpDisplay(QPainter & painter)
         float progress = (float)itsPiercingTimer->remainingTime() / ((float)POWERUP_PIERCING_DURATION*1000);
 
 
-        int displayWidth = itsGame->getItsBoard().width()/75;
+        int displayWidth = itsGame->getItsBoard().width()/60;
         int displayHeight = this->height()/3;
 
         int displayX = itsGame->getItsBoard().x() + itsGameBoard.width() + displayWidth*4;
@@ -402,6 +401,20 @@ void Widget::drawHeadUpDisplay(QPainter & painter)
         display.setTop((1-progress)*(displayY) + displayHeight);
         painter.setPen(Qt::NoPen);
         painter.setBrush(Qt::yellow);
+        painter.drawRect(display);
+    }
+    if(itsGame->getHerbicidePickedUpFlag())
+    {
+        int displayWidth = itsGame->getItsBoard().width()/60;
+        int displayHeight = this->height()/3;
+
+        int displayX = itsGame->getItsBoard().x() + itsGameBoard.width() + displayWidth*7;
+        int displayY = itsGame->getItsBoard().y() + itsGameBoard.height()/2;
+        QRect display = QRect(displayX, displayY, displayWidth, displayHeight);
+
+        display.setTop(displayHeight);
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(Qt::green);
         painter.drawRect(display);
     }
 }
@@ -436,11 +449,6 @@ void Widget::movePowerUps()
         itsGame->setIsPiercingActive(true);
         itsPiercingTimer->start(1000*POWERUP_PIERCING_DURATION);
     }
-    if(itsGame->getHerbicidePickedUpFlag())
-    {
-        itsGame->setHerbicidePickedUpFlag(false);
-        itsGame->setIsHerbicideActive(true);
-    }
 }
 
 void Widget::startGame(int level)
@@ -455,8 +463,13 @@ void Widget::startGame(int level)
         ui->stackedWidget->setCurrentIndex(3);
         this->update();
 
-        // Calculate game board
-        int boardX = width() / 2 - boardWidth / 2;
+        // Calculate the size of itsBoard based on the smallest dimension of the window
+        int maxHeight = height() * 0.95; // 95% of the window height
+
+        // Find the largest multiple of BOARD_HEIGHT that fits within the available height
+        int boardHeight = (int)(maxHeight / BOARD_HEIGHT) * BOARD_HEIGHT + 1;
+        int boardWidth = boardHeight*BOARD_WIDTH / BOARD_HEIGHT + 1;
+        int boardX = width()/2 - boardWidth/2 - 1;
         int boardY = height() * 5 / 100;
         itsGameBoard = { boardX, boardY, boardWidth, boardHeight };
 
@@ -586,7 +599,7 @@ void Widget::rafaleShot()
         itsGame->setIsRafaleActive(false);
         itsRafaleTimer->stop();
     }
-    else
+    else if(!itsGame->getIsHerbicideActive())
     {
         itsGame->shoot();
         remainingRafaleShots--;
