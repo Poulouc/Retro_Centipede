@@ -264,6 +264,7 @@ private:
     int remainingRafaleShots; /**< Number of remaining shots for 'Rafale' powerup */
     int itsElapsedTime; /**< Elapsed time of the current game session */
     int itsSpiderAppearProbability; /**< Probability of spider appearing */
+    int itsCentiImgState = 1; /**< State that determine which image of the centiped is actually used */
 };
 
 #endif // WIDGET_H
