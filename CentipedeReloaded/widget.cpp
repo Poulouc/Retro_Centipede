@@ -173,7 +173,7 @@ void Widget::resizeEvent(QResizeEvent *event)
         itsGame->setBoard(QRect(boardX, boardY, boardWidth, boardHeight));
 
         // Adjust timers or other parameters based on the new window size
-        itsCentipedeTimer->start(4000 / boardWidth); // set the speed of it
+        itsCentipedeTimer->start(4000 / boardWidth - itsGame->getCurrentLevel()/10); // set the speed of it
         itsBulletTimer->start(3000 / boardHeight); // Set the speed of the bullet
         itsPlayerTimer->start(2500 / boardWidth); // Set the speed of the player
         if(itsGame->getItsSpider() != nullptr)

@@ -33,7 +33,7 @@ private:
     Player* itsPlayer; /**< Pointer to the player */
     QRect itsBoard; /**< Rectangle representing the game board */
     QRect itsPlayerZone; /**< Rectangle representing the player's zone */
-    QRect itsCentipedeZone;
+    QRect * itsCentipedeZone;
     std::vector<Centipede*>* treatedCentipedes;
     int itsCurrentLevel = 1; /**< The current level */
     bool isRafaleActive = false; /** Flag indicating wether the 'rafale' powerup is active */

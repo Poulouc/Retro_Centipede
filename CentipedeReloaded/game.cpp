@@ -30,7 +30,7 @@ void targetLog(Centipede* centipede)
 Game::Game(QRect board)
     :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsPowerups({}), itsBullets({}),
     itsPlayer(new Player({board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2, board.y() + board.height() - (board.width() / BOARD_WIDTH) - 1}, board.width() / BOARD_WIDTH)),
-    itsBoard(board), itsPlayerZone(board.x(), board.y() + (4 * board.height()) / 5, board.width(), board.height() / 5), itsCentipedeZone(board),
+    itsBoard(board), itsPlayerZone(board.x(), board.y() + (4 * board.height()) / 5, board.width(), board.height() / 5), itsCentipedeZone(&board),
     treatedCentipedes(new vector<Centipede*>), itsSpider(nullptr)
 {
     spawnCentipede();
@@ -533,7 +533,6 @@ void Game::setBoard(QRect board)
     itsPlayer->setItsPosition({itsPlayerZone.x() + itsPlayerZone.width()/2 - cellWidth/2,
                                itsPlayerZone.y() + itsPlayerZone.height() - cellHeight - itsPlayerZone.height()/20});
 
-    //**
     // Update centipede segments for proportional resizing
     for (vector<Centipede*>::iterator it = itsCentipedes->begin(); it != itsCentipedes->end(); ++it)
     {
@@ -555,7 +554,24 @@ void Game::setBoard(QRect board)
             currentPart->setItsTargetPos({ newTargetX, newTargetY });
         }
     }
-    //**/
+
+    // Update centipede segments for proportional resizing
+    for (std::vector<Centipede*>::iterator it = itsCentipedes->begin(); it != itsCentipedes->end(); ++it)
+    {
+        for (BodyPart* part = (*it)->getItsHead(); part != nullptr; part = part->getItsChild())
+        {
+            cout << "cv planter" << endl;
+            // Calculate new proportional coordinates
+            int newX = board.x() + ((part->getItsPosition().posX - itsBoard.x()) * cellWidth) / (itsBoard.width() / BOARD_WIDTH);
+            int newY = board.y() + (part->getItsPosition().posY * cellHeight) / (itsBoard.height() / BOARD_HEIGHT);
+            cout << "ici" << endl;
+            // Update the hitbox, position, and target position of the segment
+            part->setItsHitBox(QRect(newX, newY, cellWidth, cellWidth));
+            cout << "la" << endl;
+            //part->setItsTargetPos({part->getItsParent()->getItsHitBox().x(), part->getItsParent()->getItsHitBox().y()});
+            cout << "peut etre ici" << endl;
+        }
+    }
 
     //set the size of the spider
     if(itsSpider != nullptr)
@@ -566,12 +582,6 @@ void Game::setBoard(QRect board)
 
         itsSpider->setItsHitBox({newX, newY, cellWidth, cellWidth});
     }
-
-    if (itsCentipedeZone.height() == (itsBoard.height() / 5))
-    {
-        itsCentipedeZone = itsPlayerZone;
-    }
-    else itsCentipedeZone = itsBoard;
 
     // Set the new board as actual
     itsBoard = board;
@@ -626,7 +636,7 @@ void Game::moveCentipede()
         if (alreadyTreated) continue;
 
         // If the centipede has reached the bottom for the first time, change the zone to the player zone.
-        if (itsCentipedeZone == itsBoard && centipede->hasReachedBottom()) itsCentipedeZone = itsPlayerZone;
+        if (*itsCentipedeZone == itsBoard and centipede->hasReachedBottom()) itsCentipedeZone = &itsPlayerZone;
 
         BodyPart* centiHead = centipede->getItsHead();
         centiHead->updatePos();
@@ -654,7 +664,7 @@ void Game::moveCentipede()
             }
 
             centipedeToCentipedeCollision(centipede);
-            if (centipedeBoardCollision(centipede, itsCentipedeZone)) centipedeBoardCollision(centipede, itsCentipedeZone);
+            if (centipedeBoardCollision(centipede, *itsCentipedeZone)) centipedeBoardCollision(centipede, *itsCentipedeZone);
             if (centipedeMushroomCollision(centipede)) centipedeMushroomCollision(centipede);
 
             centiHead->setItsTargetPos({ headPos.posX + centipede->getItsDirection().dirX * (itsBoard.width() / BOARD_WIDTH),
@@ -792,7 +802,7 @@ bool Game::centipedeToCentipedeCollision(Centipede * centipede)
                         if (centi->getItsDirection().dirX == -1) centi->setWasMovingLeft(true);
                         else if (centi->getItsDirection().dirX == 1) centi->setWasMovingRight(true);
                         centi->setItsDirection({ 0, 1 });
-                        centipedeBoardCollision(centi, itsCentipedeZone);
+                        centipedeBoardCollision(centi, *itsCentipedeZone);
                         centi->setVerticalDirection(true);
                     }
 
@@ -861,8 +871,8 @@ void Game::moveSpider()
     for (vector<Mushroom*>::iterator it = itsMushrooms->begin(); it < itsMushrooms->end(); it++)
     {
         //check if the mushroom is marked
-        int isMarked = itsMarkedMushroom.size();
-        for (int i = 0; i < itsMarkedMushroom.size(); i++)
+        unsigned long long int isMarked = itsMarkedMushroom.size();
+        for (unsigned long long int i = 0; i < itsMarkedMushroom.size(); i++)
         {
             if ((itsMarkedMushroom)[i] == (*it))
             {
