@@ -27,3 +27,13 @@ Position Bullet::getItsPosition()
 {
     return itsPosition;
 }
+
+bool Bullet::wasMushroomAlreadyHit(Mushroom* mushroom)
+{
+    for(Mushroom* m : itsHitMushrooms)
+    {
+        if(m == mushroom) return true;
+    }
+    itsHitMushrooms.push_back(mushroom);
+    return false;
+}

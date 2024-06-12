@@ -229,7 +229,7 @@ void Game::checkCollisions()
         Bullet* bullet = *bit;
         for (vector<Mushroom*>::iterator mit = itsMushrooms->begin(); mit < itsMushrooms->end(); mit++) // checks if the bullet touches a mushroom
         {
-            if (isColliding((*mit)->getItsHitBox(), bullet->getItsHitBox()))
+            if (isColliding((*mit)->getItsHitBox(), bullet->getItsHitBox()) && !bullet->wasMushroomAlreadyHit(*mit))
             {
                 (*mit)->damage();
                 if ((*mit)->getItsState() <= 0)
