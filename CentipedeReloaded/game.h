@@ -38,6 +38,7 @@ private:
     bool isRafaleActive = false; /** Flag indicating wether the 'rafale' powerup is active */
     bool isPiercingActive = false; /** Flag indicating wether the 'transperçant' powerup is active */
     Spider* itsSpider;
+    std::vector<Mushroom*> itsMarkedMushroom;
 
 public:
     /**
