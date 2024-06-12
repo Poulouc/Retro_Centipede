@@ -37,8 +37,10 @@ private:
     int itsCurrentLevel = 1; /**< The current level */
     bool isRafaleActive = false; /** Flag indicating wether the 'rafale' powerup is active */
     bool isPiercingActive = false; /** Flag indicating wether the 'piercing' powerup is active */
+    bool isHerbicideActive = false; /** Flag indicating wether the 'herbicide' powerup is active */
     bool rafalePickedUpFlag = false; /** Flag indicating wether the 'rafale' powerup has been picked up */
     bool piercingPickedUpFlag = false; /** Flag indicating wether the 'piercing' powerup has been picked up */
+    bool herbicidePickedUpFlag = false; /** Flag indicating wether the 'herbicide' powerup has been picked up */
     Spider* itsSpider;
 
 public:
@@ -227,13 +229,11 @@ public:
      */
     bool getIsPiercingActive();
 
-
-
     /**
-     * @brief Sets isRafaleActive to the given state.
-     * @param isActive The state to set isRafaleActive to.
+     * @brief Checks if the herbicide powerup is active.
+     * @return True if the herbicide powerup is active, otherwise false.
      */
-    void setIsRafaleActive(bool isActive);
+    bool getIsHerbicideActive();
 
     /**
      * @brief Checks if the rafale powerup was picked up.
@@ -248,6 +248,12 @@ public:
     bool getPiercingPickedUpFlag();
 
     /**
+     * @brief Checks if the herbicide powerup was picked up.
+     * @return True if the herbicide powerup was picked up, otherwise false.
+     */
+    bool getHerbicidePickedUpFlag();
+
+    /**
      * @brief Sets the state of the rafalePickedUp flag.
      * @param state The new state of the flag.
      */
@@ -260,10 +266,28 @@ public:
     void setPiercingPickedUpFlag(bool state);
 
     /**
+     * @brief Sets the state of the herbicidePickedUp flag.
+     * @param state The new state of the flag.
+     */
+    void setHerbicidePickedUpFlag(bool state);
+
+    /**
+     * @brief Sets isRafaleActive to the given state.
+     * @param isActive The state to set isRafaleActive to.
+     */
+    void setIsRafaleActive(bool isActive);
+
+    /**
      * @brief Sets isPiercingActive to the given state.
      * @param isActive The state to set isPiercingActive to.
      */
     void setIsPiercingActive(bool isActive);
+
+    /**
+     * @brief Sets isHerbicideActive to the given state.
+     * @param isActive The state to set isHerbicideActive to.
+     */
+    void setIsHerbicideActive(bool isActive);
 
     /**
      * @brief Moves the centipede.

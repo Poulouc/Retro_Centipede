@@ -282,6 +282,7 @@ void Game::checkCollisions()
                 piercingPickedUpFlag = true;
                 break;
             case herbicide:
+                herbicidePickedUpFlag = true;
                 break;
             }
             itsPowerups.erase(it);
@@ -471,6 +472,16 @@ bool Game::getIsRafaleActive()
     return isRafaleActive;
 }
 
+bool Game::getIsPiercingActive()
+{
+    return isPiercingActive;
+}
+
+bool Game::getIsHerbicideActive()
+{
+    return isHerbicideActive;
+}
+
 bool Game::getRafalePickedUpFlag()
 {
     return rafalePickedUpFlag;
@@ -481,9 +492,9 @@ bool Game::getPiercingPickedUpFlag()
     return piercingPickedUpFlag;
 }
 
-bool Game::getIsPiercingActive()
+bool Game::getHerbicidePickedUpFlag()
 {
-    return isPiercingActive;
+    return herbicidePickedUpFlag;
 }
 
 void Game::setIsRafaleActive(bool isActive)
@@ -496,6 +507,11 @@ void Game::setIsPiercingActive(bool isActive)
     isPiercingActive = isActive;
 }
 
+void Game::setIsHerbicideActive(bool isActive)
+{
+    isHerbicideActive = isActive;
+}
+
 void Game::setRafalePickedUpFlag(bool state)
 {
     rafalePickedUpFlag = state;
@@ -504,6 +520,11 @@ void Game::setRafalePickedUpFlag(bool state)
 void Game::setPiercingPickedUpFlag(bool state)
 {
     piercingPickedUpFlag = state;
+}
+
+void Game::setHerbicidePickedUpFlag(bool state)
+{
+    herbicidePickedUpFlag = state;
 }
 
 void Game::setBoard(QRect board)

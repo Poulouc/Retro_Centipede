@@ -368,6 +368,42 @@ void Widget::drawHeadUpDisplay(QPainter & painter)
     , (this->height()*0.04), QString("Life: %1").arg(itsGame->getItsPlayer()->getItsHp()));
 
     painter.drawRect(QRect(0, this->height()*0.05 - 1, this->width(), 0));
+
+    if(itsGame->getIsRafaleActive())
+    {
+        float progress = ((float)((remainingRafaleShots)/(float)POWERUP_RAFALE_FIRERATE)*1000 + itsRafaleTimer->remainingTime()) / (float)(POWERUP_RAFALE_DURATION*1000);
+
+
+        qDebug() << progress;
+        int displayWidth = itsGame->getItsBoard().width()/75;
+        int displayHeight = this->height()/3;
+
+        int displayX = itsGame->getItsBoard().x() + itsGameBoard.width() + displayWidth;
+        int displayY = itsGame->getItsBoard().y() + itsGameBoard.height()/2;
+        QRect display = QRect(displayX, displayY, displayWidth, displayHeight);
+
+        display.setTop((1-progress)*(displayY) + displayHeight);
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(Qt::black);
+        painter.drawRect(display);
+    }
+    if(itsGame->getIsPiercingActive())
+    {
+        float progress = (float)itsPiercingTimer->remainingTime() / ((float)POWERUP_PIERCING_DURATION*1000);
+
+
+        int displayWidth = itsGame->getItsBoard().width()/75;
+        int displayHeight = this->height()/3;
+
+        int displayX = itsGame->getItsBoard().x() + itsGameBoard.width() + displayWidth*4;
+        int displayY = itsGame->getItsBoard().y() + itsGameBoard.height()/2;
+        QRect display = QRect(displayX, displayY, displayWidth, displayHeight);
+
+        display.setTop((1-progress)*(displayY) + displayHeight);
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(Qt::yellow);
+        painter.drawRect(display);
+    }
 }
 
 void Widget::moveBullet()
@@ -399,6 +435,11 @@ void Widget::movePowerUps()
         itsGame->setPiercingPickedUpFlag(false);
         itsGame->setIsPiercingActive(true);
         itsPiercingTimer->start(1000*POWERUP_PIERCING_DURATION);
+    }
+    if(itsGame->getHerbicidePickedUpFlag())
+    {
+        itsGame->setHerbicidePickedUpFlag(false);
+        itsGame->setIsHerbicideActive(true);
     }
 }
 
@@ -466,6 +507,8 @@ void Widget::pauseGame()
     itsCentipedeTimer->stop();
     itsPlayerTimer->stop();
     itsPowerUpMovementTimer->stop();
+    itsRafaleTimer->stop();
+    itsPiercingTimer->stop();
     itsSpiderAppearTimer->stop();
     itsSpiderTimer->stop();
 
@@ -481,6 +524,8 @@ void Widget::resumeGame()
     itsCentipedeTimer->start();
     itsPlayerTimer->start();
     itsPowerUpMovementTimer->start();
+    itsRafaleTimer->start();
+    itsPiercingTimer->start();
     itsSpiderAppearTimer->start();
     itsSpiderTimer->start();
 
@@ -600,7 +645,7 @@ void Widget::spiderAppear()
 
 void Widget::moveSpider()
 {
-    if(itsGame->getItsSpider() != nullptr)
+    if(itsGame->getItsSpider() != nullptr && false)
     {
         itsGame->moveSpider();
     }
