@@ -91,6 +91,9 @@ Widget::Widget(QWidget *parent)
     itsLeaderboard = new Leaderboard(":/leaderboard.txt");
     ui->stackedWidget->setCurrentIndex(0);
 
+    //change the color of the font
+    this->setStyleSheet("QLabel { color: white; }");
+
     //ui->stackedWidget->setGeometry(QRect(0, 0, width(), height()));
     //ui->stackedWidget->setFixedSize(QSize(width(), height()));
     //setStyleSheet("QRect#page { background-image: url(:/assets/grass.png);"
@@ -110,6 +113,8 @@ Widget::~Widget()
     delete itsPiercingTimer;
     delete itsGame;
     delete itsLeaderboard;
+    delete itsSpiderAppearTimer;
+    delete itsSpiderTimer;
 }
 
 void Widget::paintEvent(QPaintEvent *event)
