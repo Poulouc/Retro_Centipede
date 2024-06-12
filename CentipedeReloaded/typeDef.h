@@ -6,6 +6,8 @@
 #ifndef TYPEDEF_H
 #define TYPEDEF_H
 
+#include <string>
+
 /**
  * @struct Position
  * @brief Struct representing a position with x and y coordinates.
@@ -48,6 +50,18 @@ const int MUSHROOMS_AMOUNT = 30; /**< The number of mushrooms in the game */
 const int BOARD_WIDTH = 30; /**< The width of the game board */
 const int BOARD_HEIGHT = 31; /**< The height of the game board */
 
+// Variables for powerups
+const int POWERUP_DROPRATE = 30; /**< The chance in percent for a powerup to appear when a mushroom is broken by a bullet */
+const int POWERUP_RAFALE_DURATION = 4; /**< The duration in seconds of the 'rafale' powerup */
+const int POWERUP_RAFALE_FIRERATE = 4; /**< The number of shots per second of the 'rafale' powerup */
+const int POWERUP_PIERCING_DURATION = 5; /**< The duration in second of the 'piercing' powerup */
+
 const bool SHOW_HITBOXES = true;
+
+//Variable for the Spider
+const int INCREMENT_INTERVAL = 5;
+const int SPIDER_SPEED = 1;
+
+const std::string SAVEFILE_NAME = "leaderboard.txt";
 
 #endif // TYPEDEF_H

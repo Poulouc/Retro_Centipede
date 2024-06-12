@@ -27,8 +27,8 @@ void targetLog(Centipede* centipede)
 }
 
 Game::Game(QRect board)
-    :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsBullet(nullptr),
-    itsPlayer(new Player({board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2, board.y() + board.height() - (board.width() / BOARD_WIDTH) - 1}, board.width() / BOARD_WIDTH)), itsBoard(board),
+    :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsPowerups({}), itsBullets({}),itsBoard(board), itsSpider(nullptr),
+    itsPlayer(new Player({board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2, board.y() + board.height() - (board.width() / BOARD_WIDTH) - 1}, board.width() / BOARD_WIDTH)),
     itsPlayerZone(board.x(), board.y() + (4 * board.height()) / 5, board.width(), board.height() / 5), itsCentipedeZone(board), treatedCentipedes(new vector<Centipede*>)
 {
     spawnCentipede();
@@ -51,9 +51,24 @@ Game::~Game()
     }
     delete itsMushrooms;
 
-    // Deletion of the bullet and the player
-    delete itsBullet;
+    // Deletion of powerups
+    for(PowerUp* powerup : itsPowerups)
+    {
+        delete powerup;
+    }
+
+    // Deletion of bullets
+    for(Bullet* bullet : itsBullets)
+    {
+        delete bullet;
+    }
+
+    // Deletion of the player
     delete itsPlayer;
+    if(itsSpider != nullptr)
+    {
+        delete itsSpider;
+    }
 }
 
 void Game::spawnCentipede()
@@ -141,7 +156,10 @@ void Game::createMushrooms()
         if (isColliding(previewHitbox, itsPlayer->getItsHitBox())) continue;
 
         // Check if the mushroom want to spawn on the bullet
-        if (itsBullet != nullptr && isColliding(previewHitbox, itsBullet->getItsHitBox())) continue;
+        for(Bullet* bullet : itsBullets)
+        {
+            if (isColliding(previewHitbox, bullet->getItsHitBox())) continue;
+        }
 
         // Create the mushroom, must be executed only if the position is valid
         itsMushrooms->push_back(new Mushroom(genX, genY, mushroomSize, { randomX, randomY }));
@@ -150,23 +168,58 @@ void Game::createMushrooms()
 
 void Game::shoot()
 {
-    if (itsBullet == nullptr)
+    if (itsBullets.empty() || isRafaleActive)
     {
         int bulletSize = itsBoard.width()/100;
         int newX = itsPlayer->getItsPosition().posX + (itsBoard.width() / BOARD_WIDTH) / 2 - bulletSize / 2;
         int newY = itsPlayer->getItsPosition().posY;
-        itsBullet = new Bullet(newX, newY, bulletSize);
+        itsBullets.push_back(new Bullet(newX, newY, bulletSize));
     }
 }
 
-void Game::moveBullet()
+void Game::moveBullets()
 {
-    itsBullet->updatePos();
-    //If the bullet left the board
-    if(itsBullet->getItsPosition().posY < itsBoard.y())
+    vector<vector<Bullet*>::iterator> toDelete = {};
+    for(vector<Bullet*>::iterator it = itsBullets.begin(); it != itsBullets.end(); ++it)
     {
-        itsBullet = nullptr;
+        Bullet* bullet = *it;
+        bullet->updatePos();
+        //If the bullet left the board
+        if(bullet->getItsPosition().posY < itsBoard.y())
+        {
+            toDelete.push_back(it);
+        }
     }
+    for(vector<Bullet*>::iterator it : toDelete)
+    {
+        Bullet* bullet = *it;
+        itsBullets.erase(it);
+        delete bullet;
+    }
+}
+
+void Game::movePowerUps()
+{
+    vector<vector<PowerUp*>::iterator> toDelete;
+    for(vector<PowerUp*>::iterator it = itsPowerups.begin(); it != itsPowerups.end(); ++it)
+    {
+        PowerUp* powerup = *it;
+        if(powerup->getItsPosition().posY - powerup->getItsHitbox().height()*4 - 1 > itsBoard.width())
+        {
+            toDelete.push_back(it);
+            delete powerup;
+        }
+        else
+        {
+            Position currentPos = powerup->getItsPosition();
+            powerup->setItsPosition({currentPos.posX, currentPos.posY + 1});
+        }
+    }
+    for(vector<PowerUp*>::iterator it : toDelete)
+    {
+        itsPowerups.erase(it);
+    }
+    toDelete.clear();
 }
 
 bool Game::isColliding(QRect hitbox1, QRect hitbox2)
@@ -174,9 +227,14 @@ bool Game::isColliding(QRect hitbox1, QRect hitbox2)
     return hitbox1.intersects(hitbox2);
 }
 
-bool Game::isGameWon()
+bool Game::isLevelWon()
 {
-    return itsCentipedes->size() <= 0;
+    if (itsCentipedes->size() <= 0)
+        {
+            itsCurrentLevel++;
+            return true;
+        }
+    return false;
 }
 
 bool Game::isGameLosed()
@@ -186,23 +244,81 @@ bool Game::isGameLosed()
 
 void Game::checkCollisions()
 {
-    if (itsBullet != nullptr)
+    vector<vector<Bullet*>::iterator> toDelete;
+    for(vector<Bullet*>::iterator bit = itsBullets.begin(); bit != itsBullets.end(); ++bit)
     {
-        for (vector<Mushroom*>::iterator it = itsMushrooms->begin(); it < itsMushrooms->end(); it++) // checks if the bullet touches a mushroom
+        Bullet* bullet = *bit;
+        for (vector<Mushroom*>::iterator mit = itsMushrooms->begin(); mit < itsMushrooms->end(); mit++) // checks if the bullet touches a mushroom
         {
-            if (isColliding((*it)->getItsHitBox(), itsBullet->getItsHitBox()))
+            if (isColliding((*mit)->getItsHitBox(), bullet->getItsHitBox()))
             {
-                (*it)->damage();
-                if ((*it)->getItsState() <= 0)
+                (*mit)->damage();
+                if ((*mit)->getItsState() <= 0)
                 {
                     itsScore += 4;
-                    Mushroom* toDelete = *it;
-                    itsMushrooms->erase(it);
-                    delete toDelete;
+                    Mushroom* mushroom = *mit;
+
+                    random_device rd;
+                    default_random_engine eng(rd());
+                    uniform_int_distribution<unsigned int> distr(1, 100);
+                    if(distr(eng) > (100-POWERUP_DROPRATE))
+                    {
+                        uniform_int_distribution<unsigned int> typeDistr(0,2);
+                        PowerUp* newPowerup = new PowerUp((powerupType)typeDistr(eng)); // selects a random powerup
+                        int powerupWidth = itsBoard.width()/60;
+                        newPowerup->setItsHitbox({0, 0, powerupWidth, powerupWidth});
+                        int caseSize = itsBoard.width()/BOARD_WIDTH;
+                        int xPos = itsBoard.x() + mushroom->getItsGridPosition().posX * caseSize;
+                        int yPos = itsBoard.y() + mushroom->getItsGridPosition().posY * caseSize;
+                        newPowerup->setItsPosition({xPos + caseSize/2 - powerupWidth/2, yPos + caseSize/2 - powerupWidth/2});
+                        itsPowerups.push_back(newPowerup);
+                    }
+
+                    itsMushrooms->erase(mit);
+                    delete mushroom;
                 }
-                itsBullet = nullptr;
+                if(!isPiercingActive) toDelete.push_back(bit);
                 break;
             }
+        }
+    }
+    for(vector<Bullet*>::iterator it : toDelete)
+    {
+        Bullet* bullet = *it;
+        itsBullets.erase(it);
+        delete bullet;
+    }
+
+    for(vector<PowerUp*>::iterator it = itsPowerups.begin(); it != itsPowerups.end(); ++it)
+    {
+        PowerUp* powerup = *it;
+        if(isColliding(powerup->getItsHitbox(), itsPlayer->getItsHitBox())) // the player takes the powerup
+        {
+            switch(powerup->getItsType())
+            {
+            case rafale:
+                isRafaleActive = true;
+                break;
+            case transpercant:
+                isPiercingActive = true;
+                break;
+            case herbicide:
+                break;
+            }
+            itsPowerups.erase(it);
+            delete powerup;
+            break;
+        }
+    }
+
+    for(vector<Bullet*>::iterator it = itsBullets.begin(); it != itsBullets.end(); ++it)
+    {
+        Bullet* bullet = *it;
+        if (itsSpider != nullptr and isColliding(itsSpider->getItsHitBox(), bullet->getItsHitBox()))
+        {
+            delete itsSpider;
+            itsSpider = nullptr;
+            itsScore += 300;
         }
     }
 
@@ -227,13 +343,21 @@ void Game::checkCollisions()
                 return;
             }
 
-            else if (itsBullet != nullptr && isColliding(centiPart->getItsHitBox(), itsBullet->getItsHitBox())) // centipede hit
+            for(vector<Bullet*>::iterator bit = itsBullets.begin(); bit != itsBullets.end(); ++bit)
             {
-                BodyPart * newTail = centiPart->getItsParent();
-                sliceCentipede(centiPart, centipede);
-                centipede->setItsTail(newTail);
-                itsBullet = nullptr;
-                return;
+                Bullet* bullet = *bit;
+                if (isColliding(centiPart->getItsHitBox(), bullet->getItsHitBox())) // centipede hit
+                {
+                    BodyPart * newTail = centiPart->getItsParent();
+                    sliceCentipede(centiPart, centipede);
+                    centipede->setItsTail(newTail);
+                    if(!isPiercingActive)
+                    {
+                        itsBullets.erase(bit);
+                        delete bullet;
+                    }
+                    return;
+                }
             }
         }
     }
@@ -309,8 +433,8 @@ void Game::sliceCentipede(BodyPart* hittedPart, Centipede * centipede)
                 // Generate a new mushroom at the position of the head of the centipede
                 int posX = hittedPart->getItsPosition().posX - (hittedPart->getItsPosition().posX - itsBoard.x()) % (itsBoard.width() / BOARD_WIDTH);
                 int posY = hittedPart->getItsPosition().posY - (hittedPart->getItsPosition().posY - itsBoard.y()) % (itsBoard.height() / BOARD_HEIGHT);
-                int gridX = (posX - itsBoard.x()) / BOARD_WIDTH;
-                int gridY = (posY - itsBoard.y()) / BOARD_HEIGHT;
+                int gridX = (posX - itsBoard.x()) / (itsBoard.width() / BOARD_WIDTH);
+                int gridY = (posY - itsBoard.y()) / (itsBoard.height() / BOARD_HEIGHT);
                 itsMushrooms->push_back(new Mushroom(posX, posY, itsBoard.width() / BOARD_WIDTH, { gridX, gridY }));
 
                 delete toDelete;
@@ -333,9 +457,9 @@ std::vector<Mushroom*>* Game::getItsMushrooms()
     return itsMushrooms;
 }
 
-Bullet* Game::getItsBullet()
+vector<Bullet*> Game::getItsBullets()
 {
-    return itsBullet;
+    return itsBullets;
 }
 
 Player* Game::getItsPlayer()
@@ -351,6 +475,36 @@ int Game::getItsScore()
 QRect Game::getItsBoard()
 {
     return itsBoard;
+}
+
+int Game::getCurrentLevel()
+{
+    return itsCurrentLevel;
+}
+
+std::vector<PowerUp*> Game::getItsPowerups()
+{
+    return itsPowerups;
+}
+
+bool Game::getIsRafaleActive()
+{
+    return isRafaleActive;
+}
+
+bool Game::getIsPiercingActive()
+{
+    return isPiercingActive;
+}
+
+void Game::setIsRafaleActive(bool isActive)
+{
+    isRafaleActive = isActive;
+}
+
+void Game::setIsPiercingActive(bool isActive)
+{
+    isPiercingActive = isActive;
 }
 
 void Game::setBoard(QRect board)
@@ -377,12 +531,7 @@ void Game::setBoard(QRect board)
     itsPlayer->setItsPosition({itsPlayerZone.x() + itsPlayerZone.width()/2 - cellWidth/2,
                                itsPlayerZone.y() + itsPlayerZone.height() - cellHeight - itsPlayerZone.height()/20});
 
-    while (updatingCenti) {
-        cout << "wait" << endl;
-    }
-
-    updatingCenti = true;
-
+    /**
     // Update centipede segments for proportional resizing
     for (vector<Centipede*>::iterator it = itsCentipedes->begin(); it != itsCentipedes->end(); ++it)
     {
@@ -404,6 +553,16 @@ void Game::setBoard(QRect board)
             currentPart->setItsTargetPos({ newTargetX, newTargetY });
         }
     }
+    **/
+
+    //set the size of the spider
+    if(itsSpider != nullptr)
+    {
+        // Calculate new proportional coordinates
+        int newX = board.x() + ((itsSpider->getItsHitBox().x() - itsBoard.x() + 0.5) * board.width()) / itsBoard.width();
+        int newY = board.y() + ((itsSpider->getItsHitBox().y() - itsBoard.y() + 0.5) * board.height()) / itsBoard.height();
+        itsSpider->setItsHitBox({newX, newY, cellWidth, cellWidth});
+    }
 
     if (itsCentipedeZone.height() == (itsBoard.height() / 5))
     {
@@ -413,8 +572,6 @@ void Game::setBoard(QRect board)
 
     // Set the new board as actual
     itsBoard = board;
-
-    updatingCenti = false;
 }
 
 // Moves the player based on the provided direction.
@@ -451,7 +608,6 @@ void Game::movePlayer(Direction & direction)
 // Moves the centipede units.
 void Game::moveCentipede()
 {
-    updatingCenti = true;
     // Iterate through each centipede in the game.
     for (Centipede* centipede : *itsCentipedes)
     {
@@ -524,7 +680,6 @@ void Game::moveCentipede()
         treatedCentipedes->push_back(centipede);
     }
     treatedCentipedes->clear();
-    updatingCenti = false;
 }
 
 
@@ -660,4 +815,84 @@ bool Game::centipedeToCentipedeCollision(Centipede * centipede)
         }
     }
     return false;
+}
+
+void Game::createSpider()
+{
+    itsSpider = new Spider(itsBoard.x() + 10,itsPlayer->getItsHitBox().y(), itsBoard.width()/BOARD_WIDTH);
+    itsSpider->setItsDirection({1, 1});
+}
+
+Spider* Game::getItsSpider()
+{
+    return itsSpider;
+}
+
+void Game::moveSpider()
+{
+    //the next position of the spider
+    QRect nextPos = {itsSpider->getItsHitBox().x() + itsSpider->getItsDirection().dirX * SPIDER_SPEED,
+                     itsSpider->getItsHitBox().y() + itsSpider->getItsDirection().dirY * SPIDER_SPEED,
+                     itsSpider->getItsHitBox().width(),
+                     itsSpider->getItsHitBox().height()};
+
+    // Collision with the sides of the PlayerZone
+    if (nextPos.left() <= itsPlayerZone.left() || nextPos.right() >= itsPlayerZone.right())
+    {
+        if (rand() % 100 < 40)//The spider have 40% of chance to disappear of the PlayerZone when she touche the side of it
+        {
+            delete itsSpider;
+            itsSpider = nullptr;
+            return;
+        }
+        itsSpider->setItsHorizontaleDirection(-(itsSpider->getItsHorizontaleDirection()));
+        itsSpider->setItsDirection({-itsSpider->getItsDirection().dirX, itsSpider->getItsDirection().dirY});
+    }
+    //Collision with the top of PlayerZone
+    else if (nextPos.top() <= itsPlayerZone.top())
+    {
+        itsSpider->setItsDirection({itsSpider->getItsHorizontaleDirection(), -itsSpider->getItsDirection().dirY});
+    }
+    //Collision with the bottom of PlayerZone
+    else if(nextPos.bottom() >= itsPlayerZone.bottom())
+    {
+        itsSpider->setItsHorizontaleDirection(itsSpider->getItsDirection().dirX);
+        itsSpider->setItsDirection({0, -itsSpider->getItsDirection().dirY});
+    }
+
+    // Interaction with the mushroomms
+    for (vector<Mushroom*>::iterator it = getItsMushrooms()->begin(); it != itsMushrooms->end(); ++it) {
+        if (nextPos.intersects((*it)->getItsHitBox())) {
+            if((rand() % 100) < 50){
+                Mushroom* toDelete = *it;
+                itsMushrooms->erase(it);
+                delete toDelete;
+            }
+            break;
+        }
+    }
+
+    //check the collision between the player and the spider
+    if(itsSpider->getItsHitBox().intersects(itsPlayer->getItsHitBox())){
+        //remove one life
+        itsPlayer->hit();
+        //delete the centipede
+        for (vector<Centipede*>::iterator itDel = itsCentipedes->begin(); itDel != itsCentipedes->end(); ++itDel)
+        {
+            delete *itDel;
+        }
+        itsCentipedes->clear();
+        //set the position of the player
+        itsPlayer->setItsPosition({itsPlayerZone.x() + itsPlayerZone.width()/2 - (itsBoard.width() / BOARD_WIDTH)/2,
+                                   itsPlayerZone.y() + itsPlayerZone.height() - (itsBoard.height() / BOARD_HEIGHT) - itsPlayerZone.height()/20});
+        itsPlayer->updatePos({0,0});
+        //delete the spider
+        delete itsSpider;
+        itsSpider = nullptr;
+        spawnCentipede();
+        return;
+    }
+
+    // make the spider moving
+    itsSpider->move();
 }

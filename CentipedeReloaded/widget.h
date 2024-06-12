@@ -16,6 +16,7 @@
 #include <QResizeEvent>
 #include "game.h"
 #include "typeDef.h"
+#include "leaderboard.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -93,11 +94,22 @@ protected:
     void drawMushrooms(QPainter & painter);
 
     /**
+     * @brief Draws the powerups on the widget using QPainter.
+     * @param painter The QPainter object used for drawing.
+     */
+    void drawPowerUps(QPainter & painter);
+
+    /**
      * @brief Draws the heads-up display on the widget using QPainter.
      * @param painter The QPainter object used for drawing.
      */
     void drawHeadUpDisplay(QPainter & painter);
 
+    /**
+     * @brief Draws the spider display on the widget using QPainter.
+     * @param painter The QPainter object used for drawing.
+     */
+    void drawSpider(QPainter & painter);
     /**
      * @brief Pauses the game and its timers.
      */
@@ -120,9 +132,14 @@ private slots:
     void moveBullet();
 
     /**
+     * @brief Moves powerups.
+     */
+    void movePowerUps();
+
+    /**
      * @brief Starts the game.
      */
-    void startGame();
+    void startGame(int level = 1);
 
     /**
      * @brief Resumes the game.
@@ -139,7 +156,36 @@ private slots:
      */
     void backToMenu();
 
+    /**
+     * @brief Displays the leaderboard.
+     */
+    void displayLeaderboard();
+
+    /**
+     * @brief Processes the new score and updates the leaderboard if needed.
+     */
+    void processNewScore();
+
+    /**
+     * @brief Displays the 'How to play' page.
+     */
     void goToHowToPlay();
+
+    /**
+     * @brief Used to shoot during the 'rafale' powerup.
+     */
+    void rafaleShot();
+
+    /**
+     * @brief Called when the 'piercing' powerup ends.
+     */
+    void piercingEnd();
+
+
+    void moveSpider();
+
+
+    void spiderAppear();
 
 private:
     Ui::Widget *ui; /**< The UI object */
@@ -147,7 +193,13 @@ private:
     QTimer * itsCentipedeTimer = nullptr; /**< Timer for moving the centipede */
     QTimer * itsBulletTimer = nullptr; /**< Timer for moving the bullet */
     QTimer * itsPlayerTimer = nullptr; /**< Timer for moving the player */
+    QTimer * itsPowerUpMovementTimer = nullptr; /**< Timer for moving powerups */
+    QTimer * itsRafaleTimer = nullptr; /**< Timer for the powerup 'Rafale' */
+    QTimer * itsPiercingTimer = nullptr; /**< Timer for the powerup 'Piercing' */
+    QTimer * itsSpiderAppearTimer = nullptr;
+    QTimer * itsSpiderTimer = nullptr;
     Game * itsGame = nullptr; /**< Pointer to the game object */
+    Leaderboard * itsLeaderboard = nullptr;
     QImage itsCentiHead; /**< Image of the centipede head */
     QImage itsCentiBody; /**< Image of the centipede body */
     QImage itsAvatar; /**< Image of the player */
@@ -155,7 +207,10 @@ private:
     Direction itsPlayerDirection; /**< Direction of the player */
     QRect itsGameBoard; /**< Rectangle representing the game board */
     bool isGameStarted = false; /**< Flag indicating whether the game has started */
-    bool isGamePaused = false;
+    bool isGamePaused = false; /**< Flag indicating wether the game is paused */
+    int remainingRafaleShots; /**< Number of shots remaining for the rafale powerup */
+    int itsElapsedTime;
+    int itsSpiderAppearProbability;
 };
 
 #endif // WIDGET_H

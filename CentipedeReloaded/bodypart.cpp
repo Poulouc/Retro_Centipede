@@ -46,6 +46,7 @@ void BodyPart::setItsPosition(Position pos)
 void BodyPart::setItsHitBox(QRect hitbox)
 {
     itsHitBox = hitbox;
+    itsPosition = {hitbox.x(), hitbox.y()};
 }
 
 Position BodyPart::getItsPreviousPosition()
