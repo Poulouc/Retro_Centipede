@@ -28,12 +28,13 @@ void targetLog(Centipede* centipede)
 
 Game::Game(QRect board)
     :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsPowerups({}), itsBullets({}),
-    itsPlayer(new Player({board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2, board.y() + board.height() - (board.width() / BOARD_WIDTH) - 1}, board.width() / BOARD_WIDTH)),
-    itsBoard(board), itsPlayerZone(board.x(), board.y() + (4 * board.height()) / 5, board.width(), board.height() / 5), itsCentipedeZone(board),
+    itsPlayer(new Player({board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2, board.y() + board.height() - (board.width() / BOARD_WIDTH) - 1}, board.width() / BOARD_WIDTH)), itsBoard(board),
+    itsPlayerZone(board.x()-1, board.y() + (4 * board.height()) / 5, board.width() + 1, board.height() / 5),
     treatedCentipedes(new vector<Centipede*>), itsSpider(nullptr)
 {
     spawnCentipede();
     createMushrooms();
+    itsCentipedeZone = itsBoard;
 }
 
 Game::~Game()
@@ -111,7 +112,7 @@ void Game::createMushrooms()
     default_random_engine eng(rd());
 
     uniform_int_distribution<int> randX(0, 30 - 1);
-    uniform_int_distribution<int> randY(1, 31 - 1);
+    uniform_int_distribution<int> randY(0, 30 - 1);
 
     int mushroomSize = (itsBoard.width() / BOARD_WIDTH);
 
@@ -251,7 +252,7 @@ void Game::checkCollisions()
         Bullet* bullet = *bit;
         for (vector<Mushroom*>::iterator mit = itsMushrooms->begin(); mit < itsMushrooms->end(); mit++) // checks if the bullet touches a mushroom
         {
-            if (isColliding((*mit)->getItsHitBox(), bullet->getItsHitBox()))
+            if (isColliding((*mit)->getItsHitBox(), bullet->getItsHitBox()) && !bullet->wasMushroomAlreadyHit(*mit))
             {
                 (*mit)->damage();
                 if ((*mit)->getItsState() <= 0)
@@ -298,12 +299,13 @@ void Game::checkCollisions()
             switch(powerup->getItsType())
             {
             case rafale:
-                isRafaleActive = true;
+                rafalePickedUpFlag = true;
                 break;
             case transpercant:
-                isPiercingActive = true;
+                piercingPickedUpFlag = true;
                 break;
             case herbicide:
+                herbicidePickedUpFlag = true;
                 break;
             }
             itsPowerups.erase(it);
@@ -498,6 +500,26 @@ bool Game::getIsPiercingActive()
     return isPiercingActive;
 }
 
+bool Game::getIsHerbicideActive()
+{
+    return isHerbicideActive;
+}
+
+bool Game::getRafalePickedUpFlag()
+{
+    return rafalePickedUpFlag;
+}
+
+bool Game::getPiercingPickedUpFlag()
+{
+    return piercingPickedUpFlag;
+}
+
+bool Game::getHerbicidePickedUpFlag()
+{
+    return herbicidePickedUpFlag;
+}
+
 void Game::setIsRafaleActive(bool isActive)
 {
     isRafaleActive = isActive;
@@ -506,6 +528,26 @@ void Game::setIsRafaleActive(bool isActive)
 void Game::setIsPiercingActive(bool isActive)
 {
     isPiercingActive = isActive;
+}
+
+void Game::setIsHerbicideActive(bool isActive)
+{
+    isHerbicideActive = isActive;
+}
+
+void Game::setRafalePickedUpFlag(bool state)
+{
+    rafalePickedUpFlag = state;
+}
+
+void Game::setPiercingPickedUpFlag(bool state)
+{
+    piercingPickedUpFlag = state;
+}
+
+void Game::setHerbicidePickedUpFlag(bool state)
+{
+    herbicidePickedUpFlag = state;
 }
 
 void Game::setBoard(QRect board)
@@ -521,8 +563,10 @@ void Game::setBoard(QRect board)
                                   cellWidth, cellHeight));
     }
     //set the playerZone
-    itsPlayerZone = QRect(board.x(), board.y() + (4 * board.height()) / 5,
-                          board.width(), board.height() / 5);
+    itsPlayerZone = QRect(board.x(),
+                          board.y() + (4 * board.height()) / 5,
+                          board.width(),
+                          board.height() / 5);
 
     //set the size of the player and the new placement on the board
     itsPlayer->setItsHitBox(QRect(itsPlayerZone.x() + itsPlayerZone.width()/2 - cellWidth/2,
@@ -598,9 +642,10 @@ void Game::movePlayer(Direction & direction)
         itsPlayer->updatePos({direction.dirX, 0});
     }
     // Check if the player can move vertically within the player zone
-    if(!willItTouch && itsPlayerZone.y() < itsPlayer->getItsHitBox().y() + direction.dirY * PLAYER_SPEED &&
-        itsPlayerZone.y() + itsPlayerZone.height() > itsPlayer->getItsHitBox().y() + itsPlayer->getItsHitBox().height() + direction.dirY * PLAYER_SPEED
-        && (direction.dirY == -PLAYER_SPEED or direction.dirY == PLAYER_SPEED))
+    if(!willItTouch
+        && itsPlayerZone.y() < itsPlayer->getItsHitBox().y() + direction.dirY * PLAYER_SPEED
+        && itsPlayerZone.y() + itsPlayerZone.height() + 1 > itsPlayer->getItsHitBox().y() + itsPlayer->getItsHitBox().height() + direction.dirY * PLAYER_SPEED
+        && (direction.dirY == -PLAYER_SPEED || direction.dirY == PLAYER_SPEED))
     {
         // Update the player's position in the vertical direction
         itsPlayer->updatePos({0, direction.dirY});

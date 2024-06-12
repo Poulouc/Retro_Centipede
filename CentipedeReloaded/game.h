@@ -36,8 +36,12 @@ private:
     QRect itsCentipedeZone; /**< Rectangle representing the centipede's zone */
     std::vector<Centipede*>* treatedCentipedes; /**< Pointer to the vector of treated centipedes */
     int itsCurrentLevel = 1; /**< The current level */
-    bool isRafaleActive = false; /**< Flag indicating whether the 'rafale' powerup is active */
-    bool isPiercingActive = false; /**< Flag indicating whether the 'transpercant' powerup is active */
+    bool isRafaleActive = false; /**< Flag indicating wether the 'rafale' powerup is active */
+    bool isPiercingActive = false; /**< Flag indicating wether the 'piercing' powerup is active */
+    bool isHerbicideActive = false; /**< Flag indicating wether the 'herbicide' powerup is active */
+    bool rafalePickedUpFlag = false; /**< Flag indicating wether the 'rafale' powerup has been picked up */
+    bool piercingPickedUpFlag = false; /**< Flag indicating wether the 'piercing' powerup has been picked up */
+    bool herbicidePickedUpFlag = false; /**< Flag indicating wether the 'herbicide' powerup has been picked up */
     Spider* itsSpider; /**< Pointer to the spider */
     std::vector<Mushroom*> itsMarkedMushroom; /**< Vector containing marked mushrooms */
 
@@ -229,8 +233,55 @@ public:
     bool getIsPiercingActive();
 
     /**
+<<<<<<< HEAD
+     * @brief Checks if the herbicide powerup is active.
+     * @return True if the herbicide powerup is active, otherwise false.
+     */
+    bool getIsHerbicideActive();
+
+    /**
+     * @brief Checks if the rafale powerup was picked up.
+     * @return True if the rafale powerup was picked up, otherwise false.
+     */
+    bool getRafalePickedUpFlag();
+
+    /**
+     * @brief Checks if the piercing powerup was picked up.
+     * @return True if the piercing powerup was picked up, otherwise false.
+     */
+    bool getPiercingPickedUpFlag();
+
+    /**
+     * @brief Checks if the herbicide powerup was picked up.
+     * @return True if the herbicide powerup was picked up, otherwise false.
+     */
+    bool getHerbicidePickedUpFlag();
+
+    /**
+     * @brief Sets the state of the rafalePickedUp flag.
+     * @param state The new state of the flag.
+     */
+    void setRafalePickedUpFlag(bool state);
+
+    /**
+     * @brief Sets the state of the piercingPickedUp flag.
+     * @param state The new state of the flag.
+     */
+    void setPiercingPickedUpFlag(bool state);
+
+    /**
+     * @brief Sets the state of the herbicidePickedUp flag.
+     * @param state The new state of the flag.
+     */
+    void setHerbicidePickedUpFlag(bool state);
+
+    /**
+     * @brief Sets isRafaleActive to the given state.
+     * @param isActive The state to set isRafaleActive to.
+=======
      * @brief Sets the state of the 'rafale' powerup.
      * @param isActive The state to set for the 'rafale' powerup.
+>>>>>>> V3
      */
     void setIsRafaleActive(bool isActive);
 
@@ -239,6 +290,12 @@ public:
      * @param isActive The state to set for the 'transpercant' powerup.
      */
     void setIsPiercingActive(bool isActive);
+
+    /**
+     * @brief Sets isHerbicideActive to the given state.
+     * @param isActive The state to set isHerbicideActive to.
+     */
+    void setIsHerbicideActive(bool isActive);
 
     /**
      * @brief Moves the centipede.

@@ -8,6 +8,7 @@
 
 #include <QRect>
 #include "typeDef.h"
+#include "mushroom.h"
 
 /**
  * @class Bullet
@@ -20,6 +21,7 @@ class Bullet
 private:
     QRect itsHitBox; /**< Rectangle representing the hitbox of the bullet */
     Position itsPosition; /**< Position of the bullet */
+    std::vector<Mushroom*> itsHitMushrooms = {}; /**< Mushrooms the bullet hit during its lifetime */
 
 public:
     /**
@@ -54,6 +56,7 @@ public:
      */
     Position getItsPosition();
 
+
     /**
      * @brief Sets the position of the bullet.
      * @param position The new position of the bullet.
@@ -65,6 +68,14 @@ public:
      * @param hitbox The new hitbox of the bullet.
      */
     void setItsHitBox(QRect hitbox);
+
+
+    /**
+     * @brief Indicates wether a given mushroom was already hit by the bullet during its lifetime.
+     * @param mushroom The mushroom to check.
+     * @return True if the mushroom was already hit, otherwise false.
+     */
+    bool wasMushroomAlreadyHit(Mushroom* mushroom);
 };
 
 #endif // BULLET_H

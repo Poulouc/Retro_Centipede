@@ -164,13 +164,12 @@ void Widget::resizeEvent(QResizeEvent *event)
     if (itsGame != nullptr)
     {
         // Calculate the size of itsBoard based on the smallest dimension of the window
-        int maxHeight = height() * 95 / 100; // 95% of the window height
-        int maxBoardHeight = maxHeight;
+        int maxHeight = height() * 0.95; // 95% of the window height
 
         // Find the largest multiple of BOARD_HEIGHT that fits within the available height
-        int boardHeight = (maxBoardHeight / BOARD_HEIGHT) * BOARD_HEIGHT;
-        int boardWidth = boardHeight * BOARD_WIDTH / BOARD_HEIGHT;
-        int boardX = width() / 2 - boardWidth / 2;
+        int boardHeight = (int)(maxHeight / BOARD_HEIGHT) * BOARD_HEIGHT;
+        int boardWidth = boardHeight*BOARD_WIDTH / BOARD_HEIGHT;
+        int boardX = width()/2 - boardWidth/2;
         int boardY = height() * 5 / 100;
 
 
@@ -454,7 +453,57 @@ void Widget::drawHeadUpDisplay(QPainter & painter)
     QString lifeText = QString("Life: %1").arg(itsGame->getItsPlayer()->getItsHp());
     painter.drawText((this->width() * 0.9 - (QFontMetrics(font).boundingRect(lifeText).width() / 2)), (this->height() * 7 / 200), lifeText);
 
-    painter.drawRect(QRect(0, this->height() * 5 / 100 - 1, this->width(), 0));
+    painter.drawRect(QRect(0, this->height()*0.05 - 1, this->width(), 0));
+
+    if(itsGame->getIsRafaleActive())
+    {
+        float progress = ((float)((remainingRafaleShots)/(float)POWERUP_RAFALE_FIRERATE)*1000 + itsRafaleTimer->remainingTime()) / (float)(POWERUP_RAFALE_DURATION*1000);
+
+
+        qDebug() << progress;
+        int displayWidth = itsGame->getItsBoard().width()/60;
+        int displayHeight = this->height()/3;
+
+        int displayX = itsGame->getItsBoard().x() + itsGame->getItsBoard().width() + displayWidth;
+        int displayY = itsGame->getItsBoard().y() + itsGame->getItsBoard().height()/2;
+        QRect display = QRect(displayX, displayY, displayWidth, displayHeight);
+
+        display.setTop((1-progress)*(displayY) + displayHeight);
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(Qt::black);
+        painter.drawRect(display);
+    }
+    if(itsGame->getIsPiercingActive())
+    {
+        float progress = (float)itsPiercingTimer->remainingTime() / ((float)POWERUP_PIERCING_DURATION*1000);
+
+
+        int displayWidth = itsGame->getItsBoard().width()/60;
+        int displayHeight = this->height()/3;
+
+        int displayX = itsGame->getItsBoard().x() + itsGame->getItsBoard().width() + displayWidth*4;
+        int displayY = itsGame->getItsBoard().y() + itsGame->getItsBoard().height()/2;
+        QRect display = QRect(displayX, displayY, displayWidth, displayHeight);
+
+        display.setTop((1-progress)*(displayY) + displayHeight);
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(Qt::yellow);
+        painter.drawRect(display);
+    }
+    if(itsGame->getHerbicidePickedUpFlag())
+    {
+        int displayWidth = itsGame->getItsBoard().width()/60;
+        int displayHeight = this->height()/3;
+
+        int displayX = itsGame->getItsBoard().x() + itsGame->getItsBoard().width() + displayWidth*7;
+        int displayY = itsGame->getItsBoard().y() + itsGame->getItsBoard().height()/2;
+        QRect display = QRect(displayX, displayY, displayWidth, displayHeight);
+
+        display.setTop(displayHeight);
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(Qt::green);
+        painter.drawRect(display);
+    }
 }
 
 void Widget::moveBullet()
@@ -472,13 +521,17 @@ void Widget::movePlayer()
 void Widget::movePowerUps()
 {
     itsGame->movePowerUps();
-    if(itsGame->getIsRafaleActive() && !itsRafaleTimer->isActive())
+    if(itsGame->getRafalePickedUpFlag())
     {
+        itsGame->setRafalePickedUpFlag(false);
+        itsGame->setIsRafaleActive(true);
         remainingRafaleShots = POWERUP_RAFALE_FIRERATE * POWERUP_RAFALE_DURATION;
         itsRafaleTimer->start(1000/POWERUP_RAFALE_FIRERATE);
     }
-    if(itsGame->getIsPiercingActive() && !itsPiercingTimer->isActive())
+    if(itsGame->getPiercingPickedUpFlag())
     {
+        itsGame->setPiercingPickedUpFlag(false);
+        itsGame->setIsPiercingActive(true);
         itsPiercingTimer->start(1000*POWERUP_PIERCING_DURATION);
     }
 }
@@ -495,9 +548,16 @@ void Widget::startGame(int level)
         ui->stackedWidget->setCurrentIndex(3);
         this->update();
 
-        // Calculate game board
-        int boardX = width() / 2 - boardWidth / 2;
+        // Calculate the size of itsBoard based on the smallest dimension of the window
+        int maxHeight = height() * 0.95; // 95% of the window height
+
+        // Find the largest multiple of BOARD_HEIGHT that fits within the available height
+        int boardHeight = (int)(maxHeight / BOARD_HEIGHT) * BOARD_HEIGHT + 1;
+        int boardWidth = boardHeight*BOARD_WIDTH / BOARD_HEIGHT + 1;
+        int boardX = width()/2 - boardWidth/2 - 1;
         int boardY = height() * 5 / 100;
+
+
         itsGame = new Game({ boardX, boardY, boardWidth, boardHeight });
         isGameStarted = true;
         itsDisplayTimer->start(16); // Update every 16 equal approximatly to 60fps
@@ -548,6 +608,8 @@ void Widget::pauseGame()
     itsCentipedeTimer->stop();
     itsPlayerTimer->stop();
     itsPowerUpMovementTimer->stop();
+    itsRafaleTimer->stop();
+    itsPiercingTimer->stop();
     itsSpiderAppearTimer->stop();
     itsSpiderTimer->stop();
 
@@ -563,6 +625,8 @@ void Widget::resumeGame()
     itsCentipedeTimer->start();
     itsPlayerTimer->start();
     itsPowerUpMovementTimer->start();
+    itsRafaleTimer->start();
+    itsPiercingTimer->start();
     itsSpiderAppearTimer->start();
     itsSpiderTimer->start();
 
@@ -623,7 +687,7 @@ void Widget::rafaleShot()
         itsGame->setIsRafaleActive(false);
         itsRafaleTimer->stop();
     }
-    else
+    else if(!itsGame->getIsHerbicideActive())
     {
         itsGame->shoot();
         remainingRafaleShots--;
