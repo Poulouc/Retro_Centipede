@@ -31,10 +31,16 @@ Widget::Widget(QWidget *parent)
     itsSpiderTimer = new QTimer(this);
 
     // Loading assets
-    itsCentiBody.load("../../../imageDoss/centibody.png");
-    itsCentiHead.load("../../../imageDoss/centihead.png");
-    itsAvatar.load("../../../imageDoss/avatar.png");
-    itsMushrooms.load("../../../imageDoss/mushrooms.png");
+    itsCentiBodyImg.load(":/assets/centipede_body1.png");
+    itsCentiHeadImg.load(":/assets/centipede_head1.png");
+    itsCentiTailImg.load(":/assets/centipede_tail1.png");
+    itsPlayerImg.load(":/assets/player.png");
+    itsMushState1Img.load(":/assets/mushroom_state1.png");
+    itsMushState2Img.load(":/assets/mushroom_state2.png");
+    itsMushState3Img.load(":/assets/mushroom_state3.png");
+    itsMushState4Img.load(":/assets/mushroom_state4.png");
+    itsSpiderImg.load(":/assets/spider.png");
+    itsBulletImg.load(":/assets/bullet.png");
 
     // Initialize the direction of the player
     itsPlayerDirection.dirX = 0;
@@ -215,7 +221,7 @@ void Widget::drawPlayer(QPainter & painter)
     else
     {
         // Draws the player at his position
-        painter.drawImage(itsGame->getItsPlayer()->getItsHitBox(), itsAvatar);
+        painter.drawImage(itsGame->getItsPlayer()->getItsHitBox(), itsPlayerImg);
     }
 }
 
@@ -252,7 +258,7 @@ void Widget::drawMushrooms(QPainter & painter)
         else
         {
             // displays the mushroom image
-            painter.drawImage(mushroom->getItsHitBox(), itsMushrooms);
+            painter.drawImage(mushroom->getItsHitBox(), itsMushState1Img);
         }
     }
 }
@@ -277,9 +283,9 @@ void Widget::drawCentipede(QPainter & painter)
         else
         {
             // displays the tail image
-            painter.drawImage((*it)->getItsTail()->getItsHitBox(), itsCentiBody);
+            painter.drawImage((*it)->getItsTail()->getItsHitBox(), itsCentiTailImg);
             // displays the head image
-            painter.drawImage((*it)->getItsHead()->getItsHitBox(), itsCentiHead);
+            painter.drawImage((*it)->getItsHead()->getItsHitBox(), itsCentiHeadImg);
         }
 
         while(currentPart->getItsChild() != nullptr)
@@ -296,7 +302,7 @@ void Widget::drawCentipede(QPainter & painter)
                 else
                 {
                     // displays the bodypart image
-                    painter.drawImage(currentPart->getItsHitBox(), itsCentiBody);
+                    painter.drawImage(currentPart->getItsHitBox(), itsCentiBodyImg);
                 }
             }
             currentPart = currentPart->getItsChild();
@@ -319,7 +325,7 @@ void Widget::drawBullet(QPainter & painter)
         else
         {
             // displays the bullet image
-            painter.drawRect(bullet->getItsHitBox());
+            painter.drawImage(bullet->getItsHitBox(), itsBulletImg);
         }
     }
 }
@@ -375,9 +381,7 @@ void Widget::moveBullet()
 {
     itsGame->moveBullets();
 
-    // ---- EXPERIMENTAL ----
     itsGame->checkCollisions();
-    // ----------------------
 }
 
 void Widget::movePlayer()
@@ -565,7 +569,7 @@ void Widget::drawSpider(QPainter & painter)
         else
         {
             // displays the spider image
-            //painter.drawRect(itsGame->getItsBullet()->getItsHitBox());
+            painter.drawImage(itsGame->getItsSpider()->getItsHitBox(), itsSpiderImg);
         }
     }
 }

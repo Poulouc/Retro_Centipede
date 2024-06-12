@@ -56,7 +56,7 @@ const int POWERUP_RAFALE_DURATION = 4; /**< The duration in seconds of the 'rafa
 const int POWERUP_RAFALE_FIRERATE = 4; /**< The number of shots per second of the 'rafale' powerup */
 const int POWERUP_PIERCING_DURATION = 5; /**< The duration in second of the 'piercing' powerup */
 
-const bool SHOW_HITBOXES = true;
+const bool SHOW_HITBOXES = false;
 
 //Variable for the Spider
 const int INCREMENT_INTERVAL = 5;

@@ -200,10 +200,16 @@ private:
     QTimer * itsSpiderTimer = nullptr;
     Game * itsGame = nullptr; /**< Pointer to the game object */
     Leaderboard * itsLeaderboard = nullptr;
-    QImage itsCentiHead; /**< Image of the centipede head */
-    QImage itsCentiBody; /**< Image of the centipede body */
-    QImage itsAvatar; /**< Image of the player */
-    QImage itsMushrooms; /**< Image of the mushrooms */
+    QImage itsCentiHeadImg; /**< Image of the centipede head */
+    QImage itsCentiBodyImg; /**< Image of the centipede body */
+    QImage itsCentiTailImg;
+    QImage itsPlayerImg; /**< Image of the player */
+    QImage itsMushState1Img; /**< Image of the mushrooms */
+    QImage itsMushState2Img;
+    QImage itsMushState3Img;
+    QImage itsMushState4Img;
+    QImage itsSpiderImg;
+    QImage itsBulletImg;
     Direction itsPlayerDirection; /**< Direction of the player */
     QRect itsGameBoard; /**< Rectangle representing the game board */
     bool isGameStarted = false; /**< Flag indicating whether the game has started */
