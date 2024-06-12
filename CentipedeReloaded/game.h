@@ -33,7 +33,7 @@ private:
     Player* itsPlayer; /**< Pointer to the player */
     QRect itsBoard; /**< Rectangle representing the game board */
     QRect itsPlayerZone; /**< Rectangle representing the player's zone */
-    QRect * itsCentipedeZone;
+    QRect* itsCentipedeZone;
     std::vector<Centipede*>* treatedCentipedes;
     int itsCurrentLevel = 1; /**< The current level */
     bool isRafaleActive = false; /** Flag indicating wether the 'rafale' powerup is active */
@@ -46,7 +46,7 @@ public:
      * @brief Constructor for the Game class.
      * @param board Rectangle representing the game board.
      */
-    Game(QRect board);
+    Game(QRect &board);
 
     /**
      * @brief Destructor for the Game class.
@@ -56,7 +56,7 @@ public:
     /**
      * @brief Spawns a centipede.
      */
-    void spawnCentipede();
+    void spawnCentipede(int centiLength, Direction centiDir, BodyPart* oldHead);
 
     /**
      * @brief Creates mushrooms on the game board.

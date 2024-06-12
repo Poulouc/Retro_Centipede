@@ -27,7 +27,7 @@ void targetLog(Centipede* centipede)
     }
 }
 
-Game::Game(QRect board)
+Game::Game(QRect &board)
     :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsPowerups({}), itsBullets({}),
     itsPlayer(new Player({board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2, board.y() + board.height() - (board.width() / BOARD_WIDTH) - 1}, board.width() / BOARD_WIDTH)),
     itsBoard(board), itsPlayerZone(board.x(), board.y() + (4 * board.height()) / 5, board.width(), board.height() / 5), itsCentipedeZone(&board),
@@ -73,10 +73,10 @@ Game::~Game()
     }
 }
 
-void Game::spawnCentipede()
+void Game::spawnCentipede(int centiLength = CENTIPEDE_LENGTH, Direction centiDir = { -1, 0 }, BodyPart* oldHead = nullptr)
 {
-    Centipede * newCentipede = new Centipede(new BodyPart(itsBoard.width() / BOARD_WIDTH));
-    BodyPart * currentPart = newCentipede->getItsHead();
+    Centipede* newCentipede = new Centipede(new BodyPart(itsBoard.width() / BOARD_WIDTH));
+    BodyPart* currentPart = newCentipede->getItsHead();
     Position newPos;
     Position oldPos;
 
@@ -88,8 +88,8 @@ void Game::spawnCentipede()
     oldPos.posY = newPos.posY;
     currentPart->setItsTargetPos(oldPos);
 
-    newCentipede->setItsDirection({ -1, 0 });
-    for(int i = 0; i < CENTIPEDE_LENGTH - 1; i++)
+    newCentipede->setItsDirection(centiDir);
+    for(int i = 0; i < centiLength - 1; i++)
     {
         BodyPart * newPart = new BodyPart(itsBoard.width() / BOARD_WIDTH);
         oldPos.posX = newPos.posX;
