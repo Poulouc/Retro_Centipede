@@ -2,16 +2,17 @@
 #include "game.h"
 
 #include <iostream>
+#include <QDebug>
 
 using namespace std;
 
 void headLog(Centipede* centipede, Position newPos, BodyPart* head, QRect board)
 {
-    cout << "new head pos : (" << newPos.posX << ", " << newPos.posY <<
-            ") [ break in (" << (newPos.posX - board.x()) % (board.width() / BOARD_WIDTH) << ", " <<
-            (newPos.posY - board.y()) % (board.height() / BOARD_HEIGHT) << ") ] L: " << centipede->getWasMovingLeft() <<
-            " - R: " << centipede->getWasMovingRight() << " - V: " << centipede->isVerticalDirection() << " | size: " <<
-            head->getItsHitBox().width() << ", " << head->getItsHitBox().height() << endl;
+    qDebug() << "new head pos : (" << newPos.posX << ", " << newPos.posY <<
+              ") [ break in (" << (newPos.posX - board.x()) % (board.width() / BOARD_WIDTH) << ", " <<
+              (newPos.posY - board.y()) % (board.height() / BOARD_HEIGHT) << ") ] L: " << centipede->getWasMovingLeft() <<
+              " - R: " << centipede->getWasMovingRight() << " - V: " << centipede->isVerticalDirection() << " | size: " <<
+              head->getItsHitBox().width() << ", " << head->getItsHitBox().height();
 }
 
 void targetLog(Centipede* centipede)
@@ -631,12 +632,6 @@ void Game::moveCentipede()
         centiHead->updatePos();
 
         Position headPos = centiHead->getItsPosition();
-
-        //cout << "new head pos : (" << headPos.posX << ", " << headPos.posY <<
-        //    ") [ break in (" << (headPos.posX - itsBoard.x()) % (itsBoard.width() / BOARD_WIDTH) << ", " <<
-        //    (headPos.posY - itsBoard.y()) % (itsBoard.height() / BOARD_HEIGHT) << ") ] L: " << centipede->getWasMovingLeft() <<
-        //        " - R: " << centipede->getWasMovingRight() << " - V: " << centipede->isVerticalDirection() << " | size: " <<
-        //        centiHead->getItsHitBox().width() << ", " << centiHead->getItsHitBox().height() << endl;
 
         headLog(centipede, headPos, centiHead, itsBoard);
         //targetLog(centipede);
