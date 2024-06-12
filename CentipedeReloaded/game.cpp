@@ -863,16 +863,39 @@ void Game::moveSpider()
     }
 
     // Interaction with the mushroomms
-    for (vector<Mushroom*>::iterator it = getItsMushrooms()->begin(); it != itsMushrooms->end(); ++it) {
-        if (nextPos.intersects((*it)->getItsHitBox())) {
-            if((rand() % 100) < 50){
-                Mushroom* toDelete = *it;
-                itsMushrooms->erase(it);
-                delete toDelete;
+    for (vector<Mushroom*>::iterator it = itsMushrooms->begin(); it < itsMushrooms->end(); it++)
+    {
+        //check if the mushroom is marked
+        int isMarked = itsMarkedMushroom.size();
+        for (int i = 0; i < itsMarkedMushroom.size(); i++)
+        {
+            if ((itsMarkedMushroom)[i] == (*it))
+            {
+                isMarked = i;
+                break;
             }
-            break;
+        }
+        //if the mushroom is not marked and if the spider touch the mushroom
+        if (isMarked == itsMarkedMushroom.size() and nextPos.intersects((*it)->getItsHitBox()))
+        {
+            itsMarkedMushroom.push_back((*it)); // add the mushroom in the list of mushrooms tested
+            if ((rand() % 100) < 50)
+            {
+                Mushroom* toDelete = (*it);
+                itsMushrooms->erase(it);
+                itsMarkedMushroom.erase(itsMarkedMushroom.begin() + isMarked);
+                delete toDelete;
+                break;
+            }
+        }
+        // Check if the spider is no more on the mushroom
+        if (isMarked != itsMarkedMushroom.size() and !nextPos.intersects((*it)->getItsHitBox()))
+        {
+            // Unmark the mushroom
+            itsMarkedMushroom.erase(itsMarkedMushroom.begin() + isMarked);
         }
     }
+
 
     //check the collision between the player and the spider
     if(itsSpider->getItsHitBox().intersects(itsPlayer->getItsHitBox())){
