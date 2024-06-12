@@ -12,7 +12,6 @@
 #include <QPainter>
 #include <QKeyEvent>
 #include <QFontMetrics>
-#include <iostream>
 #include <QResizeEvent>
 #include "game.h"
 #include "typeDef.h"
@@ -210,6 +209,11 @@ private:
     QImage itsMushState4Img;
     QImage itsSpiderImg;
     QImage itsBulletImg;
+    QImage itsRafalePuImg;
+    QImage itsTranspercantPuImg;
+    QImage itsHerbicidePuImg;
+    QImage itsGrassTexture;
+    QImage itsDarkGrassTexture;
     Direction itsPlayerDirection; /**< Direction of the player */
     QRect itsGameBoard; /**< Rectangle representing the game board */
     bool isGameStarted = false; /**< Flag indicating whether the game has started */

@@ -1,6 +1,7 @@
 #include "widget.h"
 #include "ui_widget.h"
 
+#include <QTransform>
 
 using namespace std;
 
@@ -14,10 +15,10 @@ Widget::Widget(QWidget *parent)
     setMinimumSize(400, 300);
 
     // Change background color of the widget
-    QPalette bgColor = QPalette();
-    bgColor.setColor(QPalette::Window, Qt::darkGray);
-    setAutoFillBackground(true);
-    setPalette(bgColor);
+    //QPalette bgColor = QPalette();
+    //bgColor.setColor(QPalette::Window, Qt::darkGray);
+    //setAutoFillBackground(true);
+    //setPalette(bgColor);
 
     // Create timers for updating the GUI, the centipede, the bullet, the player
     itsDisplayTimer = new QTimer(this);
@@ -41,10 +42,26 @@ Widget::Widget(QWidget *parent)
     itsMushState4Img.load(":/assets/mushroom_state4.png");
     itsSpiderImg.load(":/assets/spider.png");
     itsBulletImg.load(":/assets/bullet.png");
+    itsRafalePuImg.load(":/assets/rafale.png");
+    itsTranspercantPuImg.load(":/assets/balle_transpercante.png");
+    itsHerbicidePuImg.load(":/assets/herbicide.png");
+    itsGrassTexture.load(":/assets/grass.png");
+    itsDarkGrassTexture.load(":/assets/grass_dark.png");
+
+    // ---- ROTATE EXAMPLE: ----
+    //itsCentiHeadImg = itsCentiHeadImg.transformed(QTransform().rotate(90.0));
+    // -------------------------
 
     // Initialize the direction of the player
     itsPlayerDirection.dirX = 0;
     itsPlayerDirection.dirY = 0;
+
+    // Change background of the widget
+    QPalette pal = palette();
+    itsDarkGrassTexture = itsDarkGrassTexture.scaled(QSize(width() * 5 / 100, width() * 5 / 100), Qt::KeepAspectRatio);
+    QBrush brush(itsDarkGrassTexture);
+    pal.setBrush(QPalette::Window, brush);
+    setPalette(pal);
 
     // Connect buttons to their method
     connect(ui->playButton, SIGNAL(clicked()), this, SLOT(startGame()));
@@ -71,7 +88,13 @@ Widget::Widget(QWidget *parent)
     connect(itsSpiderAppearTimer, SIGNAL(timeout()), this, SLOT(spiderAppear()));
     connect(itsSpiderTimer, SIGNAL(timeout()), this, SLOT(moveSpider()));
 
-    itsLeaderboard = new Leaderboard("../../../CentipedeReloaded/leaderboard.txt");
+    itsLeaderboard = new Leaderboard(":/leaderboard.txt");
+    ui->stackedWidget->setCurrentIndex(0);
+
+    //ui->stackedWidget->setGeometry(QRect(0, 0, width(), height()));
+    //ui->stackedWidget->setFixedSize(QSize(width(), height()));
+    //setStyleSheet("QRect#page { background-image: url(:/assets/grass.png);"
+    //              " background-size: 200px; }");
 }
 
 Widget::~Widget()
@@ -98,7 +121,12 @@ void Widget::paintEvent(QPaintEvent *event)
         QPainter painter(this);
 
         // Paint in light gray the area of the game board
-        painter.fillRect(itsGame->getItsBoard(), QBrush(Qt::lightGray, Qt::SolidPattern));
+        itsGrassTexture.load(":/assets/grass.png");
+        itsGrassTexture = itsGrassTexture.scaled(QSize(width() * 5 / 100, width() * 5 / 100), Qt::KeepAspectRatio);
+        QBrush brush(itsGrassTexture);
+        brush.setStyle(Qt::TexturePattern);
+        painter.fillRect(itsGame->getItsBoard(), brush);
+        //painter.drawImage(itsGame->getItsBoard(), QImage(":/assets/grass.png"));
 
         // Draw each entities of the game
         drawCentipede(painter);
@@ -118,6 +146,16 @@ void Widget::resizeEvent(QResizeEvent *event)
 {
     // Avoid warnings of unused variable of Qt
     Q_UNUSED(event);
+
+    // Change background of the widget
+    QPalette pal = palette();
+    itsDarkGrassTexture.load(":/assets/grass_dark.png");
+    itsDarkGrassTexture = itsDarkGrassTexture.scaled(QSize(width() * 5 / 100, width() * 5 / 100), Qt::KeepAspectRatio);
+    QBrush brush(itsDarkGrassTexture);
+    brush.setStyle(Qt::TexturePattern);
+    pal.setBrush(QPalette::Window, brush);
+    setPalette(pal);
+
     if (itsGame != nullptr)
     {
         // Calculate the size of itsBoard based on the smallest dimension of the window
@@ -257,8 +295,23 @@ void Widget::drawMushrooms(QPainter & painter)
         }
         else
         {
+            switch (mushroom->getItsState()) {
+            case 4:
+                painter.drawImage(mushroom->getItsHitBox(), itsMushState1Img);
+                break;
+            case 3:
+                painter.drawImage(mushroom->getItsHitBox(), itsMushState2Img);
+                break;
+            case 2:
+                painter.drawImage(mushroom->getItsHitBox(), itsMushState3Img);
+                break;
+            case 1:
+                painter.drawImage(mushroom->getItsHitBox(), itsMushState4Img);
+                break;
+            default:
+                break;
+            }
             // displays the mushroom image
-            painter.drawImage(mushroom->getItsHitBox(), itsMushState1Img);
         }
     }
 }
@@ -266,46 +319,48 @@ void Widget::drawMushrooms(QPainter & painter)
 void Widget::drawCentipede(QPainter & painter)
 {
     for (vector<Centipede *>::iterator it = itsGame->getItsCentipedes()->begin(); it != itsGame->getItsCentipedes()->end(); ++it) {
-        BodyPart * currentPart = (*it)->getItsHead();
 
         if(SHOW_HITBOXES)
         {
-            // displays the tail hitbox
+            // Display the hitbox of the tail
             painter.setPen(Qt::darkGreen);
             painter.setBrush(Qt::SolidPattern);
-            painter.drawRect((*it)->getItsTail()->getItsHitBox());
+            painter.drawRect((*it)->getItsTail()->getItsHitBox()); 
+        }
+        else
+        {
+            // Display the image of the tail of a centipede
+            painter.drawImage((*it)->getItsTail()->getItsHitBox(), itsCentiTailImg);
+        }
 
-            // displays the head hitbox
+        // Iterates on body parts of the centipede (head and tail excluded) in descending order
+        for (BodyPart* currentPart = (*it)->getItsTail()->getItsParent(); currentPart->getItsParent() != nullptr; currentPart = currentPart->getItsParent())
+        {
+            if (SHOW_HITBOXES)
+            {
+                // Display the hitbox of the body part
+                painter.setPen(Qt::cyan);
+                painter.setBrush(Qt::SolidPattern);
+                painter.drawRect(currentPart->getItsHitBox());
+            }
+            else
+            {
+                // Display the image of the body of a centipede
+                painter.drawImage(currentPart->getItsHitBox(), itsCentiBodyImg);
+            }
+        }
+
+        if (SHOW_HITBOXES)
+        {
+            // Display the hitbox of the head
             painter.setPen(Qt::blue);
             painter.setBrush(Qt::SolidPattern);
             painter.drawRect((*it)->getItsHead()->getItsHitBox());
         }
         else
         {
-            // displays the tail image
-            painter.drawImage((*it)->getItsTail()->getItsHitBox(), itsCentiTailImg);
-            // displays the head image
+            // Display the image of the head of a centipede
             painter.drawImage((*it)->getItsHead()->getItsHitBox(), itsCentiHeadImg);
-        }
-
-        while(currentPart->getItsChild() != nullptr)
-        {
-            if(currentPart != (*it)->getItsHead())
-            {
-                if(SHOW_HITBOXES)
-                {
-                    // displays the bodypart hitbox
-                    painter.setPen(Qt::cyan);
-                    painter.setBrush(Qt::SolidPattern);
-                    painter.drawRect(currentPart->getItsHitBox());
-                }
-                else
-                {
-                    // displays the bodypart image
-                    painter.drawImage(currentPart->getItsHitBox(), itsCentiBodyImg);
-                }
-            }
-            currentPart = currentPart->getItsChild();
         }
     }
 }
@@ -332,11 +387,11 @@ void Widget::drawBullet(QPainter & painter)
 
 void Widget::drawPowerUps(QPainter & painter)
 {
-    for(PowerUp* powerup : itsGame->getItsPowerups())
+    for (PowerUp* powerup : itsGame->getItsPowerups())
     {
-        if(SHOW_HITBOXES)
+        if (SHOW_HITBOXES)
         {
-            switch(powerup->getItsType())
+            switch (powerup->getItsType())
             {
             case rafale:
                 painter.setPen(Qt::black);
@@ -349,8 +404,28 @@ void Widget::drawPowerUps(QPainter & painter)
             case herbicide:
                 painter.setPen(Qt::green);
                 painter.setBrush(Qt::SolidPattern);
+                break;
+            default:
+                break;
             }
             painter.drawRect(powerup->getItsHitbox());
+        }
+        else
+        {
+            switch (powerup->getItsType())
+            {
+            case rafale:
+                painter.drawImage(powerup->getItsHitbox(), itsRafalePuImg);
+                break;
+            case transpercant:
+                painter.drawImage(powerup->getItsHitbox(), itsTranspercantPuImg);
+                break;
+            case herbicide:
+                painter.drawImage(powerup->getItsHitbox(), itsHerbicidePuImg);
+                break;
+            default:
+                break;
+            }
         }
     }
 }
@@ -358,23 +433,23 @@ void Widget::drawPowerUps(QPainter & painter)
 void Widget::drawHeadUpDisplay(QPainter & painter)
 {
     // Set the font and color for the text
-    QFont font("Arial", 8, QFont::Bold);
+    QFont font("Arial", 9, QFont::Bold);
     painter.setFont(font);
-    painter.setPen(Qt::black);
+    painter.setPen(Qt::white);
 
     // Draw the score
-    painter.drawText((this->width()*0.1 - (QFontMetrics(font).boundingRect(QString("Score: %1").arg(itsGame->getItsScore())).width()/2)),
-    (this->height()*0.04), QString("Score: %1").arg(itsGame->getItsScore()));
+    QString scoreText = QString("Score: %1").arg(itsGame->getItsScore());
+    painter.drawText((this->width() * 0.1 - (QFontMetrics(font).boundingRect(scoreText).width() / 2)), (this->height() * 7 / 200), scoreText);
 
-    // Draw the game name
-    painter.drawText((this->width()*0.5 - (QFontMetrics(font).boundingRect(QString("Niveau: %1").arg(itsGame->getCurrentLevel())).width()/2))
-    , (this->height()*0.04), QString("Niveau: %1").arg(itsGame->getCurrentLevel()));
+    // Draw the level number
+    QString levelText = QString("Level %1").arg(itsGame->getCurrentLevel());
+    painter.drawText((this->width() * 0.5 - (QFontMetrics(font).boundingRect(levelText).width() / 2)), (this->height() * 7 / 200), levelText);
 
     // Draw the life count
-    painter.drawText((this->width()*0.9 - (QFontMetrics(font).boundingRect(QString("Life: %1").arg(itsGame->getItsPlayer()->getItsHp())).width()/2))
-    , (this->height()*0.04), QString("Life: %1").arg(itsGame->getItsPlayer()->getItsHp()));
+    QString lifeText = QString("Life: %1").arg(itsGame->getItsPlayer()->getItsHp());
+    painter.drawText((this->width() * 0.9 - (QFontMetrics(font).boundingRect(lifeText).width() / 2)), (this->height() * 7 / 200), lifeText);
 
-    painter.drawRect(QRect(0, this->height()*0.05 - 1, this->width(), 0));
+    painter.drawRect(QRect(0, this->height() * 5 / 100 - 1, this->width(), 0));
 }
 
 void Widget::moveBullet()
@@ -456,6 +531,9 @@ void Widget::endGame()
     itsPowerUpMovementTimer->stop();
     itsRafaleTimer->stop();
     itsPiercingTimer->stop();
+    itsSpiderAppearTimer->stop();
+    itsSpiderTimer->stop();
+
     isGameStarted = false;
     this->update();
 }

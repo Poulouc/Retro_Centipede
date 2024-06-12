@@ -27,9 +27,10 @@ void targetLog(Centipede* centipede)
 }
 
 Game::Game(QRect board)
-    :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsPowerups({}), itsBullets({}),itsBoard(board), itsSpider(nullptr),
+    :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsPowerups({}), itsBullets({}),
     itsPlayer(new Player({board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2, board.y() + board.height() - (board.width() / BOARD_WIDTH) - 1}, board.width() / BOARD_WIDTH)),
-    itsPlayerZone(board.x(), board.y() + (4 * board.height()) / 5, board.width(), board.height() / 5), itsCentipedeZone(board), treatedCentipedes(new vector<Centipede*>)
+    itsBoard(board), itsPlayerZone(board.x(), board.y() + (4 * board.height()) / 5, board.width(), board.height() / 5), itsCentipedeZone(board),
+    treatedCentipedes(new vector<Centipede*>), itsSpider(nullptr)
 {
     spawnCentipede();
     createMushrooms();
@@ -531,18 +532,18 @@ void Game::setBoard(QRect board)
     itsPlayer->setItsPosition({itsPlayerZone.x() + itsPlayerZone.width()/2 - cellWidth/2,
                                itsPlayerZone.y() + itsPlayerZone.height() - cellHeight - itsPlayerZone.height()/20});
 
-    /**
+    //**
     // Update centipede segments for proportional resizing
     for (vector<Centipede*>::iterator it = itsCentipedes->begin(); it != itsCentipedes->end(); ++it)
     {
         for (BodyPart* currentPart = (*it)->getItsHead(); currentPart != nullptr; currentPart = currentPart->getItsChild())
         {
             // Calculate new proportional coordinates
-            //int newX = board.x() + ((currentPart->getItsHitBox().x() - itsBoard.x() + 0.5) * board.width()) / itsBoard.width();
-            //int newY = board.y() + ((currentPart->getItsHitBox().y() - itsBoard.y() + 0.5) * board.height()) / itsBoard.height();
+            int newX = board.x() + ((currentPart->getItsHitBox().x() - itsBoard.x() + 0.5) * board.width()) / itsBoard.width();
+            int newY = board.y() + ((currentPart->getItsHitBox().y() - itsBoard.y() + 0.5) * board.height()) / itsBoard.height();
 
-            int newX = board.x() + ((currentPart->getItsPosition().posX - itsBoard.x()) * cellWidth) / (itsBoard.width() / BOARD_WIDTH);
-            int newY = board.y() + ((currentPart->getItsPosition().posY - itsBoard.y()) * cellHeight) / (itsBoard.height() / BOARD_HEIGHT);
+            //int newX = board.x() + ((currentPart->getItsPosition().posX - itsBoard.x()) * cellWidth) / (itsBoard.width() / BOARD_WIDTH);
+            //int newY = board.y() + ((currentPart->getItsPosition().posY - itsBoard.y()) * cellHeight) / (itsBoard.height() / BOARD_HEIGHT);
 
             int newTargetX = board.x() + ((currentPart->getItsTarget().posX - itsBoard.x()) * cellWidth) / (itsBoard.width() / BOARD_WIDTH);
             int newTargetY = board.y() + ((currentPart->getItsTarget().posY - itsBoard.y()) * cellHeight) / (itsBoard.height() / BOARD_HEIGHT);
@@ -553,7 +554,7 @@ void Game::setBoard(QRect board)
             currentPart->setItsTargetPos({ newTargetX, newTargetY });
         }
     }
-    **/
+    //**/
 
     //set the size of the spider
     if(itsSpider != nullptr)
@@ -561,6 +562,7 @@ void Game::setBoard(QRect board)
         // Calculate new proportional coordinates
         int newX = board.x() + ((itsSpider->getItsHitBox().x() - itsBoard.x() + 0.5) * board.width()) / itsBoard.width();
         int newY = board.y() + ((itsSpider->getItsHitBox().y() - itsBoard.y() + 0.5) * board.height()) / itsBoard.height();
+
         itsSpider->setItsHitBox({newX, newY, cellWidth, cellWidth});
     }
 
