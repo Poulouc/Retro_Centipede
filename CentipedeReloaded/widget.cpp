@@ -11,7 +11,8 @@ Widget::Widget(QWidget *parent)
     ui->setupUi(this);
 
     // Change title of the window and set minimum size of the window
-    setWindowTitle("Centipede Reloaded - v1.0");
+    setWindowTitle("Centipede Reloaded");
+    setWindowIcon(QIcon(":/assets/icon.png"));
     setMinimumSize(400, 300);
 
     // Change background color of the widget
@@ -677,6 +678,22 @@ void Widget::spiderAppear()
             itsSpiderAppearTimer->stop();
             itsSpiderAppearProbability = 5;
             itsElapsedTime = 0;
+        }
+
+        // Change centipede image
+        if (itsCentiImgState == 1)
+        {
+            itsCentiBodyImg.load(":/assets/centipede_body2.png");
+            itsCentiHeadImg.load(":/assets/centipede_head2.png");
+            itsCentiTailImg.load(":/assets/centipede_tail2.png");
+            itsCentiImgState = 2;
+        }
+        else
+        {
+            itsCentiBodyImg.load(":/assets/centipede_body1.png");
+            itsCentiHeadImg.load(":/assets/centipede_head1.png");
+            itsCentiTailImg.load(":/assets/centipede_tail1.png");
+            itsCentiImgState = 1;
         }
     }
 }

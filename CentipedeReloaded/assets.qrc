@@ -19,5 +19,6 @@
         <file>assets/rafale.png</file>
         <file>assets/spider.png</file>
         <file>leaderboard.txt</file>
+        <file>assets/icon.png</file>
     </qresource>
 </RCC>

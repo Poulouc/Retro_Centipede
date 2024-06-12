@@ -638,7 +638,7 @@ void Game::moveCentipede()
         //        " - R: " << centipede->getWasMovingRight() << " - V: " << centipede->isVerticalDirection() << " | size: " <<
         //        centiHead->getItsHitBox().width() << ", " << centiHead->getItsHitBox().height() << endl;
 
-        headLog(centipede, headPos, centiHead, itsBoard);
+        //headLog(centipede, headPos, centiHead, itsBoard);
         //targetLog(centipede);
 
         if (((headPos.posX - itsBoard.x()) % (itsBoard.width() / BOARD_WIDTH) == 0) && ((headPos.posY - itsBoard.y()) % (itsBoard.height() / BOARD_HEIGHT) == 0))
