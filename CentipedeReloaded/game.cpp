@@ -29,7 +29,7 @@ void targetLog(Centipede* centipede)
 Game::Game(QRect board)
     :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsPowerups({}), itsBullets({}),itsBoard(board), itsSpider(nullptr),
     itsPlayer(new Player({board.x() + board.width()/2 - (board.width() / BOARD_WIDTH)/2, board.y() + board.height() - (board.width() / BOARD_WIDTH) - 1}, board.width() / BOARD_WIDTH)),
-    itsPlayerZone(board.x(), board.y() + (4 * board.height()) / 5, board.width(), board.height() / 5), itsCentipedeZone(board), treatedCentipedes(new vector<Centipede*>)
+    itsPlayerZone(board.x(), board.y() + (4 * board.height()) / 5, board.width(), board.height() / 5), itsCentipedeZone(&itsBoard), treatedCentipedes(new vector<Centipede*>)
 {
     spawnCentipede();
     createMushrooms();
@@ -553,8 +553,26 @@ void Game::setBoard(QRect board)
             currentPart->setItsTargetPos({ newTargetX, newTargetY });
         }
     }
-    **/
 
+
+    // Update centipede segments for proportional resizing
+    for (std::vector<Centipede*>::iterator it = itsCentipedes->begin(); it != itsCentipedes->end(); ++it)
+    {
+        for (BodyPart* part = (*it)->getItsHead(); part != nullptr; part = part->getItsChild())
+        {
+            cout << "cv planter" << endl;
+            // Calculate new proportional coordinates
+            int newX = board.x() + ((part->getItsPosition().posX - itsBoard.x()) * cellWidth) / (itsBoard.width() / BOARD_WIDTH);
+            int newY = board.y() + (part->getItsPosition().posY * cellHeight) / (itsBoard.height() / BOARD_HEIGHT);
+            cout << "ici" << endl;
+            // Update the hitbox, position, and target position of the segment
+            part->setItsHitBox(QRect(newX, newY, cellWidth, cellWidth));
+            cout << "la" << endl;
+            //part->setItsTargetPos({part->getItsParent()->getItsHitBox().x(), part->getItsParent()->getItsHitBox().y()});
+            cout << "peut etre ici" << endl;
+        }
+    }
+    **/
     //set the size of the spider
     if(itsSpider != nullptr)
     {
@@ -563,12 +581,6 @@ void Game::setBoard(QRect board)
         int newY = board.y() + ((itsSpider->getItsHitBox().y() - itsBoard.y() + 0.5) * board.height()) / itsBoard.height();
         itsSpider->setItsHitBox({newX, newY, cellWidth, cellWidth});
     }
-
-    if (itsCentipedeZone.height() == (itsBoard.height() / 5))
-    {
-        itsCentipedeZone = itsPlayerZone;
-    }
-    else itsCentipedeZone = itsBoard;
 
     // Set the new board as actual
     itsBoard = board;
@@ -623,7 +635,7 @@ void Game::moveCentipede()
         if (alreadyTreated) continue;
 
         // If the centipede has reached the bottom for the first time, change the zone to the player zone.
-        if (itsCentipedeZone == itsBoard && centipede->hasReachedBottom()) itsCentipedeZone = itsPlayerZone;
+        if (*itsCentipedeZone == itsBoard and centipede->hasReachedBottom()) itsCentipedeZone = &itsPlayerZone;
 
         BodyPart* centiHead = centipede->getItsHead();
         centiHead->updatePos();
@@ -657,7 +669,7 @@ void Game::moveCentipede()
             }
 
             centipedeToCentipedeCollision(centipede);
-            if (centipedeBoardCollision(centipede, itsCentipedeZone)) centipedeBoardCollision(centipede, itsCentipedeZone);
+            if (centipedeBoardCollision(centipede, *itsCentipedeZone)) centipedeBoardCollision(centipede, *itsCentipedeZone);
             if (centipedeMushroomCollision(centipede)) centipedeMushroomCollision(centipede);
 
             centiHead->setItsTargetPos({ headPos.posX + centipede->getItsDirection().dirX * (itsBoard.width() / BOARD_WIDTH),
@@ -795,7 +807,7 @@ bool Game::centipedeToCentipedeCollision(Centipede * centipede)
                         if (centi->getItsDirection().dirX == -1) centi->setWasMovingLeft(true);
                         else if (centi->getItsDirection().dirX == 1) centi->setWasMovingRight(true);
                         centi->setItsDirection({ 0, 1 });
-                        centipedeBoardCollision(centi, itsCentipedeZone);
+                        centipedeBoardCollision(centi, *itsCentipedeZone);
                         centi->setVerticalDirection(true);
                     }
 
