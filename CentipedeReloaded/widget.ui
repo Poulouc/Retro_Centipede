@@ -81,7 +81,7 @@
           </spacer>
          </item>
          <item row="1" column="0" colspan="4">
-          <widget class="QLabel" name="label">
+          <widget class="QLabel" name="labelTitleMenuMain">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -131,7 +131,7 @@
           </spacer>
          </item>
          <item row="3" column="0" colspan="4">
-          <widget class="QLabel" name="label_2">
+          <widget class="QLabel" name="labelSubTitleMenuMain">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -340,7 +340,7 @@
           </spacer>
          </item>
          <item row="0" column="0" colspan="2">
-          <widget class="QLabel" name="label_3">
+          <widget class="QLabel" name="labelWin">
            <property name="font">
             <font>
              <pointsize>15</pointsize>
@@ -390,7 +390,7 @@
           </spacer>
          </item>
          <item row="0" column="0" colspan="2">
-          <widget class="QLabel" name="label_4">
+          <widget class="QLabel" name="labelGameOver">
            <property name="font">
             <font>
              <pointsize>15</pointsize>
@@ -467,7 +467,7 @@
           </spacer>
          </item>
          <item row="1" column="1">
-          <widget class="QLabel" name="label_5">
+          <widget class="QLabel" name="labelPause">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -565,7 +565,7 @@
          </spacer>
         </item>
         <item row="1" column="0" colspan="2">
-         <widget class="QLabel" name="label_7">
+         <widget class="QLabel" name="labelHowToPlayExplenation">
           <property name="text">
            <string>Move with Z, Q, S, D
 
@@ -583,7 +583,7 @@ Destroy mushrooms to get points.</string>
          </widget>
         </item>
         <item row="0" column="0" colspan="2">
-         <widget class="QLabel" name="label_6">
+         <widget class="QLabel" name="labelHowToPlayTitel">
           <property name="text">
            <string>How to Play</string>
           </property>
