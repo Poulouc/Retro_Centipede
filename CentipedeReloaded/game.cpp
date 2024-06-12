@@ -879,7 +879,7 @@ void Game::moveSpider()
         if (isMarked == itsMarkedMushroom.size() and nextPos.intersects((*it)->getItsHitBox()))
         {
             itsMarkedMushroom.push_back((*it)); // add the mushroom in the list of mushrooms tested
-            if ((rand() % 100) < 50)
+            if ((rand() % 101) < 50)//if the mushrooms should be destruct
             {
                 Mushroom* toDelete = (*it);
                 itsMushrooms->erase(it);

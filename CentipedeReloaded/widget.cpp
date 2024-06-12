@@ -656,18 +656,19 @@ void Widget::spiderAppear()
     if (isGameStarted && !isGamePaused && itsGame->getItsSpider() == nullptr) {
         itsElapsedTime += 1; // Augmenter le temps écoulé de 1 seconde
 
-        if (itsElapsedTime % INCREMENT_INTERVAL == 0) {
-            // Augmenter la probabilité d'apparition de 5% toutes les 5 secondes
+        if (itsElapsedTime % INCREMENT_INTERVAL == 0) { //if ths elapsed time is a multiple of INCREMENT_INTERVAL
+            // Increase spawn chance by 5% every 5 seconds
             if (itsSpiderAppearProbability <= 100) {
-                itsSpiderAppearProbability += 5;; // La probabilité ne doit pas dépasser 100%
+                itsSpiderAppearProbability += 5;; // The probability must not exceed 100%
             }
         }
 
-        int chance = rand() % 100;
-        if (chance < itsSpiderAppearProbability) {
+        int chance = rand() % 101;// rand() % 100 is between 0 and 99 so rand() % 100 + 1 is between 0 and 100
+        if (chance < itsSpiderAppearProbability)//if the chance is lower than the probability make the spider appear
+        {
             itsGame->createSpider();
-            itsSpiderTimer->start(4000 / itsGame->getItsBoard().width());
-            // Réinitialiser la probabilité et le temps écoulé
+            itsSpiderTimer->start(4000 / itsGame->getItsBoard().width()); // start the timer for the moveSpider
+            // Reset probability and elapsed time
             itsSpiderAppearTimer->stop();
             itsSpiderAppearProbability = 5;
             itsElapsedTime = 0;
@@ -683,6 +684,7 @@ void Widget::moveSpider()
     }
     else
     {
+        //stop the timer of move and start the timer to make appear the spider
         itsSpiderTimer->stop();
         itsSpiderAppearTimer->start(1000);
     }
