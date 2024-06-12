@@ -744,7 +744,7 @@ bool Game::centipedeBoardCollision(Centipede * centipede, QRect board)
             centipede->setHasReachedBottom(false);
             return true;
         }
-        else if (headNextHitBox.y() + headNextHitBox.height() >= board.y() + board.height()) // bottom of the board
+        else if (headNextHitBox.y() + headNextHitBox.height() > board.y() + board.height()) // bottom of the board
         {
             centipede->setItsDirection({0, -1}); // Go up
             centipede->setHasReachedBottom(true);

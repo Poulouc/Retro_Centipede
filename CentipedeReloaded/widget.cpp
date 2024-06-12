@@ -88,7 +88,7 @@ Widget::Widget(QWidget *parent)
     connect(itsSpiderAppearTimer, SIGNAL(timeout()), this, SLOT(spiderAppear()));
     connect(itsSpiderTimer, SIGNAL(timeout()), this, SLOT(moveSpider()));
 
-    itsLeaderboard = new Leaderboard(":/leaderboard.txt");
+    itsLeaderboard = new Leaderboard("../../" + SAVEFILE_NAME);
     ui->stackedWidget->setCurrentIndex(0);
 
     //change the color of the font
