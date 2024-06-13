@@ -1,30 +1,7 @@
 #include <random>
 #include "game.h"
 
-#include <iostream>
-
 using namespace std;
-
-void headLog(Centipede* centipede, Position newPos, BodyPart* head, QRect board)
-{
-    cout << "new head pos : (" << newPos.posX << ", " << newPos.posY <<
-            ") [ break in (" << (newPos.posX - board.x()) % (board.width() / BOARD_WIDTH) << ", " <<
-            (newPos.posY - board.y()) % (board.height() / BOARD_HEIGHT) << ") ] L: " << centipede->getWasMovingLeft() <<
-            " - R: " << centipede->getWasMovingRight() << " - V: " << centipede->isVerticalDirection() << " | size: " <<
-            head->getItsHitBox().width() << ", " << head->getItsHitBox().height() << endl;
-}
-
-void targetLog(Centipede* centipede)
-{
-    cout << "Targets of centipede:" << endl;
-    int i = 0;
-    for (BodyPart* actualPart = centipede->getItsHead(); actualPart != nullptr; actualPart = actualPart->getItsChild())
-    {
-        i++;
-        Position targetPos = actualPart->getItsTarget();
-        cout << "  " << i << ": (" << targetPos.posX << ", " << targetPos.posY << ")" << endl;
-    }
-}
 
 Game::Game(QRect board)
     :itsScore(0), itsCentipedes(new vector<Centipede*>), itsMushrooms(new vector<Mushroom*>), itsPowerups({}), itsBullets({}),
@@ -676,15 +653,6 @@ void Game::moveCentipede()
         centiHead->updatePos();
 
         Position headPos = centiHead->getItsPosition();
-
-        //cout << "new head pos : (" << headPos.posX << ", " << headPos.posY <<
-        //    ") [ break in (" << (headPos.posX - itsBoard.x()) % (itsBoard.width() / BOARD_WIDTH) << ", " <<
-        //    (headPos.posY - itsBoard.y()) % (itsBoard.height() / BOARD_HEIGHT) << ") ] L: " << centipede->getWasMovingLeft() <<
-        //        " - R: " << centipede->getWasMovingRight() << " - V: " << centipede->isVerticalDirection() << " | size: " <<
-        //        centiHead->getItsHitBox().width() << ", " << centiHead->getItsHitBox().height() << endl;
-
-        //headLog(centipede, headPos, centiHead, itsBoard);
-        //targetLog(centipede);
 
         if (((headPos.posX - itsBoard.x()) % (itsBoard.width() / BOARD_WIDTH) == 0) && ((headPos.posY - itsBoard.y()) % (itsBoard.height() / BOARD_HEIGHT) == 0))
         {
