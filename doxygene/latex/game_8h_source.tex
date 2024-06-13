@@ -1,0 +1,114 @@
+\doxysection{game.\+h}
+\label{game_8h_source}\textbf{ Go to the documentation of this file.}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#ifndef\ GAME\_H}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#define\ GAME\_H}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <QRect>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}bullet.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}centipede.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}mushroom.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}player.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}typeDef.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}powerup.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}spider.h"{}}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00025\ \textcolor{keyword}{class\ }Game}
+\DoxyCodeLine{00026\ \{}
+\DoxyCodeLine{00027\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{int}\ itsScore;\ }
+\DoxyCodeLine{00029\ \ \ \ \ std::vector<Centipede*>*\ itsCentipedes;\ }
+\DoxyCodeLine{00030\ \ \ \ \ std::vector<Mushroom*>*\ itsMushrooms;\ }
+\DoxyCodeLine{00031\ \ \ \ \ std::vector<PowerUp*>\ itsPowerups;\ }
+\DoxyCodeLine{00032\ \ \ \ \ std::vector<Bullet*>\ itsBullets;\ }
+\DoxyCodeLine{00033\ \ \ \ \ Player*\ itsPlayer;\ }
+\DoxyCodeLine{00034\ \ \ \ \ QRect\ itsBoard;\ }
+\DoxyCodeLine{00035\ \ \ \ \ QRect\ itsPlayerZone;\ }
+\DoxyCodeLine{00036\ \ \ \ \ QRect\ itsCentipedeZone;\ }
+\DoxyCodeLine{00037\ \ \ \ \ std::vector<Centipede*>*\ treatedCentipedes;\ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{int}\ itsCurrentLevel\ =\ 1;\ }
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{bool}\ isRafaleActive\ =\ \textcolor{keyword}{false};\ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{bool}\ isPiercingActive\ =\ \textcolor{keyword}{false};\ }
+\DoxyCodeLine{00041\ \ \ \ \ Spider*\ itsSpider;\ }
+\DoxyCodeLine{00042\ \ \ \ \ std::vector<Mushroom*>\ itsMarkedMushroom;\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00049\ \ \ \ \ Game(QRect\ board);}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00054\ \ \ \ \ \string~Game();}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{void}\ spawnCentipede();}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{void}\ createMushrooms();}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{void}\ shoot();}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordtype}{void}\ moveBullets();}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordtype}{bool}\ isColliding(Mushroom*\ mushroom,\ Player*\ player);}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordtype}{bool}\ isColliding(Mushroom*\ mushroom,\ Bullet*\ bullet);}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordtype}{bool}\ isColliding(Centipede*\ centipede,\ Bullet*\ bullet);}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordtype}{bool}\ isColliding(Centipede*\ centipede,\ Mushroom*\ mushroom);}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordtype}{bool}\ isColliding(QRect\ hitbox1,\ QRect\ hitbox2);}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordtype}{void}\ checkCollisions();}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordtype}{void}\ sliceCentipede(BodyPart*\ hittedPart,\ Centipede*\ centipede);}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordtype}{void}\ movePlayer(Direction\ \&direction);}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordtype}{void}\ movePowerUps();}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00143\ \ \ \ \ std::vector<Centipede*>*\ getItsCentipedes();}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00149\ \ \ \ \ std::vector<Mushroom*>*\ getItsMushrooms();}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00155\ \ \ \ \ std::vector<Bullet*>\ getItsBullets();}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00161\ \ \ \ \ Player*\ getItsPlayer();}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordtype}{int}\ getItsScore();}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00173\ \ \ \ \ QRect\ getItsBoard();}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00179\ \ \ \ \ std::vector<PowerUp*>\ getItsPowerups();}
+\DoxyCodeLine{00180\ }
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keywordtype}{int}\ getCurrentLevel();}
+\DoxyCodeLine{00186\ }
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keywordtype}{void}\ setBoard(QRect\ board);}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keywordtype}{bool}\ centipedeMushroomCollision(Centipede*\ centipede);}
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{keywordtype}{bool}\ centipedeToCentipedeCollision(Centipede*\ centipede);}
+\DoxyCodeLine{00206\ }
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keywordtype}{bool}\ isLevelWon();}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keywordtype}{bool}\ isGameLosed();}
+\DoxyCodeLine{00218\ }
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keywordtype}{bool}\ getIsRafaleActive();}
+\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{keywordtype}{bool}\ getIsPiercingActive();}
+\DoxyCodeLine{00230\ }
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keywordtype}{void}\ setIsRafaleActive(\textcolor{keywordtype}{bool}\ isActive);}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00241\ \ \ \ \ \textcolor{keywordtype}{void}\ setIsPiercingActive(\textcolor{keywordtype}{bool}\ isActive);}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keywordtype}{void}\ moveCentipede();}
+\DoxyCodeLine{00247\ }
+\DoxyCodeLine{00254\ \ \ \ \ \textcolor{keywordtype}{bool}\ centipedeBoardCollision(Centipede*\ centipede,\ QRect\ board);}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keywordtype}{void}\ createSpider();}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00265\ \ \ \ \ Spider*\ getItsSpider();}
+\DoxyCodeLine{00266\ }
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{keywordtype}{void}\ moveSpider();}
+\DoxyCodeLine{00271\ \};}
+\DoxyCodeLine{00272\ }
+\DoxyCodeLine{00273\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ GAME\_H}}
+
+\end{DoxyCode}

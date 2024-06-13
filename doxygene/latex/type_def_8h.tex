@@ -1,0 +1,179 @@
+\doxysection{type\+Def.\+h File Reference}
+\label{type_def_8h}\index{typeDef.h@{typeDef.h}}
+
+
+Defines common typedefs and constants used in the game.  
+
+
+{\ttfamily \#include $<$string$>$}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \textbf{ Position}
+\begin{DoxyCompactList}\small\item\em Structure representing a position with x and y coordinates. \end{DoxyCompactList}\item 
+struct \textbf{ Direction}
+\begin{DoxyCompactList}\small\item\em Structure representing a direction with x and y components. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const int \textbf{ CENTIPEDE\+\_\+\+LENGTH} = 8
+\item 
+const int \textbf{ CENTIPEDE\+\_\+\+BODYPART\+\_\+\+SIZE} = 13
+\item 
+const int \textbf{ CENTIPEDE\+\_\+\+SPAWN\+\_\+\+XPOS} = 15
+\item 
+const int \textbf{ CENTIPEDE\+\_\+\+SPAWN\+\_\+\+YPOS} = 0
+\item 
+const int \textbf{ PLAYER\+\_\+\+SPEED} = 1
+\item 
+const int \textbf{ PLAYER\+\_\+\+SIZE} = 5
+\item 
+const int \textbf{ MUSHROOM\+\_\+\+SIZE} = 10
+\item 
+const int \textbf{ BULLET\+\_\+\+SPEED} = 5
+\item 
+const int \textbf{ MUSHROOMS\+\_\+\+AMOUNT} = 30
+\item 
+const int \textbf{ BOARD\+\_\+\+WIDTH} = 30
+\item 
+const int \textbf{ BOARD\+\_\+\+HEIGHT} = 31
+\item 
+const int \textbf{ POWERUP\+\_\+\+DROPRATE} = 30
+\item 
+const int \textbf{ POWERUP\+\_\+\+RAFALE\+\_\+\+DURATION} = 4
+\item 
+const int \textbf{ POWERUP\+\_\+\+RAFALE\+\_\+\+FIRERATE} = 4
+\item 
+const int \textbf{ POWERUP\+\_\+\+PIERCING\+\_\+\+DURATION} = 5
+\item 
+const bool \textbf{ SHOW\+\_\+\+HITBOXES} = false
+\item 
+const int \textbf{ INCREMENT\+\_\+\+INTERVAL} = 5
+\item 
+const int \textbf{ SPIDER\+\_\+\+SPEED} = 1
+\item 
+const std\+::string \textbf{ SAVEFILE\+\_\+\+NAME} = "{}leaderboard.\+txt"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Defines common typedefs and constants used in the game. 
+
+
+
+\doxysubsection{Variable Documentation}
+\index{typeDef.h@{typeDef.h}!BOARD\_HEIGHT@{BOARD\_HEIGHT}}
+\index{BOARD\_HEIGHT@{BOARD\_HEIGHT}!typeDef.h@{typeDef.h}}
+\doxysubsubsection{BOARD\_HEIGHT}
+{\footnotesize\ttfamily \label{type_def_8h_ae24c765f3ad7e2463838f9566267effb} 
+const int BOARD\+\_\+\+HEIGHT = 31}
+
+The height of the game board \index{typeDef.h@{typeDef.h}!BOARD\_WIDTH@{BOARD\_WIDTH}}
+\index{BOARD\_WIDTH@{BOARD\_WIDTH}!typeDef.h@{typeDef.h}}
+\doxysubsubsection{BOARD\_WIDTH}
+{\footnotesize\ttfamily \label{type_def_8h_a42324bf350708926d83bca3e862ec3db} 
+const int BOARD\+\_\+\+WIDTH = 30}
+
+The width of the game board \index{typeDef.h@{typeDef.h}!BULLET\_SPEED@{BULLET\_SPEED}}
+\index{BULLET\_SPEED@{BULLET\_SPEED}!typeDef.h@{typeDef.h}}
+\doxysubsubsection{BULLET\_SPEED}
+{\footnotesize\ttfamily \label{type_def_8h_a17ffb1db6ee6b5be40147de8fa2576fd} 
+const int BULLET\+\_\+\+SPEED = 5}
+
+The speed of the bullet \index{typeDef.h@{typeDef.h}!CENTIPEDE\_BODYPART\_SIZE@{CENTIPEDE\_BODYPART\_SIZE}}
+\index{CENTIPEDE\_BODYPART\_SIZE@{CENTIPEDE\_BODYPART\_SIZE}!typeDef.h@{typeDef.h}}
+\doxysubsubsection{CENTIPEDE\_BODYPART\_SIZE}
+{\footnotesize\ttfamily \label{type_def_8h_acb999258a126fc32695d336a7b3ea008} 
+const int CENTIPEDE\+\_\+\+BODYPART\+\_\+\+SIZE = 13}
+
+The size of each body part of the centipede \index{typeDef.h@{typeDef.h}!CENTIPEDE\_LENGTH@{CENTIPEDE\_LENGTH}}
+\index{CENTIPEDE\_LENGTH@{CENTIPEDE\_LENGTH}!typeDef.h@{typeDef.h}}
+\doxysubsubsection{CENTIPEDE\_LENGTH}
+{\footnotesize\ttfamily \label{type_def_8h_a90e6f528a7d51d120e0c342dc3b35fc6} 
+const int CENTIPEDE\+\_\+\+LENGTH = 8}
+
+The length of the centipede \index{typeDef.h@{typeDef.h}!CENTIPEDE\_SPAWN\_XPOS@{CENTIPEDE\_SPAWN\_XPOS}}
+\index{CENTIPEDE\_SPAWN\_XPOS@{CENTIPEDE\_SPAWN\_XPOS}!typeDef.h@{typeDef.h}}
+\doxysubsubsection{CENTIPEDE\_SPAWN\_XPOS}
+{\footnotesize\ttfamily \label{type_def_8h_aeb2aa9b0083c02a2e846d1a5277f337b} 
+const int CENTIPEDE\+\_\+\+SPAWN\+\_\+\+XPOS = 15}
+
+The initial x-\/coordinate of the centipede \index{typeDef.h@{typeDef.h}!CENTIPEDE\_SPAWN\_YPOS@{CENTIPEDE\_SPAWN\_YPOS}}
+\index{CENTIPEDE\_SPAWN\_YPOS@{CENTIPEDE\_SPAWN\_YPOS}!typeDef.h@{typeDef.h}}
+\doxysubsubsection{CENTIPEDE\_SPAWN\_YPOS}
+{\footnotesize\ttfamily \label{type_def_8h_ad9ece47e7c0fb52a4ee3edf43b14567e} 
+const int CENTIPEDE\+\_\+\+SPAWN\+\_\+\+YPOS = 0}
+
+The initial y-\/coordinate of the centipede \index{typeDef.h@{typeDef.h}!INCREMENT\_INTERVAL@{INCREMENT\_INTERVAL}}
+\index{INCREMENT\_INTERVAL@{INCREMENT\_INTERVAL}!typeDef.h@{typeDef.h}}
+\doxysubsubsection{INCREMENT\_INTERVAL}
+{\footnotesize\ttfamily \label{type_def_8h_a37e8b6a0ceec79aed691e3a685305bb6} 
+const int INCREMENT\+\_\+\+INTERVAL = 5}
+
+The interval for incrementing the spider\textquotesingle{}s movement \index{typeDef.h@{typeDef.h}!MUSHROOM\_SIZE@{MUSHROOM\_SIZE}}
+\index{MUSHROOM\_SIZE@{MUSHROOM\_SIZE}!typeDef.h@{typeDef.h}}
+\doxysubsubsection{MUSHROOM\_SIZE}
+{\footnotesize\ttfamily \label{type_def_8h_ab25561b543fa82e99f01bc488a14d6a0} 
+const int MUSHROOM\+\_\+\+SIZE = 10}
+
+The size of the mushroom \index{typeDef.h@{typeDef.h}!MUSHROOMS\_AMOUNT@{MUSHROOMS\_AMOUNT}}
+\index{MUSHROOMS\_AMOUNT@{MUSHROOMS\_AMOUNT}!typeDef.h@{typeDef.h}}
+\doxysubsubsection{MUSHROOMS\_AMOUNT}
+{\footnotesize\ttfamily \label{type_def_8h_a5f02c844b25a16467180f6687996d0c5} 
+const int MUSHROOMS\+\_\+\+AMOUNT = 30}
+
+The number of mushrooms in the game \index{typeDef.h@{typeDef.h}!PLAYER\_SIZE@{PLAYER\_SIZE}}
+\index{PLAYER\_SIZE@{PLAYER\_SIZE}!typeDef.h@{typeDef.h}}
+\doxysubsubsection{PLAYER\_SIZE}
+{\footnotesize\ttfamily \label{type_def_8h_adf1df326a66f11234a5c9388e7b629ef} 
+const int PLAYER\+\_\+\+SIZE = 5}
+
+The size of the player \index{typeDef.h@{typeDef.h}!PLAYER\_SPEED@{PLAYER\_SPEED}}
+\index{PLAYER\_SPEED@{PLAYER\_SPEED}!typeDef.h@{typeDef.h}}
+\doxysubsubsection{PLAYER\_SPEED}
+{\footnotesize\ttfamily \label{type_def_8h_a9173d4f85bd7a9c891bc2eec694ee9a5} 
+const int PLAYER\+\_\+\+SPEED = 1}
+
+The speed of the player \index{typeDef.h@{typeDef.h}!POWERUP\_DROPRATE@{POWERUP\_DROPRATE}}
+\index{POWERUP\_DROPRATE@{POWERUP\_DROPRATE}!typeDef.h@{typeDef.h}}
+\doxysubsubsection{POWERUP\_DROPRATE}
+{\footnotesize\ttfamily \label{type_def_8h_a4116986d09e75edbff4733cc7329d7e8} 
+const int POWERUP\+\_\+\+DROPRATE = 30}
+
+The chance in percent for a powerup to appear when a mushroom is broken by a bullet \index{typeDef.h@{typeDef.h}!POWERUP\_PIERCING\_DURATION@{POWERUP\_PIERCING\_DURATION}}
+\index{POWERUP\_PIERCING\_DURATION@{POWERUP\_PIERCING\_DURATION}!typeDef.h@{typeDef.h}}
+\doxysubsubsection{POWERUP\_PIERCING\_DURATION}
+{\footnotesize\ttfamily \label{type_def_8h_af4c769127b7b243fac2854fa1736768f} 
+const int POWERUP\+\_\+\+PIERCING\+\_\+\+DURATION = 5}
+
+The duration in second of the \textquotesingle{}piercing\textquotesingle{} powerup \index{typeDef.h@{typeDef.h}!POWERUP\_RAFALE\_DURATION@{POWERUP\_RAFALE\_DURATION}}
+\index{POWERUP\_RAFALE\_DURATION@{POWERUP\_RAFALE\_DURATION}!typeDef.h@{typeDef.h}}
+\doxysubsubsection{POWERUP\_RAFALE\_DURATION}
+{\footnotesize\ttfamily \label{type_def_8h_a0e6896e7fc34773b4b20d292d896acf7} 
+const int POWERUP\+\_\+\+RAFALE\+\_\+\+DURATION = 4}
+
+The duration in seconds of the \textquotesingle{}rafale\textquotesingle{} powerup \index{typeDef.h@{typeDef.h}!POWERUP\_RAFALE\_FIRERATE@{POWERUP\_RAFALE\_FIRERATE}}
+\index{POWERUP\_RAFALE\_FIRERATE@{POWERUP\_RAFALE\_FIRERATE}!typeDef.h@{typeDef.h}}
+\doxysubsubsection{POWERUP\_RAFALE\_FIRERATE}
+{\footnotesize\ttfamily \label{type_def_8h_a2f9ad1ff869ccbe69815b653a8e0eb22} 
+const int POWERUP\+\_\+\+RAFALE\+\_\+\+FIRERATE = 4}
+
+The number of shots per second of the \textquotesingle{}rafale\textquotesingle{} powerup \index{typeDef.h@{typeDef.h}!SAVEFILE\_NAME@{SAVEFILE\_NAME}}
+\index{SAVEFILE\_NAME@{SAVEFILE\_NAME}!typeDef.h@{typeDef.h}}
+\doxysubsubsection{SAVEFILE\_NAME}
+{\footnotesize\ttfamily \label{type_def_8h_a61fabb404b15c25a80fa7dd19072ea13} 
+const std\+::string SAVEFILE\+\_\+\+NAME = "{}leaderboard.\+txt"{}}
+
+The name of the file to save leaderboard data \index{typeDef.h@{typeDef.h}!SHOW\_HITBOXES@{SHOW\_HITBOXES}}
+\index{SHOW\_HITBOXES@{SHOW\_HITBOXES}!typeDef.h@{typeDef.h}}
+\doxysubsubsection{SHOW\_HITBOXES}
+{\footnotesize\ttfamily \label{type_def_8h_aaa1324506dbfe4f6321607647d63ecbd} 
+const bool SHOW\+\_\+\+HITBOXES = false}
+
+Flag indicating whether to show hitboxes \index{typeDef.h@{typeDef.h}!SPIDER\_SPEED@{SPIDER\_SPEED}}
+\index{SPIDER\_SPEED@{SPIDER\_SPEED}!typeDef.h@{typeDef.h}}
+\doxysubsubsection{SPIDER\_SPEED}
+{\footnotesize\ttfamily \label{type_def_8h_a293b8f95e88da0274065ea804a51ad49} 
+const int SPIDER\+\_\+\+SPEED = 1}
+
+The speed of the spider 

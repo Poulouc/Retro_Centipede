@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['save_0',['save',['../class_leaderboard.html#afe4283cbf7963043a2ad1077a7cb34c0',1,'Leaderboard']]],
+  ['setboard_1',['setBoard',['../class_game.html#a2a899f6aa82bf9b467912e5733a864b0',1,'Game']]],
+  ['sethasreachedbottom_2',['setHasReachedBottom',['../class_centipede.html#a382a24e82bb11f4d3687be736dbebd7d',1,'Centipede']]],
+  ['setispiercingactive_3',['setIsPiercingActive',['../class_game.html#a09010a43e15d551ebe1097e6ea497bca',1,'Game']]],
+  ['setisrafaleactive_4',['setIsRafaleActive',['../class_game.html#a8893e919355324cb914563661ac327de',1,'Game']]],
+  ['setitschild_5',['setItsChild',['../class_body_part.html#ad43585895e8d2f0810451d9edba6d1ca',1,'BodyPart']]],
+  ['setitsdirection_6',['setItsDirection',['../class_centipede.html#a82ba25ca7b583107f36ea096fe535cfa',1,'Centipede::setItsDirection()'],['../class_spider.html#acd2b480003242f35d7e3cc50d38dabb9',1,'Spider::setItsDirection()']]],
+  ['setitsgridposition_7',['setItsGridPosition',['../class_mushroom.html#af68ba76be6bbc4eb86ba5ed042d86076',1,'Mushroom']]],
+  ['setitshitbox_8',['setItsHitBox',['../class_body_part.html#aac5382efce479e02367eeef981bfd26c',1,'BodyPart::setItsHitBox()'],['../class_bullet.html#ac950da1d6d7255e9f07741a3367c69d1',1,'Bullet::setItsHitBox()'],['../class_mushroom.html#a966abdc4461517c7ab0d17db93ab06a0',1,'Mushroom::setItsHitBox()'],['../class_player.html#a6b50926d3e21d239dabbb882e5da04b0',1,'Player::setItsHitBox(QRect hitBox)'],['../class_player.html#a8a42010509ca6c3681e855efac041edd',1,'Player::setItsHitBox(Position position)'],['../class_spider.html#af3060e2c92e94473dbf9d89e2622eb75',1,'Spider::setItsHitBox()']]],
+  ['setitshitbox_9',['setItsHitbox',['../class_power_up.html#a55bab5d88bea565e021d4087dc9738be',1,'PowerUp']]],
+  ['setitshorizontaledirection_10',['setItsHorizontaleDirection',['../class_spider.html#aedd70939a9396425d33fefc8f65a9911',1,'Spider']]],
+  ['setitsparent_11',['setItsParent',['../class_body_part.html#a7ef01915e771262951960c2af96e3c0e',1,'BodyPart']]],
+  ['setitsposition_12',['setItsPosition',['../class_body_part.html#ac034f1cade446680247674ece6889d04',1,'BodyPart::setItsPosition()'],['../class_bullet.html#a91470f87cca1e07099f287fe8e880c34',1,'Bullet::setItsPosition()'],['../class_player.html#a577a3e8b4e541bbad994bfaa1a1cdef6',1,'Player::setItsPosition()'],['../class_power_up.html#a3702aa0abedb76c3860ad1660ba29903',1,'PowerUp::setItsPosition()']]],
+  ['setitstail_13',['setItsTail',['../class_centipede.html#ae27339baedb1fb9c8bd704eb830d6cd1',1,'Centipede']]],
+  ['setitstargetpos_14',['setItsTargetPos',['../class_body_part.html#a88cafa056d56e04f74b69d244fc6fef3',1,'BodyPart']]],
+  ['setverticaldirection_15',['setVerticalDirection',['../class_centipede.html#af308373ca428efe39063117ac0ef4c6c',1,'Centipede']]],
+  ['setwasmovingleft_16',['setWasMovingLeft',['../class_centipede.html#a30a82b69459160c544803d89595e0905',1,'Centipede']]],
+  ['setwasmovingright_17',['setWasMovingRight',['../class_centipede.html#a9e5f5609185331373bb495f7d7a553d6',1,'Centipede']]],
+  ['shoot_18',['shoot',['../class_game.html#a6c446b7176a74fa79db358df0a56a962',1,'Game']]],
+  ['slicecentipede_19',['sliceCentipede',['../class_game.html#a5e9b4a0df1fdcbde7354991cc7c0ba16',1,'Game']]],
+  ['spawncentipede_20',['spawnCentipede',['../class_game.html#a50c7d13f15044b8490bf22a4b33b8feb',1,'Game']]],
+  ['spider_21',['Spider',['../class_spider.html#a8779bdd811dabd21599388033a238051',1,'Spider']]]
+];

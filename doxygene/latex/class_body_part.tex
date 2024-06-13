@@ -1,0 +1,268 @@
+\doxysection{Body\+Part Class Reference}
+\label{class_body_part}\index{BodyPart@{BodyPart}}
+
+
+Represents a part of the centipede\textquotesingle{}s body.  
+
+
+
+
+{\ttfamily \#include $<$bodypart.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\textbf{ Body\+Part} (int size)
+\begin{DoxyCompactList}\small\item\em Constructor for the \doxyref{Body\+Part}{p.}{class_body_part} class. \end{DoxyCompactList}\item 
+\label{class_body_part_a0d51eaacbf15745175b21bf44f67a92a} 
+{\bfseries $\sim$\+Body\+Part} ()
+\begin{DoxyCompactList}\small\item\em Destructor for the \doxyref{Body\+Part}{p.}{class_body_part} class. \end{DoxyCompactList}\item 
+\textbf{ Position} \textbf{ get\+Its\+Position} ()
+\begin{DoxyCompactList}\small\item\em Gets the position of the body part. \end{DoxyCompactList}\item 
+\textbf{ Position} \textbf{ get\+Its\+Previous\+Position} ()
+\begin{DoxyCompactList}\small\item\em Gets the previous position of the body part. \end{DoxyCompactList}\item 
+\textbf{ Body\+Part} $\ast$ \textbf{ get\+Its\+Child} ()
+\begin{DoxyCompactList}\small\item\em Gets the child body part. \end{DoxyCompactList}\item 
+\textbf{ Body\+Part} $\ast$ \textbf{ get\+Its\+Parent} ()
+\begin{DoxyCompactList}\small\item\em Gets the parent body part. \end{DoxyCompactList}\item 
+QRect \textbf{ get\+Its\+Hit\+Box} ()
+\begin{DoxyCompactList}\small\item\em Gets the hitbox of the body part. \end{DoxyCompactList}\item 
+void \textbf{ set\+Its\+Position} (\textbf{ Position} pos)
+\begin{DoxyCompactList}\small\item\em Sets the position of the body part. \end{DoxyCompactList}\item 
+void \textbf{ set\+Its\+Child} (\textbf{ Body\+Part} $\ast$child)
+\begin{DoxyCompactList}\small\item\em Sets the child body part. \end{DoxyCompactList}\item 
+void \textbf{ set\+Its\+Parent} (\textbf{ Body\+Part} $\ast$parent)
+\begin{DoxyCompactList}\small\item\em Sets the parent body part. \end{DoxyCompactList}\item 
+void \textbf{ set\+Its\+Hit\+Box} (QRect hitbox)
+\begin{DoxyCompactList}\small\item\em Sets the hitbox of the body part. \end{DoxyCompactList}\item 
+void \textbf{ set\+Its\+Target\+Pos} (\textbf{ Position} target\+Pos)
+\begin{DoxyCompactList}\small\item\em Sets the target position for the body part\textquotesingle{}s movement. \end{DoxyCompactList}\item 
+\label{class_body_part_a574848b4cd445ce941919e2edc3ebef5} 
+void {\bfseries update\+Pos} ()
+\begin{DoxyCompactList}\small\item\em Updates the position of the body part based on its target position. \end{DoxyCompactList}\item 
+\textbf{ Position} \textbf{ get\+Next\+Target} (\textbf{ Direction} centipede\+Dir, int case\+Length)
+\begin{DoxyCompactList}\small\item\em Calculates the next target position based on the centipede\textquotesingle{}s direction and movement distance. \end{DoxyCompactList}\item 
+\textbf{ Position} \textbf{ get\+Its\+Target} ()
+\begin{DoxyCompactList}\small\item\em Gets the target position of the body part. \end{DoxyCompactList}\item 
+void \textbf{ add\+Child} (\textbf{ Body\+Part} $\ast$child)
+\begin{DoxyCompactList}\small\item\em add\+Child add a new bodypart child to the bodypart \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a part of the centipede\textquotesingle{}s body. 
+
+The \doxyref{Body\+Part}{p.}{class_body_part} class manages the individual segments of the centipede, including their position, hitbox, and relationships to other segments. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\index{BodyPart@{BodyPart}!BodyPart@{BodyPart}}
+\index{BodyPart@{BodyPart}!BodyPart@{BodyPart}}
+\doxysubsubsection{BodyPart()}
+{\footnotesize\ttfamily \label{class_body_part_a00d5e3c1c35eafa0aa5b55001b658912} 
+Body\+Part\+::\+Body\+Part (\begin{DoxyParamCaption}\item[{int}]{size}{}\end{DoxyParamCaption})}
+
+
+
+Constructor for the \doxyref{Body\+Part}{p.}{class_body_part} class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em size} & The size of the body part. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\index{BodyPart@{BodyPart}!addChild@{addChild}}
+\index{addChild@{addChild}!BodyPart@{BodyPart}}
+\doxysubsubsection{addChild()}
+{\footnotesize\ttfamily \label{class_body_part_a7845dbd76a41a2fdd14be44f7f238396} 
+void Body\+Part\+::add\+Child (\begin{DoxyParamCaption}\item[{\textbf{ Body\+Part} $\ast$}]{child}{}\end{DoxyParamCaption})}
+
+
+
+add\+Child add a new bodypart child to the bodypart 
+
+
+\begin{DoxyParams}{Parameters}
+{\em child} & is his new bodypart \\
+\hline
+\end{DoxyParams}
+\index{BodyPart@{BodyPart}!getItsChild@{getItsChild}}
+\index{getItsChild@{getItsChild}!BodyPart@{BodyPart}}
+\doxysubsubsection{getItsChild()}
+{\footnotesize\ttfamily \label{class_body_part_a81cf9189dc99fc0505790fc9edc18171} 
+\textbf{ Body\+Part} $\ast$ Body\+Part\+::get\+Its\+Child (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets the child body part. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to the child body part. 
+\end{DoxyReturn}
+\index{BodyPart@{BodyPart}!getItsHitBox@{getItsHitBox}}
+\index{getItsHitBox@{getItsHitBox}!BodyPart@{BodyPart}}
+\doxysubsubsection{getItsHitBox()}
+{\footnotesize\ttfamily \label{class_body_part_a19c5f3d4340d90c73bb39aa6eeb0e5d0} 
+QRect Body\+Part\+::get\+Its\+Hit\+Box (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets the hitbox of the body part. 
+
+\begin{DoxyReturn}{Returns}
+The hitbox of the body part as a QRect. 
+\end{DoxyReturn}
+\index{BodyPart@{BodyPart}!getItsParent@{getItsParent}}
+\index{getItsParent@{getItsParent}!BodyPart@{BodyPart}}
+\doxysubsubsection{getItsParent()}
+{\footnotesize\ttfamily \label{class_body_part_ade2f8f21876843d823a433efddeb0a2c} 
+\textbf{ Body\+Part} $\ast$ Body\+Part\+::get\+Its\+Parent (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets the parent body part. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to the parent body part. 
+\end{DoxyReturn}
+\index{BodyPart@{BodyPart}!getItsPosition@{getItsPosition}}
+\index{getItsPosition@{getItsPosition}!BodyPart@{BodyPart}}
+\doxysubsubsection{getItsPosition()}
+{\footnotesize\ttfamily \label{class_body_part_aa1f2812ff18481df7ecdf1207b33cbd8} 
+\textbf{ Position} Body\+Part\+::get\+Its\+Position (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets the position of the body part. 
+
+\begin{DoxyReturn}{Returns}
+The position of the body part. 
+\end{DoxyReturn}
+\index{BodyPart@{BodyPart}!getItsPreviousPosition@{getItsPreviousPosition}}
+\index{getItsPreviousPosition@{getItsPreviousPosition}!BodyPart@{BodyPart}}
+\doxysubsubsection{getItsPreviousPosition()}
+{\footnotesize\ttfamily \label{class_body_part_a6aa57d92a602fc00a51e2abeea0e3663} 
+\textbf{ Position} Body\+Part\+::get\+Its\+Previous\+Position (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets the previous position of the body part. 
+
+\begin{DoxyReturn}{Returns}
+The previous position of the body part. 
+\end{DoxyReturn}
+\index{BodyPart@{BodyPart}!getItsTarget@{getItsTarget}}
+\index{getItsTarget@{getItsTarget}!BodyPart@{BodyPart}}
+\doxysubsubsection{getItsTarget()}
+{\footnotesize\ttfamily \label{class_body_part_aabd999ac89ec98c09500bf5adb819d7c} 
+\textbf{ Position} Body\+Part\+::get\+Its\+Target (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets the target position of the body part. 
+
+\begin{DoxyReturn}{Returns}
+The target position of the body part. 
+\end{DoxyReturn}
+\index{BodyPart@{BodyPart}!getNextTarget@{getNextTarget}}
+\index{getNextTarget@{getNextTarget}!BodyPart@{BodyPart}}
+\doxysubsubsection{getNextTarget()}
+{\footnotesize\ttfamily \label{class_body_part_aea61bbc4b9998ae9275287718070b000} 
+\textbf{ Position} Body\+Part\+::get\+Next\+Target (\begin{DoxyParamCaption}\item[{\textbf{ Direction}}]{centipede\+Dir}{, }\item[{int}]{case\+Length}{}\end{DoxyParamCaption})}
+
+
+
+Calculates the next target position based on the centipede\textquotesingle{}s direction and movement distance. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em centipede\+Dir} & The direction of movement for the centipede. \\
+\hline
+{\em case\+Length} & The distance to move. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The next target position. 
+\end{DoxyReturn}
+\index{BodyPart@{BodyPart}!setItsChild@{setItsChild}}
+\index{setItsChild@{setItsChild}!BodyPart@{BodyPart}}
+\doxysubsubsection{setItsChild()}
+{\footnotesize\ttfamily \label{class_body_part_ad43585895e8d2f0810451d9edba6d1ca} 
+void Body\+Part\+::set\+Its\+Child (\begin{DoxyParamCaption}\item[{\textbf{ Body\+Part} $\ast$}]{child}{}\end{DoxyParamCaption})}
+
+
+
+Sets the child body part. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em child} & Pointer to the child body part. \\
+\hline
+\end{DoxyParams}
+\index{BodyPart@{BodyPart}!setItsHitBox@{setItsHitBox}}
+\index{setItsHitBox@{setItsHitBox}!BodyPart@{BodyPart}}
+\doxysubsubsection{setItsHitBox()}
+{\footnotesize\ttfamily \label{class_body_part_aac5382efce479e02367eeef981bfd26c} 
+void Body\+Part\+::set\+Its\+Hit\+Box (\begin{DoxyParamCaption}\item[{QRect}]{hitbox}{}\end{DoxyParamCaption})}
+
+
+
+Sets the hitbox of the body part. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em hitbox} & The new hitbox of the body part. \\
+\hline
+\end{DoxyParams}
+\index{BodyPart@{BodyPart}!setItsParent@{setItsParent}}
+\index{setItsParent@{setItsParent}!BodyPart@{BodyPart}}
+\doxysubsubsection{setItsParent()}
+{\footnotesize\ttfamily \label{class_body_part_a7ef01915e771262951960c2af96e3c0e} 
+void Body\+Part\+::set\+Its\+Parent (\begin{DoxyParamCaption}\item[{\textbf{ Body\+Part} $\ast$}]{parent}{}\end{DoxyParamCaption})}
+
+
+
+Sets the parent body part. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent} & Pointer to the parent body part. \\
+\hline
+\end{DoxyParams}
+\index{BodyPart@{BodyPart}!setItsPosition@{setItsPosition}}
+\index{setItsPosition@{setItsPosition}!BodyPart@{BodyPart}}
+\doxysubsubsection{setItsPosition()}
+{\footnotesize\ttfamily \label{class_body_part_ac034f1cade446680247674ece6889d04} 
+void Body\+Part\+::set\+Its\+Position (\begin{DoxyParamCaption}\item[{\textbf{ Position}}]{pos}{}\end{DoxyParamCaption})}
+
+
+
+Sets the position of the body part. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos} & The new position of the body part. \\
+\hline
+\end{DoxyParams}
+\index{BodyPart@{BodyPart}!setItsTargetPos@{setItsTargetPos}}
+\index{setItsTargetPos@{setItsTargetPos}!BodyPart@{BodyPart}}
+\doxysubsubsection{setItsTargetPos()}
+{\footnotesize\ttfamily \label{class_body_part_a88cafa056d56e04f74b69d244fc6fef3} 
+void Body\+Part\+::set\+Its\+Target\+Pos (\begin{DoxyParamCaption}\item[{\textbf{ Position}}]{target\+Pos}{}\end{DoxyParamCaption})}
+
+
+
+Sets the target position for the body part\textquotesingle{}s movement. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em target\+Pos} & The new target position. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\textbf{ bodypart.\+h}\item 
+bodypart.\+cpp\end{DoxyCompactItemize}

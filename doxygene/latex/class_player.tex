@@ -1,0 +1,167 @@
+\doxysection{Player Class Reference}
+\label{class_player}\index{Player@{Player}}
+
+
+Class representing the player in the game.  
+
+
+
+
+{\ttfamily \#include $<$player.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\textbf{ Player} (\textbf{ Position} position, int size)
+\begin{DoxyCompactList}\small\item\em Constructor for the \doxyref{Player}{p.}{class_player} class. \end{DoxyCompactList}\item 
+\label{class_player_a749d2c00e1fe0f5c2746f7505a58c062} 
+{\bfseries $\sim$\+Player} ()
+\begin{DoxyCompactList}\small\item\em Destructor for the \doxyref{Player}{p.}{class_player} class. \end{DoxyCompactList}\item 
+void \textbf{ update\+Pos} (\textbf{ Direction} direction)
+\begin{DoxyCompactList}\small\item\em Updates the position of the player based on the given direction. \end{DoxyCompactList}\item 
+\label{class_player_ad83c5e93ef8b148c2eb0f1aa6349bc6a} 
+void {\bfseries hit} ()
+\begin{DoxyCompactList}\small\item\em Decreases the hit points of the player when hit. \end{DoxyCompactList}\item 
+\textbf{ Position} \textbf{ get\+Its\+Position} ()
+\begin{DoxyCompactList}\small\item\em Gets the position of the player. \end{DoxyCompactList}\item 
+int \textbf{ get\+Its\+Hp} ()
+\begin{DoxyCompactList}\small\item\em Gets the hit points of the player. \end{DoxyCompactList}\item 
+QRect \textbf{ get\+Its\+Hit\+Box} ()
+\begin{DoxyCompactList}\small\item\em Gets the hit box of the player. \end{DoxyCompactList}\item 
+void \textbf{ set\+Its\+Position} (\textbf{ Position} position)
+\begin{DoxyCompactList}\small\item\em Sets the position of the player. \end{DoxyCompactList}\item 
+void \textbf{ set\+Its\+Hit\+Box} (QRect hit\+Box)
+\begin{DoxyCompactList}\small\item\em Sets the hit box of the player. \end{DoxyCompactList}\item 
+void \textbf{ set\+Its\+Hit\+Box} (\textbf{ Position} position)
+\begin{DoxyCompactList}\small\item\em Sets the hit box of the player based on the given position. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class representing the player in the game. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\index{Player@{Player}!Player@{Player}}
+\index{Player@{Player}!Player@{Player}}
+\doxysubsubsection{Player()}
+{\footnotesize\ttfamily \label{class_player_a9f3c67194cba9abbd3454b4a99ece396} 
+Player\+::\+Player (\begin{DoxyParamCaption}\item[{\textbf{ Position}}]{position}{, }\item[{int}]{size}{}\end{DoxyParamCaption})}
+
+
+
+Constructor for the \doxyref{Player}{p.}{class_player} class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em position} & The initial position of the player. \\
+\hline
+{\em size} & The size of the player. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\index{Player@{Player}!getItsHitBox@{getItsHitBox}}
+\index{getItsHitBox@{getItsHitBox}!Player@{Player}}
+\doxysubsubsection{getItsHitBox()}
+{\footnotesize\ttfamily \label{class_player_a499539c9dc0e2472c0443eff9c7d7da8} 
+QRect Player\+::get\+Its\+Hit\+Box (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets the hit box of the player. 
+
+\begin{DoxyReturn}{Returns}
+The hit box of the player. 
+\end{DoxyReturn}
+\index{Player@{Player}!getItsHp@{getItsHp}}
+\index{getItsHp@{getItsHp}!Player@{Player}}
+\doxysubsubsection{getItsHp()}
+{\footnotesize\ttfamily \label{class_player_a4f80f3ab26b759efad27382e9d195636} 
+int Player\+::get\+Its\+Hp (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets the hit points of the player. 
+
+\begin{DoxyReturn}{Returns}
+The hit points of the player. 
+\end{DoxyReturn}
+\index{Player@{Player}!getItsPosition@{getItsPosition}}
+\index{getItsPosition@{getItsPosition}!Player@{Player}}
+\doxysubsubsection{getItsPosition()}
+{\footnotesize\ttfamily \label{class_player_a220b4220215756667395dc5a7032d07e} 
+\textbf{ Position} Player\+::get\+Its\+Position (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets the position of the player. 
+
+\begin{DoxyReturn}{Returns}
+The position of the player. 
+\end{DoxyReturn}
+\index{Player@{Player}!setItsHitBox@{setItsHitBox}}
+\index{setItsHitBox@{setItsHitBox}!Player@{Player}}
+\doxysubsubsection{setItsHitBox()\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_player_a8a42010509ca6c3681e855efac041edd} 
+void Player\+::set\+Its\+Hit\+Box (\begin{DoxyParamCaption}\item[{\textbf{ Position}}]{position}{}\end{DoxyParamCaption})}
+
+
+
+Sets the hit box of the player based on the given position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em position} & The new position of the player. \\
+\hline
+\end{DoxyParams}
+\index{Player@{Player}!setItsHitBox@{setItsHitBox}}
+\index{setItsHitBox@{setItsHitBox}!Player@{Player}}
+\doxysubsubsection{setItsHitBox()\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_player_a6b50926d3e21d239dabbb882e5da04b0} 
+void Player\+::set\+Its\+Hit\+Box (\begin{DoxyParamCaption}\item[{QRect}]{hit\+Box}{}\end{DoxyParamCaption})}
+
+
+
+Sets the hit box of the player. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em hit\+Box} & The new hit box of the player. \\
+\hline
+\end{DoxyParams}
+\index{Player@{Player}!setItsPosition@{setItsPosition}}
+\index{setItsPosition@{setItsPosition}!Player@{Player}}
+\doxysubsubsection{setItsPosition()}
+{\footnotesize\ttfamily \label{class_player_a577a3e8b4e541bbad994bfaa1a1cdef6} 
+void Player\+::set\+Its\+Position (\begin{DoxyParamCaption}\item[{\textbf{ Position}}]{position}{}\end{DoxyParamCaption})}
+
+
+
+Sets the position of the player. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em position} & The new position of the player. \\
+\hline
+\end{DoxyParams}
+\index{Player@{Player}!updatePos@{updatePos}}
+\index{updatePos@{updatePos}!Player@{Player}}
+\doxysubsubsection{updatePos()}
+{\footnotesize\ttfamily \label{class_player_add716a7bcb1214aa9e3d6f713cc8fa3c} 
+void Player\+::update\+Pos (\begin{DoxyParamCaption}\item[{\textbf{ Direction}}]{direction}{}\end{DoxyParamCaption})}
+
+
+
+Updates the position of the player based on the given direction. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em direction} & The direction in which the player should move. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\textbf{ player.\+h}\item 
+player.\+cpp\end{DoxyCompactItemize}

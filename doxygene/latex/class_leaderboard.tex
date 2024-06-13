@@ -1,0 +1,86 @@
+\doxysection{Leaderboard Class Reference}
+\label{class_leaderboard}\index{Leaderboard@{Leaderboard}}
+
+
+Manages and stores high scores in a leaderboard.  
+
+
+
+
+{\ttfamily \#include $<$leaderboard.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\textbf{ Leaderboard} (string filename)
+\begin{DoxyCompactList}\small\item\em Constructor for the \doxyref{Leaderboard}{p.}{class_leaderboard} class. \end{DoxyCompactList}\item 
+map$<$ string, int $>$ \textbf{ get\+Its\+Best\+Scores} ()
+\begin{DoxyCompactList}\small\item\em Retrieves the best scores from the leaderboard. \end{DoxyCompactList}\item 
+void \textbf{ add\+Score} (int new\+Score, string username)
+\begin{DoxyCompactList}\small\item\em Adds a new score to the leaderboard. \end{DoxyCompactList}\item 
+\label{class_leaderboard_afc34c89c749e0083dfefa89113382489} 
+void {\bfseries extract} ()
+\begin{DoxyCompactList}\small\item\em Extracts high scores from the file and updates the leaderboard. \end{DoxyCompactList}\item 
+\label{class_leaderboard_afe4283cbf7963043a2ad1077a7cb34c0} 
+void {\bfseries save} ()
+\begin{DoxyCompactList}\small\item\em Saves the current leaderboard data to the file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages and stores high scores in a leaderboard. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\index{Leaderboard@{Leaderboard}!Leaderboard@{Leaderboard}}
+\index{Leaderboard@{Leaderboard}!Leaderboard@{Leaderboard}}
+\doxysubsubsection{Leaderboard()}
+{\footnotesize\ttfamily \label{class_leaderboard_a86f261a798853d14bf9437c4da80c789} 
+Leaderboard\+::\+Leaderboard (\begin{DoxyParamCaption}\item[{string}]{filename}{}\end{DoxyParamCaption})}
+
+
+
+Constructor for the \doxyref{Leaderboard}{p.}{class_leaderboard} class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & The filename to load and save the leaderboard data. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\index{Leaderboard@{Leaderboard}!addScore@{addScore}}
+\index{addScore@{addScore}!Leaderboard@{Leaderboard}}
+\doxysubsubsection{addScore()}
+{\footnotesize\ttfamily \label{class_leaderboard_adbb5050da729eb73389098f0c88b4b80} 
+void Leaderboard\+::add\+Score (\begin{DoxyParamCaption}\item[{int}]{new\+Score}{, }\item[{string}]{username}{}\end{DoxyParamCaption})}
+
+
+
+Adds a new score to the leaderboard. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Score} & The new score to add. \\
+\hline
+{\em username} & The username associated with the score. \\
+\hline
+\end{DoxyParams}
+\index{Leaderboard@{Leaderboard}!getItsBestScores@{getItsBestScores}}
+\index{getItsBestScores@{getItsBestScores}!Leaderboard@{Leaderboard}}
+\doxysubsubsection{getItsBestScores()}
+{\footnotesize\ttfamily \label{class_leaderboard_a376627ce47279f757bde1561840c4699} 
+map$<$ string, int $>$ Leaderboard\+::get\+Its\+Best\+Scores (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Retrieves the best scores from the leaderboard. 
+
+\begin{DoxyReturn}{Returns}
+A map containing usernames and their corresponding best scores. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\textbf{ leaderboard.\+h}\item 
+leaderboard.\+cpp\end{DoxyCompactItemize}

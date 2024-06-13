@@ -1,0 +1,128 @@
+\doxysection{widget.\+h}
+\label{widget_8h_source}\textbf{ Go to the documentation of this file.}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#ifndef\ WIDGET\_H}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#define\ WIDGET\_H}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <QWidget>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <QTimer>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <QImage>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <QPainter>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <QKeyEvent>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <QFontMetrics>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <QResizeEvent>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}game.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}typeDef.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}leaderboard.h"{}}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ QT\_BEGIN\_NAMESPACE}
+\DoxyCodeLine{00021\ \textcolor{keyword}{namespace\ }Ui\ \{}
+\DoxyCodeLine{00022\ \textcolor{keyword}{class\ }Widget;}
+\DoxyCodeLine{00023\ \}}
+\DoxyCodeLine{00024\ QT\_END\_NAMESPACE}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00033\ \textcolor{keyword}{class\ }Widget\ :\ \textcolor{keyword}{public}\ QWidget}
+\DoxyCodeLine{00034\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00042\ \ \ \ \ Widget(QWidget\ *parent\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00047\ \ \ \ \ \string~Widget();}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ paintEvent(QPaintEvent\ *event)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{void}\ keyPressEvent(QKeyEvent\ *\ event)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{void}\ keyReleaseEvent(QKeyEvent\ *\ event)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{void}\ resizeEvent(QResizeEvent\ *event)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{void}\ drawCentipede(QPainter\ \&\ painter);}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordtype}{void}\ drawPlayer(QPainter\ \&\ painter);}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordtype}{void}\ drawBullet(QPainter\ \&\ painter);}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordtype}{void}\ drawMushrooms(QPainter\ \&\ painter);}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordtype}{void}\ drawPowerUps(QPainter\ \&\ painter);}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordtype}{void}\ drawHeadUpDisplay(QPainter\ \&\ painter);}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordtype}{void}\ drawSpider(QPainter\ \&\ painter);}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordtype}{void}\ pauseGame();}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \textcolor{keyword}{private}\ slots:}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordtype}{void}\ movePlayer();}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordtype}{void}\ moveCentipede();}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordtype}{void}\ moveBullet();}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordtype}{void}\ movePowerUps();}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordtype}{void}\ startGame(\textcolor{keywordtype}{int}\ level\ =\ 1);}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordtype}{void}\ resumeGame();}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keywordtype}{void}\ endGame();}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordtype}{void}\ backToMenu();}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keywordtype}{void}\ displayLeaderboard();}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordtype}{void}\ processNewScore();}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{keywordtype}{void}\ goToHowToPlay();}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keywordtype}{void}\ rafaleShot();}
+\DoxyCodeLine{00211\ }
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keywordtype}{void}\ piercingEnd();}
+\DoxyCodeLine{00218\ }
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keywordtype}{void}\ moveSpider();}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keywordtype}{void}\ spiderAppear();}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00234\ \ \ \ \ Ui::Widget\ *ui;\ }
+\DoxyCodeLine{00235\ \ \ \ \ QTimer\ *\ itsDisplayTimer\ =\ \textcolor{keyword}{nullptr};\ }
+\DoxyCodeLine{00236\ \ \ \ \ QTimer\ *\ itsCentipedeTimer\ =\ \textcolor{keyword}{nullptr};\ }
+\DoxyCodeLine{00237\ \ \ \ \ QTimer\ *\ itsBulletTimer\ =\ \textcolor{keyword}{nullptr};\ }
+\DoxyCodeLine{00238\ \ \ \ \ QTimer\ *\ itsPlayerTimer\ =\ \textcolor{keyword}{nullptr};\ }
+\DoxyCodeLine{00239\ \ \ \ \ QTimer\ *\ itsPowerUpMovementTimer\ =\ \textcolor{keyword}{nullptr};\ }
+\DoxyCodeLine{00240\ \ \ \ \ QTimer\ *\ itsRafaleTimer\ =\ \textcolor{keyword}{nullptr};\ }
+\DoxyCodeLine{00241\ \ \ \ \ QTimer\ *\ itsPiercingTimer\ =\ \textcolor{keyword}{nullptr};\ }
+\DoxyCodeLine{00242\ \ \ \ \ QTimer\ *\ itsSpiderAppearTimer\ =\ \textcolor{keyword}{nullptr};\ }
+\DoxyCodeLine{00243\ \ \ \ \ QTimer\ *\ itsSpiderTimer\ =\ \textcolor{keyword}{nullptr};\ }
+\DoxyCodeLine{00244\ \ \ \ \ Game\ *\ itsGame\ =\ \textcolor{keyword}{nullptr};\ }
+\DoxyCodeLine{00245\ \ \ \ \ Leaderboard\ *\ itsLeaderboard\ =\ \textcolor{keyword}{nullptr};\ }
+\DoxyCodeLine{00246\ \ \ \ \ QImage\ itsCentiHeadImg;\ }
+\DoxyCodeLine{00247\ \ \ \ \ QImage\ itsCentiBodyImg;\ }
+\DoxyCodeLine{00248\ \ \ \ \ QImage\ itsCentiTailImg;\ }
+\DoxyCodeLine{00249\ \ \ \ \ QImage\ itsPlayerImg;\ }
+\DoxyCodeLine{00250\ \ \ \ \ QImage\ itsMushState1Img;\ }
+\DoxyCodeLine{00251\ \ \ \ \ QImage\ itsMushState2Img;\ }
+\DoxyCodeLine{00252\ \ \ \ \ QImage\ itsMushState3Img;\ }
+\DoxyCodeLine{00253\ \ \ \ \ QImage\ itsMushState4Img;\ }
+\DoxyCodeLine{00254\ \ \ \ \ QImage\ itsSpiderImg;\ }
+\DoxyCodeLine{00255\ \ \ \ \ QImage\ itsBulletImg;\ }
+\DoxyCodeLine{00256\ \ \ \ \ QImage\ itsRafalePuImg;\ }
+\DoxyCodeLine{00257\ \ \ \ \ QImage\ itsTranspercantPuImg;\ }
+\DoxyCodeLine{00258\ \ \ \ \ QImage\ itsHerbicidePuImg;\ }
+\DoxyCodeLine{00259\ \ \ \ \ QImage\ itsGrassTexture;\ }
+\DoxyCodeLine{00260\ \ \ \ \ QImage\ itsDarkGrassTexture;\ }
+\DoxyCodeLine{00261\ \ \ \ \ Direction\ itsPlayerDirection;\ }
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{keywordtype}{bool}\ isGameStarted\ =\ \textcolor{keyword}{false};\ }
+\DoxyCodeLine{00263\ \ \ \ \ \textcolor{keywordtype}{bool}\ isGamePaused\ =\ \textcolor{keyword}{false};\ }
+\DoxyCodeLine{00264\ \ \ \ \ \textcolor{keywordtype}{int}\ remainingRafaleShots;\ }
+\DoxyCodeLine{00265\ \ \ \ \ \textcolor{keywordtype}{int}\ itsElapsedTime;\ }
+\DoxyCodeLine{00266\ \ \ \ \ \textcolor{keywordtype}{int}\ itsSpiderAppearProbability;\ }
+\DoxyCodeLine{00267\ \};}
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00269\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ WIDGET\_H}}
+
+\end{DoxyCode}
