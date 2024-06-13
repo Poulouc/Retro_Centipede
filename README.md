@@ -25,12 +25,12 @@ This is a simple Centipede game developed using Qt. The game features a centiped
 ### Steps
 
 1. **Access the Repository**:
-   - Go to the repository on GitHub: [Centipede Game Repository]((https://github.com/yourusername/centipede-game).
+   - Go to the repository on GitHub: [Centipede Game Repository](https://forge.iut-larochelle.fr/qrainaud/retrog24_c22_centipede).
 
 2. **Download the Executable**:
    - Click on the `"executable"` directory.
    - Click the blue `Code` button located at the top right corner.
-   - Select in `"Download this directory"` from the dropdown menu the Zip.
+   - Select in `"Download this directory"`, from the dropdown menu, the Zip.
 
 3. **Unzip the Folder**:
    - Unzip the downloaded folder to a location of your choice on your computer.
