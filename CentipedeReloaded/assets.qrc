@@ -18,7 +18,7 @@
         <file>assets/player.png</file>
         <file>assets/rafale.png</file>
         <file>assets/spider.png</file>
-        <file>leaderboard.txt</file>
         <file>assets/icon.png</file>
+        <file>leaderboard.txt</file>
     </qresource>
 </RCC>

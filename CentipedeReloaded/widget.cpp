@@ -89,7 +89,7 @@ Widget::Widget(QWidget *parent)
     connect(itsSpiderAppearTimer, SIGNAL(timeout()), this, SLOT(spiderAppear()));
     connect(itsSpiderTimer, SIGNAL(timeout()), this, SLOT(moveSpider()));
 
-    itsLeaderboard = new Leaderboard("../../" + SAVEFILE_NAME);
+    itsLeaderboard = new Leaderboard("../../leaderboard.txt");
     ui->stackedWidget->setCurrentIndex(0);
 
     //change the color of the font
@@ -323,25 +323,26 @@ void Widget::drawMushrooms(QPainter & painter)
 
 void Widget::drawCentipede(QPainter & painter)
 {
-    for (vector<Centipede *>::iterator it = itsGame->getItsCentipedes()->begin(); it != itsGame->getItsCentipedes()->end(); ++it) {
-
-        if(SHOW_HITBOXES)
+    for (vector<Centipede *>::iterator it = itsGame->getItsCentipedes()->begin(); it != itsGame->getItsCentipedes()->end(); ++it)
+    {
+        Centipede* centipede = *it;
+        if(SHOW_HITBOXES && centipede->getItsHead() != centipede->getItsTail())
         {
             // Display the hitbox of the tail
             painter.setPen(Qt::darkGreen);
             painter.setBrush(Qt::SolidPattern);
-            painter.drawRect((*it)->getItsTail()->getItsHitBox()); 
+            painter.drawRect(centipede->getItsTail()->getItsHitBox());
         }
-        else
+        else if(centipede->getItsTail() != centipede->getItsHead())
         {
             double resetRota = 0.0;
-            int actY = (*it)->getItsTail()->getItsPosition().posY;
-            int prvY = (*it)->getItsTail()->getItsParent()->getItsPosition().posY;
+            int actY = centipede->getItsTail()->getItsPosition().posY;
+            int prvY = centipede->getItsTail()->getItsParent()->getItsPosition().posY;
 
             if (actY == prvY)
             {
-                int actX = (*it)->getItsTail()->getItsPosition().posX;
-                int prvX = (*it)->getItsTail()->getItsParent()->getItsPosition().posX;
+                int actX = centipede->getItsTail()->getItsPosition().posX;
+                int prvX = centipede->getItsTail()->getItsParent()->getItsPosition().posX;
 
                 if (actX < prvX)
                 {
@@ -361,22 +362,63 @@ void Widget::drawCentipede(QPainter & painter)
             }
 
             // Display the image of the tail of a centipede
-            painter.drawImage((*it)->getItsTail()->getItsHitBox(), itsCentiTailImg);
+            painter.drawImage(centipede->getItsTail()->getItsHitBox(), itsCentiTailImg);
 
             itsCentiTailImg = itsCentiTailImg.transformed(QTransform().rotate(resetRota));
         }
 
-        // Iterates on body parts of the centipede (head and tail excluded) in descending order
-        for (BodyPart* currentPart = (*it)->getItsTail()->getItsParent(); currentPart->getItsParent() != nullptr; currentPart = currentPart->getItsParent())
+        if(SHOW_HITBOXES)
         {
-            if (SHOW_HITBOXES)
+            // Display the hitbox of the head
+            painter.setPen(Qt::blue);
+            painter.setBrush(Qt::SolidPattern);
+            painter.drawRect(centipede->getItsHead()->getItsHitBox());
+        }
+        else
+        {
+            double resetRota = 0.0;
+
+            if (centipede->getItsDirection().dirY == 0)
+            {
+                if (centipede->getItsDirection().dirX == 1)
+                {
+                    itsCentiHeadImg = itsCentiHeadImg.transformed(QTransform().rotate(-90.0));
+                    resetRota = 90.0;
+                }
+                else
+                {
+                    itsCentiHeadImg = itsCentiHeadImg.transformed(QTransform().rotate(90.0));
+                    resetRota = -90.0;
+                }
+            }
+            else if (centipede->getItsDirection().dirY == -1)
+            {
+                itsCentiHeadImg = itsCentiHeadImg.transformed(QTransform().rotate(180.0));
+                resetRota = -180.0;
+            }
+
+            // Display the image of the head of a centipede
+            painter.drawImage(centipede->getItsHead()->getItsHitBox(), itsCentiHeadImg);
+
+            itsCentiHeadImg = itsCentiHeadImg.transformed(QTransform().rotate(resetRota));
+        }
+
+
+
+
+
+        // Iterates on body parts of the centipede (head and tail excluded) in descending order
+        for (BodyPart* currentPart = centipede->getItsTail()->getItsParent(); currentPart != centipede->getItsHead(); currentPart = currentPart->getItsParent())
+        {
+            if(centipede->getItsHead() == centipede->getItsTail()) break;
+            if(SHOW_HITBOXES)
             {
                 // Display the hitbox of the body part
                 painter.setPen(Qt::cyan);
                 painter.setBrush(Qt::SolidPattern);
                 painter.drawRect(currentPart->getItsHitBox());
             }
-            else
+            else if(currentPart->getItsParent() != nullptr)
             {
                 double resetRota = 0.0;
                 int actY = currentPart->getItsPosition().posY;
@@ -409,42 +451,6 @@ void Widget::drawCentipede(QPainter & painter)
 
                 itsCentiBodyImg = itsCentiBodyImg.transformed(QTransform().rotate(resetRota));
             }
-        }
-
-        if (SHOW_HITBOXES)
-        {
-            // Display the hitbox of the head
-            painter.setPen(Qt::blue);
-            painter.setBrush(Qt::SolidPattern);
-            painter.drawRect((*it)->getItsHead()->getItsHitBox());
-        }
-        else
-        {
-            double resetRota = 0.0;
-
-            if ((*it)->getItsDirection().dirY == 0)
-            {
-                if ((*it)->getItsDirection().dirX == 1)
-                {
-                    itsCentiHeadImg = itsCentiHeadImg.transformed(QTransform().rotate(-90.0));
-                    resetRota = 90.0;
-                }
-                else
-                {
-                    itsCentiHeadImg = itsCentiHeadImg.transformed(QTransform().rotate(90.0));
-                    resetRota = -90.0;
-                }
-            }
-            else if ((*it)->getItsDirection().dirY == -1)
-            {
-                itsCentiHeadImg = itsCentiHeadImg.transformed(QTransform().rotate(180.0));
-                resetRota = -180.0;
-            }
-
-            // Display the image of the head of a centipede
-            painter.drawImage((*it)->getItsHead()->getItsHitBox(), itsCentiHeadImg);
-
-            itsCentiHeadImg = itsCentiHeadImg.transformed(QTransform().rotate(resetRota));
         }
     }
 }
